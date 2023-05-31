@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
 import axios from "axios";
-import * as dotenv from "dotenv";
+import dotenv from "dotenv";
+dotenv.config();
 
 const PORT = 8000;
 
@@ -14,11 +15,13 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/test-cases", async (req, res) => {
-  //const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+  const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+
   const requirements = req.query.requirements;
   console.log(requirements);
-  const API_KEY = ;
+
   console.log(API_KEY);
+
   const data = {
     model: "gpt-3.5-turbo",
     messages: [

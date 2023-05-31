@@ -5,9 +5,6 @@ import "./App.css";
 const App = () => {
   const [requirements, setRequirements] = useState("");
   const [testCases, setTestCases] = useState([]);
-  const API_KEY = "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";
-  console.log(API_KEY);
-  console.log("Hello!!!!!");
 
   const handleChange = (event) => {
     setRequirements(event.target.value);
