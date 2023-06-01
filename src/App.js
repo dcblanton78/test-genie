@@ -82,6 +82,10 @@ const App = () => {
     link.click();
   };
 
+  const saveTestCase = async (testCase) => {
+    await axios.post("http://localhost:8000/store-test-cases", testCase);
+  };
+
   return (
     <div>
       <h1>TestGenie</h1>
@@ -135,6 +139,11 @@ const App = () => {
                         <option value="Passed">Passed</option>
                         <option value="Failed">Failed</option>
                       </select>
+                    </td>
+                    <td>
+                      <button onClick={() => saveTestCase(testCase)}>
+                        Save
+                      </button>
                     </td>
                   </tr>
                 </tbody>
