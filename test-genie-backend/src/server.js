@@ -13,6 +13,40 @@ const app = express();
 // Enable cross-origin resource sharing
 app.use(cors());
 
+import db from "./db.js"; // Import db from database.js
+
+app.use(express.json());
+
+// rest of your code...
+
+// Define a route that saves test cases to the MySQL database
+app.post("/store-test-cases", async (req, res) => {
+  try {
+    console.log("req.body:", req.body);
+
+    let testCases = req.body;
+    // Check if testCases is an array. If not, convert it into an array.
+    if (!Array.isArray(testCases)) {
+      testCases = [testCases];
+    }
+
+    for (let testCase of testCases) {
+      const { ID, Description, Expected_Result, Actual_Result, Status } =
+        testCase;
+
+      await db.execute(
+        "INSERT INTO test_cases (test_case_id, Description, Expected_Result, Actual_Result, Status) VALUES (?, ?, ?, ?, ?)",
+        [ID, Description, Expected_Result, Actual_Result, Status]
+      );
+    }
+
+    res.status(201).json({ message: "Test cases saved successfully!" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "An error occurred." });
+  }
+});
+
 // Define a route that returns a simple string response
 app.get("/hello", (req, res) => {
   res.json("Hello World");
