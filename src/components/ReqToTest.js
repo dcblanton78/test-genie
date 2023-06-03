@@ -13,6 +13,7 @@ const ReqToTest = () => {
   };
 
   const handleSubmit = async (event) => {
+    console.log("Submit button clicked");
     event.preventDefault();
     setIsLoading(true);
     document.body.style.cursor = "wait";
@@ -113,9 +114,9 @@ const ReqToTest = () => {
           value={requirements}
           onChange={handleChange}
         />
-
         <input type="submit" value="Generate Test Cases" disabled={isLoading} />
       </form>
+
       {successMessage && <div className="success">{successMessage}</div>}
 
       {testCases.length > 0 && (
