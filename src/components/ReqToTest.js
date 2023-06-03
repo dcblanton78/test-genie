@@ -9,58 +9,11 @@ const ReqToTest = () => {
   const [testCases, setTestCases] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [codeString, setCodeString] = useState("");
 
   const handleChange = (event) => {
     setRequirements(event.target.value);
   };
-
-  const codeString = `const { searchListings } = require('./listings');
-
-describe('Search Listings', () => {
-  const mockListings = [{
-    id: 1,
-    location: 'New York',
-    availableDates: ['2023-07-01', '2023-07-02', '2023-07-03'],
-    maxGuests: 4,
-    amenities: ['wifi', 'kitchen', 'parking']
-  }, {
-    id: 2,
-    location: 'San Francisco',
-    availableDates: ['2023-07-02', '2023-07-03'],
-    maxGuests: 2,
-    amenities: ['wifi', 'kitchen']
-  }];
-  
-  test('should return listings based on location', async () => {
-    const results = await searchListings('New York', null, null, null, mockListings);
-    expect(results).toEqual([mockListings[0]]);
-  });
-
-  test('should return listings based on dates', async () => {
-    const results = await searchListings(null, ['2023-07-03'], null, null, mockListings);
-    expect(results).toEqual(mockListings);
-  });
-
-  test('should return listings based on number of guests', async () => {
-    const results = await searchListings(null, null, 2, null, mockListings);
-    expect(results).toEqual([mockListings[1]]);
-  });
-
-  test('should return listings based on amenities', async () => {
-    const results = await searchListings(null, null, null, ['parking'], mockListings);
-    expect(results).toEqual([mockListings[0]]);
-  });
-
-  test('should return listings based on multiple criteria', async () => {
-    const results = await searchListings('New York', ['2023-07-03'], 4, ['wifi'], mockListings);
-    expect(results).toEqual([mockListings[0]]);
-  });
-
-  test('should return an empty array when no matching listings', async () => {
-    const results = await searchListings('Los Angeles', null, null, null, mockListings);
-    expect(results).toEqual([]);
-  });
-});`;
 
   const handleSubmit = async (event) => {
     console.log("Submit button clicked");
@@ -74,18 +27,35 @@ describe('Search Listings', () => {
       params: { requirements: requirements },
     };
 
-    axios.request(data).then(function (response) {
-      const updatedTestCases = response.data.map((testCase) => ({
-        ...testCase,
+    const unitTestData = {
+      method: "GET",
+      url: "http://localhost:8000/generate-unit-tests",
+      params: { requirements: requirements },
+    };
 
+    try {
+      const [testResponse, unitTestResponse] = await Promise.all([
+        axios.request(data),
+        axios.request(unitTestData),
+        console.log("unit test data: ", unitTestData),
+      ]);
+
+      const updatedTestCases = testResponse.data.map((testCase) => ({
+        ...testCase,
         Status: testCases.Status || "New",
       }));
       console.log("Status: ", testCases.Status);
       setTestCases(updatedTestCases);
       console.log("testCases:", testCases);
+      console.log("Unit Tests: ", unitTestResponse.data.unitTests);
+
+      setCodeString(unitTestResponse.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
       setIsLoading(false);
       document.body.style.cursor = "";
-    });
+    }
   };
 
   const handleActualResultChange = (event, index) => {
@@ -237,7 +207,7 @@ describe('Search Listings', () => {
         </div>
       )}
 
-      <CodeBlock codeString={codeString} />
+      {codeString && <CodeBlock codeString={codeString} />}
     </div>
   );
 };

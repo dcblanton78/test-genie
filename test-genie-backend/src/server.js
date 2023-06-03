@@ -110,6 +110,51 @@ app.get("/generate-test-cases", async (req, res) => {
   }
 });
 
+// Define a route that generates unit tests based on user-provided requirements
+app.get("/generate-unit-tests", async (req, res) => {
+  const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+
+  // Get the requirements parameter from the query string
+  const requirements = req.query.requirements;
+
+  // Create the data object to send to OpenAI's API
+  const data = {
+    model: "text-davinci-003",
+    prompt:
+      "Please provide at least 10 jest unit tests to test the following requirement: " +
+      requirements +
+      ". The response should be formatted like this example. The format / structure is REALLY important to follow to ensure the results are displayed correcty on the frontend: describe('Search Listings', () => { const mockListings = [{ id: 1, location: 'New York', availableDates: ['2023-07-01', '2023-07-02', '2023-07-03'], maxGuests: 4, amenities: ['wifi', 'kitchen', 'parking'] }, { id: 2, location: 'San Francisco', availableDates: ['2023-07-02', '2023-07-03'], maxGuests: 2, amenities: ['wifi', 'kitchen'] }]; test('should return listings based on location', async () => { const results = await searchListings('New York', null, null, null, mockListings); expect(results).toEqual([mockListings[0]]); }); test('should return listings based on dates', async () => { const results = await searchListings(null, ['2023-07-03'], null, null, mockListings); expect(results).toEqual(mockListings); }); test('should return an empty array when no matching listings', async () => { const results = await searchListings('Los Angeles', null, null, null, mockListings); expect(results).toEqual([]); }); });",
+    max_tokens: 1500,
+    temperature: 0.4,
+  };
+
+  // Set up the configuration object for the API request
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${API_KEY}`,
+    },
+  };
+
+  try {
+    // Send a POST request to OpenAI's API to generate the unit tests
+    const response = await axios.post(
+      "https://api.openai.com/v1/completions",
+      data,
+      config
+    );
+
+    // Extract the generated unit tests from the API response
+    const generatedUnitTests = response.data.choices[0].text;
+
+    // Send the generated unit tests as a JSON response to the client
+    res.json(generatedUnitTests);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // Start the server and listen for incoming requests
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
