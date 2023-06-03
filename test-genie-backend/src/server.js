@@ -53,7 +53,17 @@ app.get("/hello", (req, res) => {
 });
 
 // Define a route that generates test cases based on user-provided requirements
-app.get("/test-cases", async (req, res) => {
+app.get("/get-test-cases", async (req, res) => {
+  try {
+    const [rows] = await db.execute("SELECT * FROM test_cases");
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "An error occurred." });
+  }
+});
+
+app.get("/generate-test-cases", async (req, res) => {
   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
 
   // Get the requirements parameter from the query string
@@ -66,7 +76,7 @@ app.get("/test-cases", async (req, res) => {
   const data = {
     model: "text-davinci-003",
     prompt:
-      "Please provide the test cases associated with this requirement in Gherkin syntax (Given, When, Then). In addition to happy path, include all negative cases, edge cases, and corner cases. Please include all the following information: Test Case ID, Description, and Expected Result. Provide the answer as a JSON object with a key 'testCases' that has a value of an array containing objects with keys for 'ID', 'Description', and 'Expected_Result'. ONLY include the Given, When steps in the Description and ONLY the Then step should be included in the Expected Result. Be sure to start with the word Then in the Expected Result. For example, Description: Given I am on the reset password page, When I enter my email address. Expected Result: Then I am sent a link to reset my password: " +
+      "Please provide at least 20 test cases associated with this requirement in Gherkin syntax (Given, When, Then). In addition to happy path, include all negative cases, edge cases, and corner cases. Please include all the following information: Test Case ID, Description, and Expected Result. Provide the answer as a JSON object with a key 'testCases' that has a value of an array containing objects with keys for 'ID', 'Description', and 'Expected_Result'. ONLY include the Given, When steps in the Description and ONLY the Then step should be included in the Expected Result. Be sure to start with the word Then in the Expected Result. For example, Description: Given I am on the reset password page, When I enter my email address. Expected Result: Then I am sent a link to reset my password: " +
       requirements,
     max_tokens: 1500,
     temperature: 0.4,
@@ -88,8 +98,12 @@ app.get("/test-cases", async (req, res) => {
       config
     );
 
-    // Send the API response as a JSON response to the client
-    res.json(response.data);
+    // Extract the generated test cases from the API response
+    const generatedTestCases = response.data.choices[0].text;
+    const parsedTestCases = JSON.parse(generatedTestCases).testCases;
+
+    // Send the parsed test cases as a JSON response to the client
+    res.json(parsedTestCases);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
