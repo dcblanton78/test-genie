@@ -14,19 +14,30 @@
   --box-shadow-1: 0 3px 15px rgba(0, 0, 0, 0.3);
 }
 
-.landing-page-container {
-  text-align: center;
+html,
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
   background-color: var(--color-grey-1);
 }
 
+.landing-page-container {
+  text-align: center;
+  background-color: var(--color-grey-1);
+  border: 1px solid var(--color-grey-2);
+}
+
 .landing-page-header {
-  color: var(--color-primary);
+  /* color: var(--color-primary); */
+  color: var(--color-secondary);
 }
 
 .landing-page-link-container {
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  padding-bottom: 20px;
 }
 
 .landing-page-link {
@@ -41,5 +52,5 @@
 }
 
 .landing-page-link:hover {
-  background-color: var(--color-grey-4);
+  background-color: rgb(0, 144, 46);
 }
