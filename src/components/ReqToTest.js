@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./ReqToTest.css";
 
+import CodeBlock from "./CodeBlock";
+
 const ReqToTest = () => {
   const [requirements, setRequirements] = useState("");
   const [testCases, setTestCases] = useState([]);
@@ -11,6 +13,54 @@ const ReqToTest = () => {
   const handleChange = (event) => {
     setRequirements(event.target.value);
   };
+
+  const codeString = `const { searchListings } = require('./listings');
+
+describe('Search Listings', () => {
+  const mockListings = [{
+    id: 1,
+    location: 'New York',
+    availableDates: ['2023-07-01', '2023-07-02', '2023-07-03'],
+    maxGuests: 4,
+    amenities: ['wifi', 'kitchen', 'parking']
+  }, {
+    id: 2,
+    location: 'San Francisco',
+    availableDates: ['2023-07-02', '2023-07-03'],
+    maxGuests: 2,
+    amenities: ['wifi', 'kitchen']
+  }];
+  
+  test('should return listings based on location', async () => {
+    const results = await searchListings('New York', null, null, null, mockListings);
+    expect(results).toEqual([mockListings[0]]);
+  });
+
+  test('should return listings based on dates', async () => {
+    const results = await searchListings(null, ['2023-07-03'], null, null, mockListings);
+    expect(results).toEqual(mockListings);
+  });
+
+  test('should return listings based on number of guests', async () => {
+    const results = await searchListings(null, null, 2, null, mockListings);
+    expect(results).toEqual([mockListings[1]]);
+  });
+
+  test('should return listings based on amenities', async () => {
+    const results = await searchListings(null, null, null, ['parking'], mockListings);
+    expect(results).toEqual([mockListings[0]]);
+  });
+
+  test('should return listings based on multiple criteria', async () => {
+    const results = await searchListings('New York', ['2023-07-03'], 4, ['wifi'], mockListings);
+    expect(results).toEqual([mockListings[0]]);
+  });
+
+  test('should return an empty array when no matching listings', async () => {
+    const results = await searchListings('Los Angeles', null, null, null, mockListings);
+    expect(results).toEqual([]);
+  });
+});`;
 
   const handleSubmit = async (event) => {
     console.log("Submit button clicked");
@@ -25,7 +75,14 @@ const ReqToTest = () => {
     };
 
     axios.request(data).then(function (response) {
-      setTestCases(response.data);
+      const updatedTestCases = response.data.map((testCase) => ({
+        ...testCase,
+
+        Status: testCases.Status || "New",
+      }));
+      console.log("Status: ", testCases.Status);
+      setTestCases(updatedTestCases);
+      console.log("testCases:", testCases);
       setIsLoading(false);
       document.body.style.cursor = "";
     });
@@ -76,9 +133,12 @@ const ReqToTest = () => {
     link.click();
   };
 
-  const saveTestCase = async (testCase) => {
+  const saveTestCase = async (index) => {
     try {
-      await axios.post("http://localhost:8000/store-test-cases", testCase);
+      await axios.post(
+        "http://localhost:8000/store-test-cases",
+        testCases[index]
+      );
       setSuccessMessage("Test case saved successfully!");
     } catch (error) {
       console.error(error);
@@ -86,10 +146,10 @@ const ReqToTest = () => {
     }
   };
 
-  const saveAllTestCases = async (testCases) => {
+  const saveAllTestCases = async () => {
     try {
-      for (let testCase of testCases) {
-        await saveTestCase(testCase);
+      for (let index = 0; index < testCases.length; index++) {
+        await saveTestCase(index);
       }
       setSuccessMessage("All test cases saved successfully!");
     } catch (error) {
@@ -105,7 +165,6 @@ const ReqToTest = () => {
   return (
     <div>
       <h1>TestGenie</h1>
-
       <form onSubmit={handleSubmit}>
         <textarea
           id="textarea"
@@ -116,9 +175,7 @@ const ReqToTest = () => {
         />
         <input type="submit" value="Generate Test Cases" disabled={isLoading} />
       </form>
-
       {successMessage && <div className="success">{successMessage}</div>}
-
       {testCases.length > 0 && (
         <div>
           <h2>Here are your Gherkin test cases</h2>
@@ -179,6 +236,8 @@ const ReqToTest = () => {
           </button>
         </div>
       )}
+
+      <CodeBlock codeString={codeString} />
     </div>
   );
 };
