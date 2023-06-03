@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./LandingPage.css";
 
 //Adding some comments to test git
+//Adding some more comments to test git
 
 const LandingPage = () => {
   return (
