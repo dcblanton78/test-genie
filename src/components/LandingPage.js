@@ -11,7 +11,7 @@ const LandingPage = () => {
       <h1 className="landing-page-header">Welcome to TestGenie!</h1>
       <div className="landing-page-link-container">
         <Link to="/requirements" className="landing-page-link">
-          Generate Test Cases
+          Generate Tests
         </Link>
         <Link to="/your-tests" className="landing-page-link">
           Your Tests

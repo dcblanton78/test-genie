@@ -10,6 +10,8 @@ const PORT = 8000;
 
 const app = express();
 
+app.use(express.json());
+
 // Enable cross-origin resource sharing
 app.use(cors());
 
@@ -31,8 +33,14 @@ app.post("/store-test-cases", async (req, res) => {
     }
 
     for (let testCase of testCases) {
-      const { ID, Description, Expected_Result, Actual_Result, Status } =
-        testCase;
+      const {
+        ID,
+        Description,
+        Expected_Result,
+        Actual_Result = null,
+        Status,
+      } = testCase;
+      console.log("Status: ", Status);
 
       await db.execute(
         "INSERT INTO test_cases (test_case_id, Description, Expected_Result, Actual_Result, Status) VALUES (?, ?, ?, ?, ?)",

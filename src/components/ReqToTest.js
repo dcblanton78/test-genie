@@ -42,12 +42,11 @@ const ReqToTest = () => {
 
       const updatedTestCases = testResponse.data.map((testCase) => ({
         ...testCase,
-        Status: testCases.Status || "New",
+        Status: testCase.Status || "In Progress",
       }));
       console.log("Status: ", testCases.Status);
       setTestCases(updatedTestCases);
       console.log("testCases:", testCases);
-      console.log("Unit Tests: ", unitTestResponse.data.unitTests);
 
       setCodeString(unitTestResponse.data);
     } catch (error) {
@@ -103,12 +102,9 @@ const ReqToTest = () => {
     link.click();
   };
 
-  const saveTestCase = async (index) => {
+  const saveTestCase = async (testCase) => {
     try {
-      await axios.post(
-        "http://localhost:8000/store-test-cases",
-        testCases[index]
-      );
+      await axios.post("http://localhost:8000/store-test-cases", testCase);
       setSuccessMessage("Test case saved successfully!");
     } catch (error) {
       console.error(error);
@@ -119,7 +115,7 @@ const ReqToTest = () => {
   const saveAllTestCases = async () => {
     try {
       for (let index = 0; index < testCases.length; index++) {
-        await saveTestCase(index);
+        await saveTestCase(testCases[index]);
       }
       setSuccessMessage("All test cases saved successfully!");
     } catch (error) {
