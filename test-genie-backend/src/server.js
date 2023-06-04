@@ -129,9 +129,27 @@ app.get("/generate-unit-tests", async (req, res) => {
   const data = {
     model: "text-davinci-003",
     prompt:
-      "Please provide at least 10 jest unit tests to test the following requirement: " +
+      "Please provide at least 7 jest unit tests to test the following requirement: " +
       requirements +
-      ". The response should be formatted like this example: describe('Search Listings', () => { const mockListings = [{ id: 1, location: 'New York', availableDates: ['2023-07-01', '2023-07-02', '2023-07-03'], maxGuests: 4, amenities: ['wifi', 'kitchen', 'parking'] }, { id: 2, location: 'San Francisco', availableDates: ['2023-07-02', '2023-07-03'], maxGuests: 2, amenities: ['wifi', 'kitchen'] }]; test('should return listings based on location', async () => { const results = await searchListings('New York', null, null, null, mockListings); expect(results).toEqual([mockListings[0]]); }); test('should return listings based on dates', async () => { const results = await searchListings(null, ['2023-07-03'], null, null, mockListings); expect(results).toEqual(mockListings); }); test('should return an empty array when no matching listings', async () => { const results = await searchListings('Los Angeles', null, null, null, mockListings); expect(results).toEqual([]); }); });",
+      ". The response should be formatted like this example: \n\n" +
+      "describe('View Listing Details', () => {\n" +
+      "  const mockListing = {\n" +
+      "    id: 1,\n" +
+      "    photos: ['photo1.jpg', 'photo2.jpg'],\n" +
+      "    description: 'This is a great listing',\n" +
+      "    houseRules: 'No parties',\n" +
+      "    reviews: [{ author: 'John', rating: 5 }, { author: 'Jane', rating: 4 }],\n" +
+      "    pricing: {\n" +
+      "      basePrice: 100,\n" +
+      "      extraPersonFee: 10\n" +
+      "    }\n" +
+      "  };\n\n" +
+      "  test('should return the correct listing photos', () => {\n" +
+      "    expect(mockListing.photos).toEqual(['photo1.jpg', 'photo2.jpg']);\n" +
+      "  });\n\n" +
+      // Rest of tests
+      "});",
+
     max_tokens: 1500,
     temperature: 0.4,
   };

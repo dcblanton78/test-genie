@@ -141,11 +141,11 @@ const ReqToTest = () => {
         />
         <input type="submit" value="Generate Test Cases" disabled={isLoading} />
       </form>
-      {successMessage && <div className="success">{successMessage}</div>}
+
       {testCases.length > 0 && (
-        <div>
+        <div className="gherkContainter">
           <h2>Here are your Gherkin test cases</h2>
-          <p>Requirement: {requirements}</p>
+          <p id="GherkReq">Requirement: {requirements}</p>
           <table>
             <thead>
               <tr>
@@ -191,19 +191,23 @@ const ReqToTest = () => {
             </tbody>
           </table>
 
-          <button onClick={downloadCSV}>Download to CSV</button>
-          <button>Export To Jira</button>
-
-          <button
-            onClick={() => saveAllTestCases(testCases)}
-            className="save-all-button"
-          >
-            Save All
-          </button>
+          <div className="button-container">
+            <button onClick={downloadCSV}>Download to CSV</button>
+            <button>Export To Jira</button>
+            <button
+              onClick={() => saveAllTestCases(testCases)}
+              className="save-all-button"
+            >
+              Save All
+            </button>
+          </div>
+          {successMessage && <div className="success">{successMessage}</div>}
         </div>
       )}
 
-      {codeString && <CodeBlock codeString={codeString} />}
+      {codeString && (
+        <CodeBlock codeString={codeString} requirements={requirements} />
+      )}
     </div>
   );
 };

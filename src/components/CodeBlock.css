@@ -1,5 +1,22 @@
 .code-block {
-  padding-left: 1em;
+  position: relative;
+}
+
+.highlight-container {
+  position: relative;
+  width: 50vw;
+  margin: 0 auto;
+}
+
+.copy-code-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Adjust these values as needed */
+  z-index: 1;
+  padding-left: 20px;
+  margin-left: 12px;
+  margin-top: 12px;
 }
 
 .heading-container {
@@ -8,9 +25,30 @@
 
 .unit-tests {
   margin-bottom: 0.5em;
-  margin-left: -1em; /* align with 'Copy Code' button and code block */
+  margin-left: 0px; /* align with 'Copy Code' button and code block */
 }
 
-.copy-code-button {
+/* .copy-code-button {
   margin-bottom: 1em;
+} */
+
+p {
+  padding-left: 10 px;
+  margin-left: 22px;
+}
+
+button {
+  font-family: "Poppins", sans-serif;
+  background-color: #23a459;
+  color: white;
+  /* font-size: larger; */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.button-container button:hover {
+  background-color: #307133;
 }
