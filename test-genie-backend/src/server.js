@@ -77,6 +77,21 @@ app.get("/generate-test-cases", async (req, res) => {
   // Get the requirements parameter from the query string
   const requirements = req.query.requirements;
 
+  const MOCK_TEST_CASES = [
+    {
+      ID: "TC1",
+      Description: "Test Case 1 Description",
+      Expected_Result: "Expected Result for Test Case 1",
+      Actual_Result: "",
+      Status: null,
+    },
+    // additional test cases...
+  ];
+
+  if (process.env.MOCK_TEST_DATA === "true") {
+    return res.status(200).json(MOCK_TEST_CASES);
+  }
+
   // Log the requirements to the console (for debugging purposes)
   console.log(requirements);
 
@@ -124,6 +139,34 @@ app.get("/generate-unit-tests", async (req, res) => {
 
   // Get the requirements parameter from the query string
   const requirements = req.query.requirements;
+
+  const MOCK_UNIT_TESTS = `
+
+
+    describe('View Listing Details', () => {
+      const mockListing = {
+        id: 1,
+        photos: ['photo1.jpg', 'photo2.jpg'],
+        description: 'This is a great listing',
+        houseRules: 'No parties',
+        reviews: [{ author: 'John', rating: 5 }, { author: 'Jane', rating: 4 }],
+        pricing: {
+          basePrice: 100,
+          extraPersonFee: 10
+        }
+      };
+
+      test('should return the correct listing photos', () => {
+        expect(mockListing.photos).toEqual(['photo1.jpg', 'photo2.jpg']);
+      });
+
+      // Rest of tests
+    });
+    `;
+
+  if (process.env.MOCK_TEST_DATA === "true") {
+    return res.status(200).json(MOCK_UNIT_TESTS);
+  }
 
   // Create the data object to send to OpenAI's API
   const data = {
