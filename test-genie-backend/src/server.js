@@ -172,7 +172,7 @@ app.get("/generate-unit-tests", async (req, res) => {
   const data = {
     model: "text-davinci-003",
     prompt:
-      "Please provide at least 7 jest unit tests to test the following requirement: " +
+      "Please provide the jest unit tests to test the following requirement: " +
       requirements +
       ". The response should be formatted like this example: \n\n" +
       "describe('View Listing Details', () => {\n" +
@@ -218,6 +218,146 @@ app.get("/generate-unit-tests", async (req, res) => {
 
     // Send the generated unit tests as a JSON response to the client
     res.json(generatedUnitTests);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.get("/generate-integration-tests", async (req, res) => {
+  const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+
+  // Get the requirements parameter from the query string
+  const requirements = req.query.requirements;
+
+  const MOCK_INTEGRATION_TESTS = `
+    describe('TEST!!! View Listing Details', () => {
+      const mockListing = {
+        id: 1,
+        photos: ['photo1.jpg', 'photo2.jpg'],
+        description: 'This is a great listing',
+        houseRules: 'No parties',
+        reviews: [{ author: 'John', rating: 5 }, { author: 'Jane', rating: 4 }],
+        pricing: {
+          basePrice: 100,
+          extraPersonFee: 10
+        }
+      };
+
+      test('should return the correct listing photos', () => {
+        expect(mockListing.photos).toEqual(['photo1.jpg', 'photo2.jpg']);
+      });
+
+      // Rest of tests
+    });
+    `;
+
+  if (process.env.MOCK_TEST_DATA === "true") {
+    return res.status(200).json(MOCK_INTEGRATION_TESTS);
+  }
+
+  // Create the data object to send to OpenAI's API
+  const integrationData = {
+    model: "text-davinci-003",
+    prompt:
+      "Please provide the jest integration (not unit!) tests to test the following requirement: " +
+      requirements,
+    max_tokens: 1500,
+    temperature: 0.4,
+  };
+  console.log(integrationData);
+
+  // Set up the configuration object for the API request
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${API_KEY}`,
+    },
+  };
+
+  try {
+    // Send a POST request to OpenAI's API to generate the integration tests
+    const response = await axios.post(
+      "https://api.openai.com/v1/completions",
+      integrationData,
+      config
+    );
+
+    // Extract the generated integration tests from the API response
+    const generatedIntegrationTests = response.data.choices[0].text;
+
+    // Send the generated integration tests as a JSON response to the client
+    res.json(generatedIntegrationTests);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+// Create route to handle requests to the /generate-e2e-tests endpoint
+app.get("/generate-e2e-tests", async (req, res) => {
+  const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+  const requirements = req.query.requirements;
+
+  const MOCK_E2E_TESTS = `
+
+
+    describe('TEST!!! View Listing Details', () => {
+      const mockListing = {
+        id: 1,
+        photos: ['photo1.jpg', 'photo2.jpg'],
+        description: 'This is a great listing',
+        houseRules: 'No parties',
+        reviews: [{ author: 'John', rating: 5 }, { author: 'Jane', rating: 4 }],
+        pricing: {
+          basePrice: 100,
+          extraPersonFee: 10
+        }
+      };
+
+      test('should return the correct listing photos', () => {
+        expect(mockListing.photos).toEqual(['photo1.jpg', 'photo2.jpg']);
+      });
+
+      // Rest of tests
+    });
+    `;
+
+  if (process.env.MOCK_TEST_DATA === "true") {
+    return res.status(200).json(MOCK_E2E_TESTS);
+  }
+
+  // Create the data object to send to OpenAI's API
+  const e2eData = {
+    model: "text-davinci-003",
+    prompt:
+      "Please provide the Cypress End to End tests to test the following requirement: " +
+      requirements,
+    max_tokens: 1500,
+    temperature: 0.4,
+  };
+  //console.log(e2eData);
+  // Set up the configuration object for the API request
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${API_KEY}`,
+    },
+  };
+
+  try {
+    // Send a POST request to OpenAI's API to generate the integration tests
+    const response = await axios.post(
+      "https://api.openai.com/v1/completions",
+      e2eData,
+      config
+    );
+
+    // Extract the generated End to End tests from the API response
+    const generatedE2ETests = response.data.choices[0].text;
+
+    // Send the generated integration tests as a JSON response to the client
+    res.json(generatedE2ETests);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });

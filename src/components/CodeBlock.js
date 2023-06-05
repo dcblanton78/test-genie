@@ -4,7 +4,7 @@ import { solarizedlight } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import "./CodeBlock.css";
 
-const CodeBlock = ({ codeString, requirements }) => {
+const CodeBlock = ({ codeString, requirements, title }) => {
   const [isCopied, setIsCopied] = useState(false);
 
   const handleCopy = () => {
@@ -15,18 +15,21 @@ const CodeBlock = ({ codeString, requirements }) => {
   return (
     <div className="code-block">
       <div className="heading-container">
-        <h2 className="unit-tests">And here are your Unit Tests</h2>
+        {/* <h2 className="unit-tests">And here are your Integration Tests</h2> */}
+        <h2> {title} </h2>
         <p>Requirement: {requirements}</p>
       </div>
-      <div className="highlight-container">
-        <CopyToClipboard text={codeString} onCopy={handleCopy}>
-          <button className="copy-code-button">
-            {isCopied ? "Copied!" : "Copy Code"}
-          </button>
-        </CopyToClipboard>
-        <SyntaxHighlighter language="javascript" style={solarizedlight}>
-          {codeString}
-        </SyntaxHighlighter>
+      <div className="highlight-wrapper">
+        <div className="highlight-container">
+          <CopyToClipboard text={codeString} onCopy={handleCopy}>
+            <button className="copy-code-button">
+              {isCopied ? "Copied!" : "Copy Code"}
+            </button>
+          </CopyToClipboard>
+          <SyntaxHighlighter language="javascript" style={solarizedlight}>
+            {codeString}
+          </SyntaxHighlighter>
+        </div>
       </div>
     </div>
   );

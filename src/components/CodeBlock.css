@@ -1,11 +1,15 @@
 .code-block {
   position: relative;
 }
-
+.highlight-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
 .highlight-container {
   position: relative;
-  width: 50vw;
-  margin: 0 auto;
+  width: 45%;
+  /* margin: 0 auto; */
+  margin-left: 20px;
 }
 
 .copy-code-button {
@@ -19,9 +23,9 @@
   margin-top: 12px;
 }
 
-.heading-container {
+/* .heading-container {
   text-align: left;
-}
+} */
 
 .unit-tests {
   margin-bottom: 0.5em;

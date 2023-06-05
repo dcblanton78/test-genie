@@ -3,6 +3,7 @@ import axios from "axios";
 import "./ReqToTest.css";
 
 import CodeBlock from "./CodeBlock";
+import logo from "./img/TestGenieLogo.png";
 
 const ReqToTest = () => {
   const [requirements, setRequirements] = useState("");
@@ -10,6 +11,9 @@ const ReqToTest = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [codeString, setCodeString] = useState("");
+  const [integrationTestCases, setIntegrationTestCases] = useState("");
+  // Add a new state variable to store the e2e test cases
+  const [e2eTestCases, setE2eTestCases] = useState("");
 
   const handleChange = (event) => {
     setRequirements(event.target.value);
@@ -33,11 +37,30 @@ const ReqToTest = () => {
       params: { requirements: requirements },
     };
 
+    const integrationTestData = {
+      method: "GET",
+      url: "http://localhost:8000/generate-integration-tests",
+      params: { requirements: requirements },
+    };
+
+    // Add a new request to get the e2e test cases
+    const e2eTestData = {
+      method: "GET",
+      url: "http://localhost:8000/generate-e2e-tests",
+      params: { requirements: requirements },
+    };
+
     try {
-      const [testResponse, unitTestResponse] = await Promise.all([
+      const [
+        testResponse,
+        unitTestResponse,
+        integrationTestResponse,
+        e2eTestResponse,
+      ] = await Promise.all([
         axios.request(data),
         axios.request(unitTestData),
-        console.log("unit test data: ", unitTestData),
+        axios.request(integrationTestData),
+        axios.request(e2eTestData), // add a new request to get the e2e test cases
       ]);
 
       const updatedTestCases = testResponse.data.map((testCase) => ({
@@ -49,6 +72,8 @@ const ReqToTest = () => {
       console.log("testCases:", testCases);
 
       setCodeString(unitTestResponse.data);
+      setIntegrationTestCases(integrationTestResponse.data); // updated to use the data from the integration test response
+      setE2eTestCases(e2eTestResponse.data); // updated to use the data from the e2e test response
     } catch (error) {
       console.error(error);
     } finally {
@@ -125,12 +150,15 @@ const ReqToTest = () => {
   };
 
   function clearPlaceholder() {
-    document.getElementById("textarea").value = "";
+    //clear the placeholder text
+    document.getElementById("textarea").placeholder = "";
   }
 
   return (
     <div>
-      <h1>TestGenie</h1>
+      <div className="logo-container">
+        <img src={logo} alt="TestGenie Logo" className="logo" />
+      </div>
       <form onSubmit={handleSubmit}>
         <textarea
           id="textarea"
@@ -139,9 +167,8 @@ const ReqToTest = () => {
           value={requirements}
           onChange={handleChange}
         />
-        <input type="submit" value="Generate Test Cases" disabled={isLoading} />
+        <input type="submit" value="Generate Tests" disabled={isLoading} />
       </form>
-
       {testCases.length > 0 && (
         <div className="gherkContainter">
           <h2>Here are your Gherkin test cases</h2>
@@ -204,9 +231,27 @@ const ReqToTest = () => {
           {successMessage && <div className="success">{successMessage}</div>}
         </div>
       )}
-
       {codeString && (
-        <CodeBlock codeString={codeString} requirements={requirements} />
+        <CodeBlock
+          codeString={codeString}
+          requirements={requirements}
+          title="And here are your Unit Tests"
+        />
+      )}
+      {integrationTestCases && (
+        <CodeBlock
+          codeString={integrationTestCases}
+          requirements={requirements}
+          title="And here are your Integration Tests"
+        />
+      )}
+      {/* Add e2e test code block */}
+      {e2eTestCases && (
+        <CodeBlock
+          codeString={e2eTestCases}
+          requirements={requirements}
+          title="And here are your E2E Tests"
+        />
       )}
     </div>
   );

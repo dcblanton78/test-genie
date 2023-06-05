@@ -17,5 +17,8 @@
     "dotenv": "^16.1.1",
     "express": "^4.18.2",
     "mysql2": "^3.3.3"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0"
   }
 }
