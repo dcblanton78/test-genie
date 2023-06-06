@@ -7,7 +7,7 @@
 }
 .highlight-container {
   position: relative;
-  width: 45%;
+  width: 90%;
   /* margin: 0 auto; */
   margin-left: 20px;
 }
@@ -51,6 +51,22 @@ button {
   border-radius: 4px;
   cursor: pointer;
   margin-right: 10px;
+}
+
+.show-more-button {
+  display: inline-block;
+  background-color: transparent;
+  color: #007bff; /* This is a typical hyperlink blue */
+  text-decoration: underline;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+}
+
+.show-more-button:hover {
+  color: #0056b3; /* Darken color on hover */
+  text-decoration: none;
 }
 
 .button-container button:hover {

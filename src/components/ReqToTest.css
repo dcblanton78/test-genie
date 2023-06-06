@@ -6,6 +6,12 @@ html {
   margin: 0;
   padding: 0;
   background-color: #dbe1e8;
+  height: 100%;
+}
+
+.ReqToTest {
+  background-color: #dbe1e8;
+  min-height: 100vh;
 }
 
 h1 {
@@ -47,7 +53,7 @@ textarea::placeholder {
   color: gray;
   font-family: "Poppins", sans-serif;
   font-style: italic;
-  font-size: 1.5em;
+  font-size: 1em;
   line-height: 1.4;
   text-align: center;
   vertical-align: middle;

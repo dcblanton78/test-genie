@@ -7,6 +7,9 @@ import "./CodeBlock.css";
 const CodeBlock = ({ codeString, requirements, title }) => {
   const [isCopied, setIsCopied] = useState(false);
 
+  //  create a 'read more' or 'expand' functionality for long strings
+  const [isExpanded, setIsExpanded] = useState(false);
+
   const handleCopy = () => {
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 3000); // reset after 3s
@@ -17,7 +20,20 @@ const CodeBlock = ({ codeString, requirements, title }) => {
       <div className="heading-container">
         {/* <h2 className="unit-tests">And here are your Integration Tests</h2> */}
         <h2> {title} </h2>
-        <p>Requirement: {requirements}</p>
+        <p id="GherkReq">
+          Requirement:
+          {isExpanded || requirements.length <= 100
+            ? requirements
+            : requirements.slice(0, 100) + "... "}
+          {requirements.length > 100 && (
+            <button
+              className="show-more-button"
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              {isExpanded ? "Show less" : "Show more"}
+            </button>
+          )}
+        </p>
       </div>
       <div className="highlight-wrapper">
         <div className="highlight-container">
