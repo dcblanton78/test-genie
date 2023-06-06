@@ -99,7 +99,7 @@ app.get("/generate-test-cases", async (req, res) => {
   const data = {
     model: "text-davinci-003",
     prompt:
-      "Please provide at least 20 test cases associated with this requirement in Gherkin syntax (Given, When, Then). In addition to happy path, include all negative cases, edge cases, and corner cases. Please include all the following information: Test Case ID, Description, and Expected Result. Provide the answer as a JSON object with a key 'testCases' that has a value of an array containing objects with keys for 'ID', 'Description', and 'Expected_Result'. ONLY include the Given, When steps in the Description and ONLY the Then step should be included in the Expected Result. Be sure to start with the word Then in the Expected Result. For example, Description: Given I am on the reset password page, When I enter my email address. Expected Result: Then I am sent a link to reset my password: " +
+      "Please provide all possible test cases associated with the following requirement in Gherkin syntax (Given, When, Then). In addition to happy path, include all negative cases, edge cases, and corner cases. Please include all the following information: Test Case ID, Description, and Expected Result. Provide the answer as a JSON object with a key 'testCases' that has a value of an array containing objects with keys for 'ID', 'Description', and 'Expected_Result'. ONLY include the Given, When steps in the Description and ONLY the Then step should be included in the Expected Result. Be sure to start with the word Then in the Expected Result. For example, Description: Given I am on the reset password page, Expected Result: When I enter my email address. Then I am sent a link to reset my password: " +
       requirements,
     max_tokens: 1500,
     temperature: 0.4,
@@ -330,12 +330,55 @@ app.get("/generate-e2e-tests", async (req, res) => {
   // Create the data object to send to OpenAI's API
   const e2eData = {
     model: "text-davinci-003",
-    prompt:
-      "Please provide the Cypress End to End tests to test the following requirement: " +
-      requirements,
+    prompt: `Please provide the Cypress End to End tests to test the following requirement: ${requirements}. Here is an example of what the response should look like: 
+
+    describe('Listing Search', () => {
+      beforeEach(() => {
+        // Visit the homepage
+        cy.visit('http://www.airbnb.com');
+      });
+
+      it('should allow a guest to search by location', () => {
+        cy.get('[data-cy=location-input]').type('New York');
+        cy.get('[data-cy=search-submit]').click();
+        cy.get('[data-cy=listing]').should('be.visible');
+      });
+
+      it('should allow a guest to search by dates', () => {
+        cy.get('[data-cy=checkin-date-input]').type('2023-07-01');
+        cy.get('[data-cy=checkout-date-input]').type('2023-07-10');
+        cy.get('[data-cy=search-submit]').click();
+        cy.get('[data-cy=listing]').should('be.visible');
+      });
+
+      it('should allow a guest to search by number of guests', () => {
+        cy.get('[data-cy=guests-input]').type('4');
+        cy.get('[data-cy=search-submit]').click();
+        cy.get('[data-cy=listing]').should('be.visible');
+      });
+
+      it('should allow a guest to search by amenities', () => {
+        cy.get('[data-cy=amenities-dropdown]').click();
+        cy.get('[data-cy=amenities-wifi-checkbox]').check();
+        cy.get('[data-cy=search-submit]').click();
+        cy.get('[data-cy=listing]').should('be.visible');
+      });
+
+      it('should allow a guest to search by location, dates, number of guests, and amenities', () => {
+        cy.get('[data-cy=location-input]').type('New York');
+        cy.get('[data-cy=checkin-date-input]').type('2023-07-01');
+        cy.get('[data-cy=checkout-date-input]').type('2023-07-10');
+        cy.get('[data-cy=guests-input]').type('4');
+        cy.get('[data-cy=amenities-dropdown]').click();
+        cy.get('[data-cy=amenities-wifi-checkbox]').check();
+        cy.get('[data-cy=search-submit]').click();
+        cy.get('[data-cy=listing]').should('be.visible');
+      });
+    });`,
     max_tokens: 1500,
     temperature: 0.4,
   };
+
   //console.log(e2eData);
   // Set up the configuration object for the API request
   const config = {

@@ -4,6 +4,10 @@ import "./ReqToTest.css";
 
 import CodeBlock from "./CodeBlock";
 import logo from "./img/TestGenieLogo.png";
+import TextareaAutosize from "react-textarea-autosize";
+//creaete modal to display a wait message to the user
+import Modal from "react-modal";
+import { BeatLoader } from "react-spinners";
 
 const ReqToTest = () => {
   const [requirements, setRequirements] = useState("");
@@ -14,6 +18,8 @@ const ReqToTest = () => {
   const [integrationTestCases, setIntegrationTestCases] = useState("");
   // Add a new state variable to store the e2e test cases
   const [e2eTestCases, setE2eTestCases] = useState("");
+  //  create a 'read more' or 'expand' functionality for long strings
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const handleChange = (event) => {
     setRequirements(event.target.value);
@@ -155,12 +161,48 @@ const ReqToTest = () => {
   }
 
   return (
-    <div>
+    <div className="ReqToTest">
       <div className="logo-container">
         <img src={logo} alt="TestGenie Logo" className="logo" />
       </div>
+      <Modal
+        isOpen={isLoading}
+        contentLabel="Loading Modal"
+        style={{
+          overlay: {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "#808080",
+          },
+          content: {
+            display: "flex", // Added to center items
+            flexDirection: "column", // Added to align spinner and text vertically
+            alignItems: "center", // Added to center items
+            justifyContent: "center", // Added to center items
+            position: "relative",
+            inset: "auto",
+            width: "fit-content",
+            border: "none",
+            background: "none",
+            overflow: "auto",
+            WebkitOverflowScrolling: "touch",
+            borderRadius: "4px",
+            outline: "none",
+            padding: "20px",
+          },
+        }}
+      >
+        <BeatLoader color="#61DAFB" size={15} margin={2} />
+        <p style={{ fontSize: "20px" }}>
+          Please wait while I create your tests. It's a lot of work, so it'll
+          take a moment...
+        </p>{" "}
+        {/* Increased font size */}
+      </Modal>
+
       <form onSubmit={handleSubmit}>
-        <textarea
+        <TextareaAutosize
           id="textarea"
           onFocus={() => clearPlaceholder()}
           placeholder="Enter your requirement"
@@ -172,7 +214,22 @@ const ReqToTest = () => {
       {testCases.length > 0 && (
         <div className="gherkContainter">
           <h2>Here are your Gherkin test cases</h2>
-          <p id="GherkReq">Requirement: {requirements}</p>
+          {/* create a 'read more' or 'expand' functionality for long strings */}
+          <p id="GherkReq">
+            Requirement:
+            {isExpanded || requirements.length <= 100
+              ? requirements
+              : requirements.slice(0, 100) + "... "}
+            {requirements.length > 100 && (
+              <button
+                className="show-more-button"
+                onClick={() => setIsExpanded(!isExpanded)}
+              >
+                {isExpanded ? "Show less" : "Show more"}
+              </button>
+            )}
+          </p>
+
           <table>
             <thead>
               <tr>
@@ -217,7 +274,6 @@ const ReqToTest = () => {
               ))}
             </tbody>
           </table>
-
           <div className="button-container">
             <button onClick={downloadCSV}>Download to CSV</button>
             <button>Export To Jira</button>
