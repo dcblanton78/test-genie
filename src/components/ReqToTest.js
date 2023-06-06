@@ -155,7 +155,7 @@ const ReqToTest = () => {
   }
 
   return (
-    <div>
+    <div className="ReqToTest">
       <div className="logo-container">
         <img src={logo} alt="TestGenie Logo" className="logo" />
       </div>
