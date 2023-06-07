@@ -3,7 +3,7 @@ import axios from "axios";
 import "./ReqToTest.css";
 
 import CodeBlock from "./CodeBlock";
-import logo from "./img/LogoTestGenie.png";
+import logo from "./img/TestGenieLogo.png";
 import TextareaAutosize from "react-textarea-autosize";
 //creaete modal to display a wait message to the user
 import Modal from "react-modal";
