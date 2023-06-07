@@ -1,27 +1,44 @@
-//Testing git
-
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./LandingPage.css";
 import logo from "./img/TestGenieLogo.png";
 
-//Adding some comments to test git
-//Adding some more comments to test git
-
 const LandingPage = () => {
   return (
     <div className="landing-page-container">
-          <div className="logo-container">
+      <div className="logo-container">
         <img src={logo} alt="TestGenie Logo" className="logo" />
       </div>
       <h1 className="landing-page-header">Welcome to TestGenie!</h1>
       <div className="landing-page-link-container">
-        <Link to="/tests" className="landing-page-link">
-          Generate Tests
-        </Link>
-        <Link to="/your-tests" className="landing-page-link">
-          Your Tests
-        </Link>
+        <div className="tooltip-container">
+          <Link to="/tests" className="landing-page-link">
+            Req To Test Generator
+          </Link>
+          <span className="tooltip-text">
+            Got a well written requirement but no tests?
+          </span>
+        </div>
+        <div className="tooltip-container">
+          <Link to="/tests" className="landing-page-link">
+            Regression Generator
+          </Link>
+          <span className="tooltip-text">
+            Got code but no regression tests?
+          </span>
+        </div>
+        <div className="tooltip-container">
+          <Link to="/tests" className="landing-page-link">
+            Locator Generator
+          </Link>
+          <span className="tooltip-text">Got code but crappy locators?</span>
+        </div>
+        <div className="tooltip-container">
+          <Link to="/your-tests" className="landing-page-link">
+            Your Tests
+          </Link>
+          <span className="tooltip-text">View your tests</span>
+        </div>
       </div>
     </div>
   );
