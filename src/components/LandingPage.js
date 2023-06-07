@@ -3,7 +3,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./LandingPage.css";
-import logo from "./img/LogoTestGenie.png";
+import logo from "./img/TestGenieLogo.png";
 
 //Adding some comments to test git
 //Adding some more comments to test git
