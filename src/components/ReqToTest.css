@@ -10,7 +10,7 @@ html {
 }
 
 .ReqToTest {
-  background-color: #43545B;
+  background-color: #DBE1E8;
   min-height: 100vh;
 }
 
@@ -118,7 +118,7 @@ table,
 th,
 td {
   font-family: "Poppins", sans-serif;
-  border: 1px solid #ddd;
+  border: 1px solid #a6a6a6;
   padding: 8px;
   margin: 20px;
 }
