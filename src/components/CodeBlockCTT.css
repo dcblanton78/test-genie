@@ -1,0 +1,74 @@
+.code-block {
+  position: relative;
+}
+.highlight-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+.highlight-container {
+  position: relative;
+  width: 90%;
+  /* margin: 0 auto; */
+  margin-left: 20px;
+}
+
+.copy-code-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* Adjust these values as needed */
+  z-index: 1;
+  padding-left: 20px;
+  margin-left: 12px;
+  margin-top: 12px;
+}
+
+/* .heading-container {
+  text-align: left;
+} */
+
+.unit-tests {
+  margin-bottom: 0.5em;
+  margin-left: 0px; /* align with 'Copy Code' button and code block */
+}
+
+/* .copy-code-button {
+  margin-bottom: 1em;
+} */
+
+p {
+  padding-left: 10 px;
+  margin-left: 22px;
+}
+
+button {
+  font-family: "Poppins", sans-serif;
+  background-color: #23a459;
+  color: white;
+  /* font-size: larger; */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.show-more-button {
+  display: inline-block;
+  background-color: transparent;
+  color: #007bff; /* This is a typical hyperlink blue */
+  text-decoration: underline;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+}
+
+.show-more-button:hover {
+  color: #0056b3; /* Darken color on hover */
+  text-decoration: none;
+}
+
+.button-container button:hover {
+  background-color: #307133;
+}

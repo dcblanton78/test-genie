@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./CodeToTest.css";
 
-import CodeBlock from "./CodeBlock";
+import CodeBlock from "./CodeBlockCTT";
 import logo from "./img/TestGenieLogo.png";
 import TextareaAutosize from "react-textarea-autosize";
 import Modal from "react-modal";
@@ -27,33 +27,38 @@ const CodeToTest = () => {
 
   const handleSubmit = async (event) => {
     console.log("Submit button clicked");
+    console.log("codeBlock:", codeBlock);
+    //When user clicks submit, clear out the textarea field
+    setCodeBlock("");
     event.preventDefault();
     setIsLoading(true);
     document.body.style.cursor = "wait";
 
     const data = {
       method: "GET",
-      url: "http://localhost:8000/generate-test-cases",
+      url: "http://localhost:8000/generate-test-cases-from-code",
       params: { code: codeBlock },
     };
 
     const unitTestData = {
       method: "GET",
-      url: "http://localhost:8000/generate-unit-tests",
+      url: "http://localhost:8000/generate-unit-tests-from-code",
       params: { code: codeBlock },
     };
 
     const integrationTestData = {
       method: "GET",
-      url: "http://localhost:8000/generate-integration-tests",
+      url: "http://localhost:8000/generate-integration-tests-from-code",
       params: { code: codeBlock },
     };
 
     const e2eTestData = {
       method: "GET",
-      url: "http://localhost:8000/generate-e2e-tests",
+      url: "http://localhost:8000/generate-e2e-tests-from-code",
       params: { code: codeBlock },
     };
+    //When user clicks submit, clear out the textarea field
+    setCodeBlock("");
 
     try {
       const [
@@ -225,69 +230,85 @@ const CodeToTest = () => {
               </button>
             )}
           </p>
-          {testCases.map((testCase, index) => (
-            <div key={testCase.ID} className="gherkCases">
-              <div className="gherkCase">
-                <h3>
-                  Test Case {index + 1}: {testCase.Description}
-                </h3>
-                <CodeBlock codeBlock={testCase} />
-                <div className="results">
-                  <label>
-                    Actual Result:
-                    <textarea
-                      className="actual-result"
-                      value={testCase.Actual_Result || ""}
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Expected Result</th>
+                <th>Actual Result</th>
+                <th>Status</th>
+                <th>Save</th>
+              </tr>
+            </thead>
+            <tbody>
+              {testCases.map((testCase, index) => (
+                <tr key={index}>
+                  <td>{testCase.ID}</td>
+                  <td>{testCase.Description}</td>
+                  <td>{testCase.Expected_Result}</td>
+                  <td>
+                    <input
+                      type="text"
+                      value={testCase.Actual_Result}
                       onChange={(event) =>
                         handleActualResultChange(event, index)
                       }
                     />
-                  </label>
-                  <label>
-                    Status:
+                  </td>
+                  <td>
                     <select
                       value={testCase.Status}
                       onChange={(event) => handleStatusChange(event, index)}
                     >
-                      <option>In Progress</option>
-                      <option>Pass</option>
-                      <option>Fail</option>
+                      <option value="New">New</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="Passed">Passed</option>
+                      <option value="Failed">Failed</option>
                     </select>
-                  </label>
-                </div>
-                <button onClick={() => saveTestCase(testCase)}>
-                  Save Test Case
-                </button>
-              </div>
-            </div>
-          ))}
+                  </td>
+                  <td>
+                    <button onClick={() => saveTestCase(testCase)}>Save</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div className="button-container">
+            <button onClick={downloadCSV}>Download to CSV</button>
+            <button>Export To Jira</button>
+            <button
+              onClick={() => saveAllTestCases(testCases)}
+              className="save-all-button"
+            >
+              Save All
+            </button>
+          </div>
+          {successMessage && <div className="success">{successMessage}</div>}
         </div>
-      )}
-      {testCases.length > 0 && (
-        <button onClick={saveAllTestCases}>Save All Test Cases</button>
-      )}
-      {testCases.length > 0 && (
-        <button onClick={downloadCSV}>Download Test Cases as CSV</button>
       )}
       {codeString && (
-        <div className="unitTestContainer">
-          <h2>Here are your unit tests</h2>
-          <CodeBlock codeBlock={codeString} />
-        </div>
+        <CodeBlock
+          codeString={codeString}
+          codeBlock={codeBlock}
+          title="And here are your Unit Tests"
+        />
       )}
       {integrationTestCases && (
-        <div className="integrationTestContainer">
-          <h2>Here are your integration tests</h2>
-          <CodeBlock codeBlock={integrationTestCases} />
-        </div>
+        <CodeBlock
+          codeString={integrationTestCases}
+          codeBlock={codeBlock}
+          title="And here are your Integration Tests"
+        />
       )}
+      {/* Add e2e test code block */}
       {e2eTestCases && (
-        <div className="e2eTestContainer">
-          <h2>Here are your end-to-end tests</h2>
-          <CodeBlock codeBlock={e2eTestCases} />
-        </div>
+        <CodeBlock
+          codeString={e2eTestCases}
+          codeBlock={codeBlock}
+          title="And here are your E2E Tests"
+        />
       )}
-      {successMessage && <p>{successMessage}</p>}
     </div>
   );
 };
