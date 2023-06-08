@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import "./LandingPage.css";
 import logo from "./img/TestGenieLogo.png";
@@ -20,7 +20,7 @@ const LandingPage = () => {
           </span>
         </div>
         <div className="tooltip-container">
-          <Link to="/tests" className="landing-page-link">
+          <Link to="/codetotest" className="landing-page-link">
             Regression Generator
           </Link>
           <span className="tooltip-text">
@@ -28,7 +28,7 @@ const LandingPage = () => {
           </span>
         </div>
         <div className="tooltip-container">
-          <Link to="/tests" className="landing-page-link">
+          <Link to="/locator" className="landing-page-link">
             Locator Generator
           </Link>
           <span className="tooltip-text">Got code but crappy locators?</span>
