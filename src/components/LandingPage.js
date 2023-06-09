@@ -13,7 +13,7 @@ const LandingPage = () => {
       <div className="landing-page-link-container">
         <div className="tooltip-container">
           <Link to="/tests" className="landing-page-link">
-            Req To Test Generator
+            Req To Test
           </Link>
           <span className="tooltip-text">
             Got a well written requirement but no tests?
@@ -21,7 +21,7 @@ const LandingPage = () => {
         </div>
         <div className="tooltip-container">
           <Link to="/codetotest" className="landing-page-link">
-            Regression Generator
+            Code To Test
           </Link>
           <span className="tooltip-text">
             Got code but no regression tests?
