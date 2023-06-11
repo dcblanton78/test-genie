@@ -1,8 +1,11 @@
 //Clay
+//Pierce
 
 import React, { useState } from "react";
 import axios from "axios";
 import "./ReqToTest.css";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import CodeBlock from "./CodeBlock";
 import logo from "./img/TestGenieLogo.png";
@@ -23,8 +26,14 @@ const ReqToTest = () => {
   //  create a 'read more' or 'expand' functionality for long strings
   const [isExpanded, setIsExpanded] = useState(false);
 
+  const navigate = useNavigate();
+
   const handleChange = (event) => {
     setRequirements(event.target.value);
+  };
+
+  const handleHomeLink = () => {
+    navigate("/");
   };
 
   const handleSubmit = async (event) => {
@@ -164,6 +173,13 @@ const ReqToTest = () => {
 
   return (
     <div className="ReqToTest">
+            <nav className="navbar">
+            <a className="navbar-link" onClick={handleHomeLink}>
+  Home
+</a>
+
+
+      </nav>
       <div className="logo-container">
         <img src={logo} alt="TestGenie Logo" className="logo" />
       </div>
