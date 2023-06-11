@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-//import GoogleLogin from "react-google-login";
+import GoogleLogin from "react-google-login";
 import { useNavigate } from "react-router-dom";
 import logo from "./img/TestGenieLogo.png";
 import "./Login.css";
@@ -14,13 +14,13 @@ const Login = () => {
     "pierce.blanton3@gmail.com": "abc123",
   };
 
-  //   const responseGoogle = (response) => {
-  //     console.log(response);
-  //     if (response.profileObj) {
-  //       console.log("Login successful");
-  //       navigate("/landing");
-  //     }
-  //   };
+  const responseGoogle = (response) => {
+    console.log(response);
+    if (response.profileObj) {
+      console.log("Login successful");
+      navigate("/landing");
+    }
+  };
 
   const handleEmailPasswordLogin = (e) => {
     e.preventDefault();
@@ -62,7 +62,7 @@ const Login = () => {
         </div>
         <input className="login-button" type="submit" value="Login" />
       </form>
-      {/* <div className="button-container">
+      <div className="button-container">
         <GoogleLogin
           clientId="689676700162-4lbq8u3nhldbussef4c7gk8iojorvsk0.apps.googleusercontent.com"
           buttonText="Login with Google"
@@ -70,7 +70,7 @@ const Login = () => {
           onFailure={responseGoogle}
           cookiePolicy={"single_host_origin"}
         />
-      </div> */}
+      </div>
     </div>
   );
 };
