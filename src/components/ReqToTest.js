@@ -4,7 +4,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./ReqToTest.css";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 import CodeBlock from "./CodeBlock";
@@ -173,13 +172,12 @@ const ReqToTest = () => {
 
   return (
     <div className="ReqToTest">
-            <nav className="navbar">
-            <a className="navbar-link" onClick={handleHomeLink}>
-  Home
-</a>
-
-
+      <nav className="navbar">
+        <button className="navbar-link" onClick={handleHomeLink}>
+          Home
+        </button>
       </nav>
+
       <div className="logo-container">
         <img src={logo} alt="TestGenie Logo" className="logo" />
       </div>
