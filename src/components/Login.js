@@ -70,6 +70,7 @@ const Login = () => {
           onFailure={responseGoogle}
           cookiePolicy={"single_host_origin"}
           isSignedIn={true}
+          //redirectUri="http://localhost:3000/auth/google/callback"
           redirectUri="https://test-genie.com/auth/google/callback"
         />
       </div>
