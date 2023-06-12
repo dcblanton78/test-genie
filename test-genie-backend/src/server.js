@@ -3,6 +3,9 @@ import cors from "cors";
 import axios from "axios";
 import dotenv from "dotenv";
 
+import passport from "passport";
+import GoogleStrategy from "passport-google-oauth20";
+
 // Load environment variables from .env file
 dotenv.config();
 
@@ -18,8 +21,42 @@ app.use(cors());
 import db from "./db.js"; // Import db from database.js
 
 app.use(express.json());
+// Initialize Passport
+app.use(passport.initialize());
 
-// rest of your code...
+// Configure the Google authentication strategy
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID:
+        "689676700162-4lbq8u3nhldbussef4c7gk8iojorvsk0.apps.googleusercontent.com",
+      clientSecret: "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",
+      callbackURL: "https://test-genie.com/auth/google/callback",
+    },
+    (accessToken, refreshToken, profile, done) => {
+      // Your authentication logic here
+      // `profile` contains user information returned by Google
+      // Call `done()` to indicate successful authentication
+      // or pass an error as the first argument to indicate authentication failure
+    }
+  )
+);
+
+// Route handler to initiate the Google authentication
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+// Route handler for the Google authentication callback
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  (req, res) => {
+    // Redirect the user to the desired page after successful authentication
+    res.redirect("/landing");
+  }
+);
 
 // Define a route that saves test cases to the MySQL database
 app.post("/store-test-cases", async (req, res) => {
