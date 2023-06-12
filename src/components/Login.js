@@ -113,7 +113,7 @@ const Login = () => {
       <div id="signInDiv"></div>
       {user && Object.keys(user).length > 0 && (
         <div>
-          <img src={user.picture}></img>
+          <img src={user.picture} alt="user"></img>
           <h3>{user.name}</h3>
           <button onClick={logout}>Logout</button>
         </div>
