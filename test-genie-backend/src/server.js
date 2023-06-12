@@ -13,10 +13,14 @@ const PORT = 8000;
 
 const app = express();
 
-app.use(express.json());
+app.use(
+  cors({
+    origin: "https://test-genie.com", // replace with your actual frontend domain
+    credentials: true,
+  })
+);
 
-// Enable cross-origin resource sharing
-app.use(cors());
+app.use(express.json());
 
 import db from "./db.js"; // Import db from database.js
 

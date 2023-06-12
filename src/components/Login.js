@@ -69,6 +69,7 @@ const Login = () => {
           onSuccess={responseGoogle}
           onFailure={responseGoogle}
           cookiePolicy={"single_host_origin"}
+          isSignedIn={true}
           redirectUri="https://test-genie.com/auth/google/callback"
         />
       </div>
