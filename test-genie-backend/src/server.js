@@ -15,8 +15,8 @@ const app = express();
 
 app.use(
   cors({
-    //origin: "http://localhost:3000",
-    origin: "https://test-genie.com", // replace with your actual frontend domain
+    origin: "http://localhost:3000",
+    //origin: "https://test-genie.com", // replace with your actual frontend domain
     credentials: true,
   })
 );
@@ -36,8 +36,8 @@ passport.use(
       clientID:
         "689676700162-4lbq8u3nhldbussef4c7gk8iojorvsk0.apps.googleusercontent.com",
       clientSecret: "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",
-      callbackURL: "https://test-genie.com/auth/google/callback",
-      //callbackURL: "http://localhost:3000/auth/google/callback",
+      //callbackURL: "https://test-genie.com/auth/google/callback",
+      callbackURL: "http://localhost:3000/auth/google/callback",
     },
     (accessToken, refreshToken, profile, done) => {
       // Assuming you have a user model/schema in your database,
