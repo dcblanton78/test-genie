@@ -4,7 +4,7 @@ import axios from "axios";
 import dotenv from "dotenv";
 
 import passport from "passport";
-import GoogleStrategy from "passport-google-oauth20";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -34,10 +34,34 @@ passport.use(
       callbackURL: "https://test-genie.com/auth/google/callback",
     },
     (accessToken, refreshToken, profile, done) => {
-      // Your authentication logic here
-      // `profile` contains user information returned by Google
-      // Call `done()` to indicate successful authentication
-      // or pass an error as the first argument to indicate authentication failure
+      // Assuming you have a user model/schema in your database,
+      // you can check if the user already exists based on the Google profile ID
+      User.findOne({ googleId: profile.id }, (err, user) => {
+        if (err) {
+          return done(err);
+        }
+
+        if (user) {
+          // User already exists, proceed with authentication
+          return done(null, user);
+        } else {
+          // User doesn't exist, create a new user based on the Google profile
+          const newUser = new User({
+            googleId: profile.id,
+            name: profile.displayName,
+            // Other user properties...
+          });
+
+          // Save the new user to the database
+          newUser.save((err) => {
+            if (err) {
+              return done(err);
+            }
+            // User saved successfully, proceed with authentication
+            return done(null, newUser);
+          });
+        }
+      });
     }
   )
 );
