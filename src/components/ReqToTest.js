@@ -180,11 +180,6 @@ const ReqToTest = () => {
     document.getElementById("textarea").placeholder = "";
   }
 
-  //function getLocalPic that returns the user's picture from local storage
-  function getLocalPic() {
-    return localStorage.getItem("profilePicture");
-  }
-
   const profilePicture = localStorage.getItem("profilePicture");
   console.log("profilePicture: " + profilePicture);
 
