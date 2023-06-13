@@ -5,20 +5,25 @@ import ReqToTest from "./components/ReqToTest";
 import TestCasesTable from "./components/TestCasesTable";
 import CodeToTest from "./components/CodeToTest";
 import Login from "./components/Login";
+import UserContext from "./components/UserContext";
+import { useState } from "react";
 
 const App = () => {
+  const [user, setUser] = useState({});
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />{" "}
-        {/* Login page is now the root route */}
-        <Route path="/landing" element={<LandingPage />} />{" "}
-        {/* LandingPage has been moved to /landing */}
-        <Route path="/tests" element={<ReqToTest />} />
-        <Route path="/your-tests" element={<TestCasesTable />} />
-        <Route path="/codetotest" element={<CodeToTest />} />
-      </Routes>
-    </Router>
+    <UserContext.Provider value={{ user, setUser }}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login />} />{" "}
+          {/* Login page is now the root route */}
+          <Route path="/landing" element={<LandingPage />} />{" "}
+          {/* LandingPage has been moved to /landing */}
+          <Route path="/tests" element={<ReqToTest />} />
+          <Route path="/your-tests" element={<TestCasesTable />} />
+          <Route path="/codetotest" element={<CodeToTest />} />
+        </Routes>
+      </Router>
+    </UserContext.Provider>
   );
 };
 

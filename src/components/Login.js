@@ -1,27 +1,16 @@
 /* global google */
-import React, { useState } from "react";
-// import GoogleLogin from "react-google-login";
+import React, { useContext, useEffect, useState } from "react"; // import useContext
 import { useNavigate } from "react-router-dom";
+import UserContext from "./UserContext"; // import UserContext
 import logo from "./img/TestGenieLogo.png";
 import "./Login.css";
-import { useEffect } from "react";
 import jwt_decode from "jwt-decode";
 
 const Login = () => {
-  const [user, setUser] = useState({});
+  const { user, setUser } = useContext(UserContext); // use UserContext
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  //global google login
-  // eslint-disable-next-line
-  function handleCallbackResponse(response) {
-    console.log("Encoded JW Token: " + response.credential);
-    var userObject = jwt_decode(response.credential);
-    console.log(userObject);
-    setUser(userObject);
-    navigate("/landing");
-  }
 
   useEffect(() => {
     const handleCallbackResponse = (response) => {
@@ -54,26 +43,19 @@ const Login = () => {
       // Clean up timer upon unmount
       return () => clearTimeout(timerId);
     }
-  }, [navigate]); // eslint-disable-next-line
+  }, [navigate, setUser]); // add setUser as a dependency
 
   const users = {
     "dcblanton78@gmail.com": "abc123",
     "pierce.blanton3@gmail.com": "abc123",
   };
 
-  //   const responseGoogle = (response) => {
-  //     console.log(response);
-  //     if (response.profileObj) {
-  //       console.log("Login successful");
-  //       navigate("/landing");
-  //     }
-  //   };
-
   const handleEmailPasswordLogin = (e) => {
     e.preventDefault();
 
     if (users[email] && users[email] === password) {
       console.log("Login successful");
+      setUser({ name: email }); // set user to an object with a name property
       navigate("/landing");
     } else {
       console.log("Login failed");
@@ -117,13 +99,9 @@ const Login = () => {
         <input className="login-button" type="submit" value="Login" />
       </form>
 
-      {/* If we have no user: show the Google One Tap button
-      If we have a user: show the user's name and email */}
-
       <div id="signInDiv"></div>
-      {user && Object.keys(user).length > 0 && (
+      {user && user.name && (
         <div>
-          <img src={user.picture} alt="user"></img>
           <h3>{user.name}</h3>
           <button onClick={logout}>Logout</button>
         </div>
