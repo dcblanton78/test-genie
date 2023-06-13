@@ -1,7 +1,6 @@
-//Clay
-//Pierce
+/* global google */
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import "./ReqToTest.css";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +11,7 @@ import TextareaAutosize from "react-textarea-autosize";
 //creaete modal to display a wait message to the user
 import Modal from "react-modal";
 import { BeatLoader } from "react-spinners";
+import UserContext from "./UserContext";
 
 const ReqToTest = () => {
   const [requirements, setRequirements] = useState("");
@@ -24,15 +24,25 @@ const ReqToTest = () => {
   const [e2eTestCases, setE2eTestCases] = useState("");
   //  create a 'read more' or 'expand' functionality for long strings
   const [isExpanded, setIsExpanded] = useState(false);
+  const { user, setUser } = useContext(UserContext);
+  console.log("user", user);
 
   const navigate = useNavigate();
 
-  const handleChange = (event) => {
-    setRequirements(event.target.value);
+  const logout = () => {
+    setUser({});
+    if (window.google && window.google.accounts && window.google.accounts.id) {
+      google.accounts.id.disableAutoSelect();
+    }
+    navigate("/");
   };
 
   const handleHomeLink = () => {
     navigate("/landing");
+  };
+
+  const handleChange = (event) => {
+    setRequirements(event.target.value);
   };
 
   const handleSubmit = async (event) => {
@@ -170,12 +180,24 @@ const ReqToTest = () => {
     document.getElementById("textarea").placeholder = "";
   }
 
+  const profilePicture = localStorage.getItem("profilePicture");
+  console.log("profilePicture: " + profilePicture);
+
   return (
     <div className="ReqToTest">
       <nav className="navbar">
         <button className="navbar-link" onClick={handleHomeLink}>
           Home
         </button>
+        {user && user.name && (
+          <div className="user-info">
+            <img src={profilePicture} alt={user.name} />
+            <h3>{user.name}</h3>
+            <button className="navbar-link" onClick={logout}>
+              Logout
+            </button>
+          </div>
+        )}
       </nav>
 
       <div className="logo-container">

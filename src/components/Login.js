@@ -17,6 +17,11 @@ const Login = () => {
       console.log("Encoded JW Token: " + response.credential);
       var userObject = jwt_decode(response.credential);
       console.log(userObject);
+      if (userObject.picture) {
+        localStorage.setItem("profilePicture", userObject.picture);
+      }
+      console.log("User Picture: " + userObject.picture);
+      console.log("User Pic 2: " + localStorage.getItem("profilePicture"));
       setUser(userObject);
       navigate("/landing");
     };
