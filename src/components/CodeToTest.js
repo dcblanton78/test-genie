@@ -1,7 +1,9 @@
 //A module that prompts the user for a block of code. Based on that code, make an API call to OpenAI's  API to
 //return the associated tests (unit, integration, regression, etc). The user can then copy the code and paste it.
 
-import React, { useState } from "react";
+/* global google */
+
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import "./CodeToTest.css";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +13,7 @@ import logo from "./img/TestGenieLogo.png";
 import TextareaAutosize from "react-textarea-autosize";
 import Modal from "react-modal";
 import { BeatLoader } from "react-spinners";
+import UserContext from "./UserContext";
 
 const CodeToTest = () => {
   const [codeBlock, setCodeBlock] = useState("");
@@ -22,6 +25,8 @@ const CodeToTest = () => {
   const [e2eTestCases, setE2eTestCases] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
   const navigate = useNavigate();
+  const profilePicture = localStorage.getItem("profilePicture");
+  const { user, setUser } = useContext(UserContext);
 
   const handleChange = (event) => {
     setCodeBlock(event.target.value);
@@ -29,7 +34,15 @@ const CodeToTest = () => {
 
   const handleHomeLink = () => {
     navigate("/landing");
-  };  
+  };
+
+  const logout = () => {
+    setUser({});
+    if (window.google && window.google.accounts && window.google.accounts.id) {
+      google.accounts.id.disableAutoSelect();
+    }
+    navigate("/");
+  };
 
   const handleSubmit = async (event) => {
     console.log("Submit button clicked");
@@ -37,13 +50,11 @@ const CodeToTest = () => {
     setIsLoading(true);
     document.body.style.cursor = "wait";
 
-
     const data = {
       method: "GET",
       url: "http://localhost:8000/generate-test-cases",
       params: { code: codeBlock },
     };
-
 
     const unitTestData = {
       method: "GET",
@@ -172,6 +183,15 @@ const CodeToTest = () => {
         <button className="navbar-link" onClick={handleHomeLink}>
           Home
         </button>
+        {user && user.name && (
+          <div className="user-info">
+            <img src={profilePicture} alt={user.name} />
+            <h3>{user.name}</h3>
+            <button className="navbar-link" onClick={logout}>
+              Logout
+            </button>
+          </div>
+        )}
       </nav>
       <div className="logo-container">
         <img src={logo} alt="TestGenie Logo" className="logo" />
