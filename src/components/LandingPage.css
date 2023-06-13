@@ -76,3 +76,9 @@ body {
   white-space: pre-wrap; /* wrap the text */
   text-align: center;
 }
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}

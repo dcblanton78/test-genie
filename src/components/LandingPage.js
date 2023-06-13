@@ -2,10 +2,27 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./LandingPage.css";
 import logo from "./img/TestGenieLogo.png";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+  const handleHomeLink = () => {
+    navigate("/tests");
+  };
+  const handleLogoutLink = () => {
+    navigate("/");
+  };
+
   return (
     <div className="landing-page-container">
+      <nav className="navbar">
+        <button className="navbar-link" onClick={handleHomeLink}>
+          ReqToTest
+        </button>
+        <button className="navbar-link" onClick={handleLogoutLink}>
+          Logout
+        </button>
+      </nav>
       <div className="logo-container">
         <img src={logo} alt="TestGenie Logo" className="logo" />
       </div>

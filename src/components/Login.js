@@ -19,7 +19,7 @@ const Login = () => {
     var userObject = jwt_decode(response.credential);
     console.log(userObject);
     setUser(userObject);
-    // navigate("/landing");
+    navigate("/landing");
   }
 
   useEffect(() => {
@@ -110,6 +110,7 @@ const Login = () => {
 
       {/* If we have no user: show the Google One Tap button
       If we have a user: show the user's name and email */}
+
       <div id="signInDiv"></div>
       {user && Object.keys(user).length > 0 && (
         <div>
