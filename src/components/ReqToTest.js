@@ -32,7 +32,7 @@ const ReqToTest = () => {
   };
 
   const handleHomeLink = () => {
-    navigate("/");
+    navigate("/landing");
   };
 
   const handleSubmit = async (event) => {
