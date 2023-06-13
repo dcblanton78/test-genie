@@ -180,3 +180,15 @@ tr:nth-child(even) {
   margin-left: auto;
   margin-right: auto;
 }
+
+.navbar-link {
+  font-family: "Poppins", sans-serif;
+  background-color: #27ae60;
+  color: white;
+  /* font-size: larger; */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-left: 5px;
+}

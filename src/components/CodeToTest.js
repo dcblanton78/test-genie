@@ -4,6 +4,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./CodeToTest.css";
+import { useNavigate } from "react-router-dom";
 
 import CodeBlock from "./CodeBlock";
 import logo from "./img/TestGenieLogo.png";
@@ -20,10 +21,15 @@ const CodeToTest = () => {
   const [integrationTestCases, setIntegrationTestCases] = useState("");
   const [e2eTestCases, setE2eTestCases] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     setCodeBlock(event.target.value);
   };
+
+  const handleHomeLink = () => {
+    navigate("/landing");
+  };  
 
   const handleSubmit = async (event) => {
     console.log("Submit button clicked");
@@ -31,11 +37,13 @@ const CodeToTest = () => {
     setIsLoading(true);
     document.body.style.cursor = "wait";
 
+
     const data = {
       method: "GET",
       url: "http://localhost:8000/generate-test-cases",
       params: { code: codeBlock },
     };
+
 
     const unitTestData = {
       method: "GET",
@@ -160,6 +168,11 @@ const CodeToTest = () => {
 
   return (
     <div className="CodeToTest">
+      <nav className="navbar">
+        <button className="navbar-link" onClick={handleHomeLink}>
+          Home
+        </button>
+      </nav>
       <div className="logo-container">
         <img src={logo} alt="TestGenie Logo" className="logo" />
       </div>

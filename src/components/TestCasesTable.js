@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./TestCasesTable.css";
+import { useNavigate } from "react-router-dom";
 
 const TestCasesTable = () => {
   const [testCases, setTestCases] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchTestCases();
   }, []);
+
+  const handleHomeLink = () => {
+    navigate("/landing");
+  };
 
   const fetchTestCases = async () => {
     try {
@@ -20,6 +26,11 @@ const TestCasesTable = () => {
 
   return (
     <div className="test-cases-container">
+      <nav className="navbar">
+        <button className="navbar-link" onClick={handleHomeLink}>
+          Home
+        </button>
+      </nav>
       <h1>Your Tests</h1>
       <table className="test-cases-table">
         <thead>
