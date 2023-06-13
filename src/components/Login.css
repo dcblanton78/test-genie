@@ -36,3 +36,19 @@ input[type="submit"] {
   margin-top: 10px;
   margin-bottom: 20px;
 }
+
+.Login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* This ensures that your Login div takes up the full height of the viewport */
+}
+
+/* Other styles */
+
+#signInDiv {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  /* margin-left is removed to keep the element centered */
+}
