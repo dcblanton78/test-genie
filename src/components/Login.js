@@ -14,6 +14,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   //global google login
+  // eslint-disable-next-line
   function handleCallbackResponse(response) {
     console.log("Encoded JW Token: " + response.credential);
     var userObject = jwt_decode(response.credential);
@@ -23,6 +24,14 @@ const Login = () => {
   }
 
   useEffect(() => {
+    const handleCallbackResponse = (response) => {
+      console.log("Encoded JW Token: " + response.credential);
+      var userObject = jwt_decode(response.credential);
+      console.log(userObject);
+      setUser(userObject);
+      navigate("/landing");
+    };
+
     // Function to initialize Google One Tap
     const initializeGoogleOneTap = () => {
       google.accounts.id.initialize({
@@ -45,7 +54,7 @@ const Login = () => {
       // Clean up timer upon unmount
       return () => clearTimeout(timerId);
     }
-  }, []);
+  }, [navigate]); // eslint-disable-next-line
 
   const users = {
     "dcblanton78@gmail.com": "abc123",
