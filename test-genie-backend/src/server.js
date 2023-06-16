@@ -15,8 +15,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
-    //origin: "https://test-genie.com", // replace with your actual frontend domain
+    origin: ["http://localhost:3000", "https://test-genie.com"],
     credentials: true,
   })
 );
