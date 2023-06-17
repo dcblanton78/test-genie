@@ -1,22 +1,30 @@
 version: 2.1
 orbs:
-  node: circleci/node@5.1.0 # Use the CircleCI Node Orb
+  node: circleci/node@5.1.0
   cypress: cypress-io/cypress@3
 jobs:
-  unit_test: # Define a new job for Jest tests, renamed to avoid confusion
+  unit_test: # Define a new job for Jest tests
     executor: node/default
     steps:
       - checkout
       - node/install-packages: # Cache and restore npm dependencies
           pkg-manager: npm
-      - run: CI=true npm run test # Make sure the tests only run once
-      - store_test_results: # Store the test results for CircleCI to read
-          path: test-results.xml # Modify this with your actual test results path
-workflows:
-  build: # Renamed the workflow from "test" to "build" to avoid confusion
-    jobs:
-      - unit_test # Run your Jest test job
+      - run: CI=true npm run test # Run the tests
+  run-cypress-tests: # Define a new job for Cypress tests
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          name: Start the server
+          command: npm start
+          background: true
       - cypress/run:
           cypress-command: npx cypress run --browser chrome
           install-browsers: true
-          start-command: "npm run start"
+workflows:
+  build: # Renamed the workflow from "test" to "build" to avoid confusion
+    jobs:
+      - unit_test # Run the Jest tests
+      - run-cypress-tests # Run the Cypress tests
