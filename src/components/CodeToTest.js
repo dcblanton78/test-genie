@@ -4,7 +4,8 @@
 /* global google */
 
 import React, { useState, useContext } from "react";
-import axios from "axios";
+//import axios from "axios";
+
 import "./CodeToTest.css";
 import { useNavigate } from "react-router-dom";
 
@@ -15,16 +16,18 @@ import Modal from "react-modal";
 import { BeatLoader } from "react-spinners";
 import UserContext from "./UserContext";
 
+const axios = require("axios");
+
+//A component that prompts the user for a block of code. Based on that code, make an API call to OpenAI's  API to return the associated tests (unit, integration, regression, etc). The user can then copy the code and paste it into their dev environment.
 const CodeToTest = () => {
+  //State variables
   const [codeBlock, setCodeBlock] = useState("");
 
   const [testCases, setTestCases] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   const [codeString, setCodeString] = useState("");
-  // useEffect(() => {
-  //   console.log("Updated CodeString: ", codeString);
-  // }, [codeString]);
+
   const [integrationTestCases, setIntegrationTestCases] = useState("");
   const [e2eTestCases, setE2eTestCases] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
@@ -32,14 +35,19 @@ const CodeToTest = () => {
   const profilePicture = localStorage.getItem("profilePicture");
   const { user, setUser } = useContext(UserContext);
 
+  //Functions
+
+  //A function that handles the change in the code block
   const handleChange = (event) => {
     setCodeBlock(event.target.value);
   };
 
+  //A function that routes the user to the landing page when they click the Home button
   const handleHomeLink = () => {
     navigate("/landing");
   };
 
+  //A function that logs the user out of the application
   const logout = () => {
     setUser({});
     if (window.google && window.google.accounts && window.google.accounts.id) {
@@ -48,18 +56,23 @@ const CodeToTest = () => {
     navigate("/");
   };
 
+  //A function that handles the submit button click
   const handleSubmit = async (event) => {
     console.log("Submit button clicked");
     event.preventDefault();
     setIsLoading(true);
     document.body.style.cursor = "wait";
 
+    //API calls to generate the test cases
+
+    //API call to generate the Gherkin tests
     const data = {
       method: "GET",
       url: "http://localhost:8000/generate-test-cases-from-code",
       params: { code: codeBlock },
     };
 
+    //API call to generate the unit tests
     const unitTestData = {
       method: "GET",
       url: "http://localhost:8000/generate-unit-tests-from-code",
