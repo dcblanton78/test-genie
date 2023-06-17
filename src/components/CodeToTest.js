@@ -4,7 +4,7 @@
 /* global google */
 
 import React, { useState, useContext } from "react";
-//import axios from "axios";
+import axios from "axios";
 
 import "./CodeToTest.css";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +16,7 @@ import Modal from "react-modal";
 import { BeatLoader } from "react-spinners";
 import UserContext from "./UserContext";
 
-const axios = require("axios");
+//const axios = require("axios");
 
 //A component that prompts the user for a block of code. Based on that code, make an API call to OpenAI's  API to return the associated tests (unit, integration, regression, etc). The user can then copy the code and paste it into their dev environment.
 const CodeToTest = () => {
