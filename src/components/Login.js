@@ -75,14 +75,14 @@ const Login = () => {
   };
 
   return (
-    <div className="Login">
+    <div className="Login" data-cy="login-page">
       <div className="landing-page-container">
         <div className="logo-container">
           <img src={logo} alt="TestGenie Logo" className="logo" />
         </div>
       </div>
-      <h1>TestGenie</h1>
-      <form onSubmit={handleEmailPasswordLogin}>
+      <h1 data-cy="login-title">TestGenie!</h1>
+      <form onSubmit={handleEmailPasswordLogin} data-cy="login-form">
         <div className="input-container">
           <label>Email: </label>
           <input
@@ -90,6 +90,7 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            data-cy="email-input"
           />
         </div>
         <div className="input-container">
@@ -99,16 +100,24 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            data-cy="password-input"
           />
         </div>
-        <input className="login-button" type="submit" value="Login" />
+        <input
+          className="login-button"
+          type="submit"
+          value="Login"
+          data-cy="submit-button"
+        />
       </form>
 
       <div id="signInDiv"></div>
       {user && user.name && (
         <div>
-          <h3>{user.name}</h3>
-          <button onClick={logout}>Logout</button>
+          <h3 data-cy="user-name">{user.name}</h3>
+          <button onClick={logout} data-cy="logout-button">
+            Logout
+          </button>
         </div>
       )}
     </div>
