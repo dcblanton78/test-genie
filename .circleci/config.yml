@@ -1,14 +1,19 @@
-version: "2.1"
+version: 2.1
 orbs:
-  jest: blimmer/jest@1.1.1
+  node: circleci/node@5.1.0 # Use the CircleCI Node Orb
   cypress: cypress-io/cypress@3
+jobs:
+  test: # Define a new job for Jest tests
+    executor: node/default
+    steps:
+      - checkout
+      - node/install-packages: # Cache and restore npm dependencies
+          pkg-manager: npm
+      - run: npm run test
 workflows:
   test:
     jobs:
-      - jest/test
-
-  use-my-orb:
-    jobs:
+      - test # Run your Jest test job
       - cypress/run:
           cypress-command: npx cypress run --browser chrome
           install-browsers: true
