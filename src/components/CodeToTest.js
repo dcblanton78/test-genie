@@ -42,10 +42,6 @@ const CodeToTest = () => {
     setCodeBlock(event.target.value);
   };
 
-  const handleCodeToTestLink = () => {
-    navigate("/CodeToTest");
-  };
-
   const handleTestLink = () => {
     navigate("/your-tests");
   };

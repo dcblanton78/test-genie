@@ -26,9 +26,6 @@ const TestCasesTable = () => {
     navigate("/tests");
   };
 
-  const handleTestLink = () => {
-    navigate("/your-tests");
-  };
   const logout = () => {
     setUser({});
     if (window.google && window.google.accounts && window.google.accounts.id) {

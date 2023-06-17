@@ -19,10 +19,6 @@ const LandingPage = () => {
     navigate("/");
   };
 
-  const handleHomeLink = () => {
-    navigate("/tests");
-  };
-
   const handleCodeToTestLink = () => {
     navigate("/CodeToTest");
   };
