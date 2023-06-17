@@ -42,9 +42,21 @@ const CodeToTest = () => {
     setCodeBlock(event.target.value);
   };
 
+  const handleCodeToTestLink = () => {
+    navigate("/CodeToTest");
+  };
+
+  const handleTestLink = () => {
+    navigate("/your-tests");
+  };
+
   //A function that routes the user to the landing page when they click the Home button
   const handleHomeLink = () => {
     navigate("/landing");
+  };
+
+  const handleReqToTestLink = () => {
+    navigate("/tests");
   };
 
   //A function that logs the user out of the application
@@ -202,6 +214,12 @@ const CodeToTest = () => {
       <nav className="navbar">
         <button className="navbar-link" onClick={handleHomeLink}>
           Home
+        </button>
+        <button className="navbar-link" onClick={handleReqToTestLink}>
+          Req to Test
+        </button>
+        <button className="navbar-link" onClick={handleTestLink}>
+          Your Tests
         </button>
         {user && user.name && (
           <div className="user-info">

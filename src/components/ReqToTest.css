@@ -219,6 +219,7 @@ tr:nth-child(even) {
   margin-left: auto; /* Push user-info to the right */
   display: flex;
   align-items: center;
+  padding-right: 40px;
 }
 
 .user-info img {
