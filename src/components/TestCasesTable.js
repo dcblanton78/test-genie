@@ -18,6 +18,13 @@ const TestCasesTable = () => {
   const handleHomeLink = () => {
     navigate("/landing");
   };
+  const handleCodeToTestLink = () => {
+    navigate("/CodeToTest");
+  };
+
+  const handleReqToTestLink = () => {
+    navigate("/tests");
+  };
 
   const logout = () => {
     setUser({});
@@ -43,6 +50,12 @@ const TestCasesTable = () => {
       <nav className="navbar">
         <button className="navbar-link" onClick={handleHomeLink}>
           Home
+        </button>
+        <button className="navbar-link" onClick={handleReqToTestLink}>
+          Req To Test
+        </button>
+        <button className="navbar-link" onClick={handleCodeToTestLink}>
+          Code To Test
         </button>
         {user && user.name && (
           <div className="user-info">

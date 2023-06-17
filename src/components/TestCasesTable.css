@@ -7,6 +7,7 @@ html {
 
 .test-cases-container {
   margin: 20px;
+  padding-right: 20px;
 }
 
 .test-cases-table {
@@ -29,3 +30,15 @@ html {
 .test-cases-table tbody tr:nth-child(even) {
   background-color: #f2f2f2;
 }
+
+html {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #dbe1e8; /* Change made here */
+}
+
+.navbar {
+  padding-right: 20px;
+}
+/* Rest of the CSS */

@@ -5,6 +5,7 @@ import "./LandingPage.css";
 import logo from "./img/TestGenieLogo.png";
 import { useNavigate } from "react-router-dom";
 import UserContext from "./UserContext";
+const profilePicture = localStorage.getItem("profilePicture");
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -18,19 +19,33 @@ const LandingPage = () => {
     navigate("/");
   };
 
-  const handleHomeLink = () => {
+  const handleCodeToTestLink = () => {
+    navigate("/CodeToTest");
+  };
+
+  const handleReqToTestLink = () => {
     navigate("/tests");
+  };
+
+  const handleTestLink = () => {
+    navigate("/your-tests");
   };
 
   return (
     <div className="landing-page-container">
       <nav className="navbar">
-        <button className="navbar-link" onClick={handleHomeLink}>
-          ReqToTest
+        <button className="navbar-link" onClick={handleReqToTestLink}>
+          Req To Test
+        </button>
+        <button className="navbar-link" onClick={handleCodeToTestLink}>
+          CodeToTest
+        </button>
+        <button className="navbar-link" onClick={handleTestLink}>
+          Your Tests
         </button>
         {user && user.name && (
           <div className="user-info">
-            {user.picture && <img src={user.picture} alt={user.name} />}
+            <img src={profilePicture} alt={user.name} />
             <h3>{user.name}</h3>
             <button className="navbar-link" onClick={logout}>
               Logout
