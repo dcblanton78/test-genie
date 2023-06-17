@@ -41,6 +41,14 @@ const ReqToTest = () => {
     navigate("/landing");
   };
 
+  const handleCodeToTestLink = () => {
+    navigate("/CodeToTest");
+  };
+
+  const handleTestLink = () => {
+    navigate("/your-tests");
+  };
+
   const handleChange = (event) => {
     setRequirements(event.target.value);
   };
@@ -188,6 +196,12 @@ const ReqToTest = () => {
       <nav className="navbar">
         <button className="navbar-link" onClick={handleHomeLink}>
           Home
+        </button>
+        <button className="navbar-link" onClick={handleCodeToTestLink}>
+          CodeToTest
+        </button>
+        <button className="navbar-link" onClick={handleTestLink}>
+          Your Tests
         </button>
         {user && user.name && (
           <div className="user-info">

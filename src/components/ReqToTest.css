@@ -190,5 +190,6 @@ tr:nth-child(even) {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  margin-left: 5px;
+  margin-left: 20px;
 }
+
