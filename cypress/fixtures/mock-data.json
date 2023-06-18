@@ -1,0 +1,16 @@
+[
+  {
+    "ID": "TC1",
+    "Description": "Test Case 1 Description",
+    "Expected_Result": "Expected Result for Test Case 1",
+    "Actual_Result": "",
+    "Status": null
+  },
+  {
+    "ID": "TC2",
+    "Description": "Test Case 2 Description",
+    "Expected_Result": "Expected Result for Test Case 2",
+    "Actual_Result": "",
+    "Status": null
+  }
+]

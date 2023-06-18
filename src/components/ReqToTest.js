@@ -20,9 +20,7 @@ const ReqToTest = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [codeString, setCodeString] = useState("");
   const [integrationTestCases, setIntegrationTestCases] = useState("");
-  // Add a new state variable to store the e2e test cases
   const [e2eTestCases, setE2eTestCases] = useState("");
-  //  create a 'read more' or 'expand' functionality for long strings
   const [isExpanded, setIsExpanded] = useState(false);
   const { user, setUser } = useContext(UserContext);
   console.log("user", user);
@@ -77,7 +75,6 @@ const ReqToTest = () => {
       params: { requirements: requirements },
     };
 
-    // Add a new request to get the e2e test cases
     const e2eTestData = {
       method: "GET",
       url: "http://localhost:8000/generate-e2e-tests",
@@ -94,7 +91,7 @@ const ReqToTest = () => {
         axios.request(data),
         axios.request(unitTestData),
         axios.request(integrationTestData),
-        axios.request(e2eTestData), // add a new request to get the e2e test cases
+        axios.request(e2eTestData),
       ]);
 
       const updatedTestCases = testResponse.data.map((testCase) => ({
@@ -106,8 +103,8 @@ const ReqToTest = () => {
       console.log("testCases:", testCases);
 
       setCodeString(unitTestResponse.data);
-      setIntegrationTestCases(integrationTestResponse.data); // updated to use the data from the integration test response
-      setE2eTestCases(e2eTestResponse.data); // updated to use the data from the e2e test response
+      setIntegrationTestCases(integrationTestResponse.data);
+      setE2eTestCases(e2eTestResponse.data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -184,7 +181,6 @@ const ReqToTest = () => {
   };
 
   function clearPlaceholder() {
-    //clear the placeholder text
     document.getElementById("textarea").placeholder = "";
   }
 
@@ -192,21 +188,33 @@ const ReqToTest = () => {
   console.log("profilePicture: " + profilePicture);
 
   return (
-    <div className="ReqToTest">
+    <div className="ReqToTest" data-cy="req-to-test-page">
       <nav className="navbar">
-        <button className="navbar-link" onClick={handleHomeLink}>
+        <button
+          className="navbar-link"
+          onClick={handleHomeLink}
+          data-cy="home-link"
+        >
           Home
         </button>
-        <button className="navbar-link" onClick={handleCodeToTestLink}>
+        <button
+          className="navbar-link"
+          onClick={handleCodeToTestLink}
+          data-cy="code-to-test-link"
+        >
           CodeToTest
         </button>
-        <button className="navbar-link" onClick={handleTestLink}>
+        <button
+          className="navbar-link"
+          onClick={handleTestLink}
+          data-cy="your-tests-link"
+        >
           Your Tests
         </button>
         {user && user.name && (
           <div className="user-info">
             <img src={profilePicture} alt={user.name} />
-            <h3>{user.name}</h3>
+            <h3 data-cy="user-name">{user.name}</h3>
             <button className="navbar-link" onClick={logout}>
               Logout
             </button>
@@ -228,10 +236,10 @@ const ReqToTest = () => {
             backgroundColor: "#808080",
           },
           content: {
-            display: "flex", // Added to center items
-            flexDirection: "column", // Added to align spinner and text vertically
-            alignItems: "center", // Added to center items
-            justifyContent: "center", // Added to center items
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
             position: "relative",
             inset: "auto",
             width: "fit-content",
@@ -249,25 +257,29 @@ const ReqToTest = () => {
         <p style={{ fontSize: "20px" }}>
           Please wait while I create your tests. It's a lot of work, so it'll
           take a moment...
-        </p>{" "}
-        {/* Increased font size */}
+        </p>
       </Modal>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} data-cy="req-to-test-form">
         <TextareaAutosize
           id="textarea"
           onFocus={() => clearPlaceholder()}
           placeholder="Enter your requirement"
           value={requirements}
           onChange={handleChange}
+          data-cy="requirements-textarea"
         />
-        <input type="submit" value="Generate Tests" disabled={isLoading} />
+        <input
+          type="submit"
+          value="Generate Tests"
+          disabled={isLoading}
+          data-cy="generate-tests-button"
+        />
       </form>
       {testCases.length > 0 && (
-        <div className="gherkContainter">
+        <div className="gherkContainter" data-cy="test-cases-container">
           <h2>Here are your Gherkin test cases</h2>
-          {/* create a 'read more' or 'expand' functionality for long strings */}
-          <p id="GherkReq">
+          <p id="GherkReq" data-cy="requirements-text">
             Requirement:
             {isExpanded || requirements.length <= 100
               ? requirements
@@ -276,6 +288,7 @@ const ReqToTest = () => {
               <button
                 className="show-more-button"
                 onClick={() => setIsExpanded(!isExpanded)}
+                data-cy="show-more-button"
               >
                 {isExpanded ? "Show less" : "Show more"}
               </button>
@@ -306,12 +319,14 @@ const ReqToTest = () => {
                       onChange={(event) =>
                         handleActualResultChange(event, index)
                       }
+                      data-cy={`actual-result-input-${index}`}
                     />
                   </td>
                   <td>
                     <select
                       value={testCase.Status}
                       onChange={(event) => handleStatusChange(event, index)}
+                      data-cy={`status-select-${index}`}
                     >
                       <option value="New">New</option>
                       <option value="In Progress">In Progress</option>
@@ -320,23 +335,35 @@ const ReqToTest = () => {
                     </select>
                   </td>
                   <td>
-                    <button onClick={() => saveTestCase(testCase)}>Save</button>
+                    <button
+                      onClick={() => saveTestCase(testCase)}
+                      data-cy={`save-button-${index}`}
+                    >
+                      Save
+                    </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
           <div className="button-container">
-            <button onClick={downloadCSV}>Download to CSV</button>
-            <button>Export To Jira</button>
+            <button onClick={downloadCSV} data-cy="download-csv-button">
+              Download to CSV
+            </button>
+            <button data-cy="export-jira-button">Export To Jira</button>
             <button
               onClick={() => saveAllTestCases(testCases)}
               className="save-all-button"
+              data-cy="save-all-button"
             >
               Save All
             </button>
           </div>
-          {successMessage && <div className="success">{successMessage}</div>}
+          {successMessage && (
+            <div className="success" data-cy="success-message">
+              {successMessage}
+            </div>
+          )}
         </div>
       )}
       {codeString && (
@@ -353,7 +380,6 @@ const ReqToTest = () => {
           title="And here are your Integration Tests"
         />
       )}
-      {/* Add e2e test code block */}
       {e2eTestCases && (
         <CodeBlock
           codeString={e2eTestCases}
