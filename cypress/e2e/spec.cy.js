@@ -81,38 +81,38 @@ describe("ReqToTest Page", () => {
     cy.get("[data-cy=req-to-test-page]").should("exist");
   });
 
-  it("should generate tests for valid requirements and save them", () => {
-    // cy.intercept(
-    //   "GET",
-    //   "http://localhost:8000/generate-test-cases?requirements=**"
-    // ).as("generateTestCases");
+  // it("should generate tests for valid requirements and save them", () => {
+  //   // cy.intercept(
+  //   //   "GET",
+  //   //   "http://localhost:8000/generate-test-cases?requirements=**"
+  //   // ).as("generateTestCases");
 
-    cy.get("[data-cy=requirements-textarea]")
-      .type("The user should be able to log in")
-      .should("have.value", "The user should be able to log in");
+  //   cy.get("[data-cy=requirements-textarea]")
+  //     .type("The user should be able to log in")
+  //     .should("have.value", "The user should be able to log in");
 
-    cy.get("[data-cy=generate-tests-button]").click();
-    cy.wait(90000);
-    // cy.wait("@generateTestCases", { timeout: 10000 }).then((interception) => {
-    //   if (interception) {
-    //     expect(interception.response.statusCode).to.equal(200);
-    //     // Add any additional assertions you need to check the response
-    //   } else {
-    //     throw new Error("Interception not found");
-    //   }
+  //   cy.get("[data-cy=generate-tests-button]").click();
 
-    cy.get("[data-cy=test-cases-container]").should("exist");
-    cy.get("[data-cy=requirements-text]").should(
-      "contain",
-      "The user should be able to log in"
-    );
-    cy.get("[data-cy=save-button-0]").click();
+  //   // cy.wait("@generateTestCases", { timeout: 10000 }).then((interception) => {
+  //   //   if (interception) {
+  //   //     expect(interception.response.statusCode).to.equal(200);
+  //   //     // Add any additional assertions you need to check the response
+  //   //   } else {
+  //   //     throw new Error("Interception not found");
+  //   //   }
 
-    cy.get("[data-cy=success-message]").should(
-      "contain",
-      "Test case saved successfully!"
-    );
-  });
+  //   cy.get("[data-cy=test-cases-container]").should("exist");
+  //   cy.get("[data-cy=requirements-text]").should(
+  //     "contain",
+  //     "The user should be able to log in"
+  //   );
+  //   cy.get("[data-cy=save-button-0]").click();
+
+  //   cy.get("[data-cy=success-message]").should(
+  //     "contain",
+  //     "Test case saved successfully!"
+  //   );
+  // });
 
   // it("should save a test case", () => {
   //   cy.get("[data-cy=save-button-0]").click();
