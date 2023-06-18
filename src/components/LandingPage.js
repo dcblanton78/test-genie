@@ -32,22 +32,38 @@ const LandingPage = () => {
   };
 
   return (
-    <div className="landing-page-container">
+    <div className="landing-page-container" data-cy="landing-page">
       <nav className="navbar">
-        <button className="navbar-link" onClick={handleReqToTestLink}>
+        <button
+          className="navbar-link"
+          onClick={handleReqToTestLink}
+          data-cy="req-to-test-link"
+        >
           Req To Test
         </button>
-        <button className="navbar-link" onClick={handleCodeToTestLink}>
+        <button
+          className="navbar-link"
+          onClick={handleCodeToTestLink}
+          data-cy="code-to-test-link"
+        >
           CodeToTest
         </button>
-        <button className="navbar-link" onClick={handleTestLink}>
+        <button
+          className="navbar-link"
+          onClick={handleTestLink}
+          data-cy="your-tests-link"
+        >
           Your Tests
         </button>
         {user && user.name && (
           <div className="user-info">
             <img src={profilePicture} alt={user.name} />
-            <h3>{user.name}</h3>
-            <button className="navbar-link" onClick={logout}>
+            <h3 data-cy="user-name">{user.name}</h3>
+            <button
+              className="navbar-link"
+              onClick={logout}
+              data-cy="logout-button"
+            >
               Logout
             </button>
           </div>
@@ -59,7 +75,7 @@ const LandingPage = () => {
       <h1 className="landing-page-header">Welcome to TestGenie!</h1>
       <div className="landing-page-link-container">
         <div className="tooltip-container">
-          <Link to="/tests" className="landing-page-link">
+          <Link to="/tests" className="landing-page-link" data-cy="req-to-test">
             Req To Test
           </Link>
           <span className="tooltip-text">
@@ -67,7 +83,11 @@ const LandingPage = () => {
           </span>
         </div>
         <div className="tooltip-container">
-          <Link to="/codetotest" className="landing-page-link">
+          <Link
+            to="/codetotest"
+            className="landing-page-link"
+            data-cy="code-to-test"
+          >
             Code To Test
           </Link>
           <span className="tooltip-text">
@@ -75,13 +95,21 @@ const LandingPage = () => {
           </span>
         </div>
         <div className="tooltip-container">
-          <Link to="/locator" className="landing-page-link">
+          <Link
+            to="/locator"
+            className="landing-page-link"
+            data-cy="locator-generator"
+          >
             Locator Generator
           </Link>
           <span className="tooltip-text">Got code but crappy locators?</span>
         </div>
         <div className="tooltip-container">
-          <Link to="/your-tests" className="landing-page-link">
+          <Link
+            to="/your-tests"
+            className="landing-page-link"
+            data-cy="your-tests"
+          >
             Your Tests
           </Link>
           <span className="tooltip-text">View your tests</span>
