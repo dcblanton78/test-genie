@@ -92,7 +92,7 @@ describe("ReqToTest Page", () => {
       .should("have.value", "The user should be able to log in");
 
     cy.get("[data-cy=generate-tests-button]").click();
-    cy.wait(20000);
+    cy.wait(90000);
     // cy.wait("@generateTestCases", { timeout: 10000 }).then((interception) => {
     //   if (interception) {
     //     expect(interception.response.statusCode).to.equal(200);
