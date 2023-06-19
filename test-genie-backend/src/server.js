@@ -80,6 +80,8 @@ app.get("/get-test-cases", async (req, res) => {
 
 app.get("/generate-test-cases", async (req, res) => {
   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+  console.log("Req.query: ", req.query);
+  const isCypressTest = req.query["x-cypress-test"] === "true";
 
   // Get the requirements parameter from the query string
   const requirements = req.query.requirements;
@@ -95,7 +97,7 @@ app.get("/generate-test-cases", async (req, res) => {
     // additional test cases...
   ];
 
-  if (process.env.MOCK_TEST_DATA === "true") {
+  if (process.env.MOCK_TEST_DATA === "true" || isCypressTest) {
     return res.status(200).json(MOCK_TEST_CASES);
   }
 
@@ -129,8 +131,17 @@ app.get("/generate-test-cases", async (req, res) => {
     );
 
     // Extract the generated test cases from the API response
+    console.log("response.data: ", response.data);
     const generatedTestCases = response.data.choices[0].text;
-    const parsedTestCases = JSON.parse(generatedTestCases).testCases;
+
+    // Find the position of the first '{' character in the string
+    const jsonStart = generatedTestCases.indexOf("{");
+
+    // Slice the string from the first '{' character
+    const jsonContent = generatedTestCases.slice(jsonStart);
+
+    // Parse the JSON content
+    const parsedTestCases = JSON.parse(jsonContent).testCases;
 
     // Send the parsed test cases as a JSON response to the client
     res.json(parsedTestCases);
@@ -143,6 +154,8 @@ app.get("/generate-test-cases", async (req, res) => {
 // Define a route that generates unit tests based on user-provided requirements
 app.get("/generate-unit-tests", async (req, res) => {
   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+  const isCypressTest = req.query["x-cypress-test"] === "true";
+  console.log("Req.Headers: ", req.headers);
 
   // Get the requirements parameter from the query string
   const requirements = req.query.requirements;
@@ -171,7 +184,8 @@ app.get("/generate-unit-tests", async (req, res) => {
     });
     `;
 
-  if (process.env.MOCK_TEST_DATA === "true") {
+  console.log("isCypressTest: ", isCypressTest);
+  if (process.env.MOCK_TEST_DATA === "true" || isCypressTest) {
     return res.status(200).json(MOCK_UNIT_TESTS);
   }
 
@@ -233,6 +247,7 @@ app.get("/generate-unit-tests", async (req, res) => {
 
 app.get("/generate-integration-tests", async (req, res) => {
   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+  const isCypressTest = req.query["x-cypress-test"] === "true";
 
   // Get the requirements parameter from the query string
   const requirements = req.query.requirements;
@@ -259,7 +274,7 @@ app.get("/generate-integration-tests", async (req, res) => {
     });
     `;
 
-  if (process.env.MOCK_TEST_DATA === "true") {
+  if (process.env.MOCK_TEST_DATA === "true" || isCypressTest) {
     return res.status(200).json(MOCK_INTEGRATION_TESTS);
   }
 
@@ -305,6 +320,7 @@ app.get("/generate-integration-tests", async (req, res) => {
 app.get("/generate-e2e-tests", async (req, res) => {
   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
   const requirements = req.query.requirements;
+  const isCypressTest = req.query["x-cypress-test"] === "true";
 
   const MOCK_E2E_TESTS = `
 
@@ -330,7 +346,7 @@ app.get("/generate-e2e-tests", async (req, res) => {
     });
     `;
 
-  if (process.env.MOCK_TEST_DATA === "true") {
+  if (process.env.MOCK_TEST_DATA === "true" || isCypressTest) {
     return res.status(200).json(MOCK_E2E_TESTS);
   }
 
