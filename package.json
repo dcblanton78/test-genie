@@ -25,7 +25,8 @@
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "start": "npm --prefix test-genie-backend install && react-scripts start",
+    "prestart": "npm --prefix test-genie-backend install",
+    "start": "concurrently \"npm --prefix test-genie-backend start\" \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!my-library-dir)/'",
     "eject": "react-scripts eject"
