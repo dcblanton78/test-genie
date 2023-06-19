@@ -7,8 +7,14 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - node/install-packages: # Cache and restore npm dependencies
-          pkg-manager: npm
+      - run:
+          name: Install dependencies for test-genie
+          command: npm install
+          working_directory: test-genie
+      - run:
+          name: Install dependencies for test-genie-backend
+          command: npm install
+          working_directory: test-genie/test-genie-backend
       - run: CI=true npm run test # Make sure the tests only run once
       - store_test_results: # Store the test results for CircleCI to read
           path: test-results.xml # Modify this with your actual test results path
@@ -17,6 +23,6 @@ workflows:
     jobs:
       - unit_test # Run your Jest test job
       - cypress/run:
-          cypress-command: npx cypress run --browser chrome
+          cypress-command: npx cypress run --browser electron --headless --record
           install-browsers: true
           start-command: "npm run start"
