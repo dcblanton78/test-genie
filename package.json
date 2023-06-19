@@ -20,7 +20,8 @@
     "react-spinners": "^0.13.8",
     "react-syntax-highlighter": "^15.5.0",
     "react-textarea-autosize": "^8.4.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "concurrently": "^7.0.0"
   },
   "scripts": {
     "predeploy": "npm run build",
