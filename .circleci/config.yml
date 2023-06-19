@@ -12,6 +12,9 @@ jobs:
       - run: CI=true npm run test # Make sure the tests only run once
       - store_test_results: # Store the test results for CircleCI to read
           path: test-results.xml # Modify this with your actual test results path
+      - run:
+          name: Install Nodemon globally
+          command: npm install -g nodemon
 workflows:
   build: # Renamed the workflow from "test" to "build" to avoid confusion
     jobs:
