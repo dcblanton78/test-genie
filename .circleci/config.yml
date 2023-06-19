@@ -17,6 +17,6 @@ workflows:
     jobs:
       - unit_test # Run your Jest test job
       - cypress/run:
-          cypress-command: npx cypress run --browser chrome
+          cypress-command: npx cypress run --browser chrome --headless --record
           install-browsers: true
           start-command: "npm run start"
