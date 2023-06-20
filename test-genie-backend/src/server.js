@@ -108,7 +108,7 @@ app.get("/generate-test-cases", async (req, res) => {
   const data = {
     model: "text-davinci-003",
     prompt:
-      "Please provide at least 15 test cases associated with the following requirement: " +
+      "Please provide at least 5 test cases associated with the following requirement: " +
       requirements +
       " The test cases should be provided in Gherkin syntax (Given, When, Then). In addition to happy path, include all negative cases, edge cases, and corner cases. Please include all the following information: Test Case ID, Description, and Expected Result. Provide the answer as a JSON object with a key 'testCases' that has a value of an array containing objects with keys for 'ID', 'Description', and 'Expected_Result'. ONLY include the Given and When steps in the Description and ONLY the Then step should be included in the Expected Result. Be sure to start with the word Then in the Expected Result. For example, Description: Given I am on the reset password page, when I enter my email address. Expected Result: Then I am sent a link to reset my password: ",
     max_tokens: 1500,
