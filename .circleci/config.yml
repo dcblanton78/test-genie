@@ -2,6 +2,7 @@ version: 2.1
 orbs:
   node: circleci/node@5.1.0 # Use the CircleCI Node Orb
   cypress: cypress-io/cypress@3
+  mailer-orb: sudiptog81/mailer-orb@1.0.0
 jobs:
   unit_test: # Define a new job for Jest tests, renamed to avoid confusion
     executor: node/default
@@ -21,8 +22,14 @@ jobs:
 workflows:
   build: # Renamed the workflow from "test" to "build" to avoid confusion
     jobs:
+      - mailer-orb/mail:
+            body: Success! 
+            from: dcblanton78@gmail.com 
+            subject: Success 
+            to: dcblanton78@gmail.com 
       - unit_test # Run your Jest test job
       - cypress/run:
           cypress-command: npx cypress run --browser electron --headless --record
           install-browsers: true
           start-command: "npm run start"
+          
