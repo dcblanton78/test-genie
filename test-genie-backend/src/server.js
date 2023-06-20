@@ -108,8 +108,9 @@ app.get("/generate-test-cases", async (req, res) => {
   const data = {
     model: "text-davinci-003",
     prompt:
-      "Please provide all possible test cases associated with the following requirement in Gherkin syntax (Given, When, Then). In addition to happy path, include all negative cases, edge cases, and corner cases. Please include all the following information: Test Case ID, Description, and Expected Result. Provide the answer as a JSON object with a key 'testCases' that has a value of an array containing objects with keys for 'ID', 'Description', and 'Expected_Result'. ONLY include the Given, When steps in the Description and ONLY the Then step should be included in the Expected Result. Be sure to start with the word Then in the Expected Result. For example, Description: Given I am on the reset password page, Expected Result: When I enter my email address. Then I am sent a link to reset my password: " +
-      requirements,
+      "Please provide at least 15 test cases associated with the following requirement: " +
+      requirements +
+      " The test cases should be provided in Gherkin syntax (Given, When, Then). In addition to happy path, include all negative cases, edge cases, and corner cases. Please include all the following information: Test Case ID, Description, and Expected Result. Provide the answer as a JSON object with a key 'testCases' that has a value of an array containing objects with keys for 'ID', 'Description', and 'Expected_Result'. ONLY include the Given and When steps in the Description and ONLY the Then step should be included in the Expected Result. Be sure to start with the word Then in the Expected Result. For example, Description: Given I am on the reset password page, when I enter my email address. Expected Result: Then I am sent a link to reset my password: ",
     max_tokens: 1500,
     temperature: 0.4,
   };
@@ -133,6 +134,7 @@ app.get("/generate-test-cases", async (req, res) => {
     // Extract the generated test cases from the API response
     console.log("response.data: ", response.data);
     const generatedTestCases = response.data.choices[0].text;
+    console.log("Generated test cases:", generatedTestCases);
 
     // Find the position of the first '{' character in the string
     const jsonStart = generatedTestCases.indexOf("{");
@@ -458,7 +460,7 @@ app.get("/generate-test-cases-from-code", async (req, res) => {
   const data = {
     model: "text-davinci-003",
     prompt:
-      `Please provide all possible test cases associated with the following code in Gherkin syntax (Given, When, Then). In addition to happy path, include all negative cases, edge cases, and corner cases. Please include all the following information: Test Case ID, Description, and Expected Result. Provide the answer as a JSON object with keys for 'ID', 'Description', and 'Expected_Result'. ONLY include the Given, When steps in the Description and ONLY the Then step should be included in the Expected Result. Be sure to start with the word Then in the Expected Result. For example, Description: Given I am on the reset password page, Expected Result: When I enter my email address. Then I am sent a link to reset my password: ` +
+      `Please provide all possible test cases associated with the following code in Gherkin syntax (Given, When, Then). In addition to happy path, include all negative cases, edge cases, and corner cases. Please include all the following information: Test Case ID, Description, and Expected Result. Provide the answer as a JSON object with keys for 'ID', 'Description', and 'Expected_Result'. ONLY include the Given, When steps in the Description and ONLY the Then step should be included in the Expected Result. Be sure to start with the word Then in the Expected Result. If you see a specific error message in the code, it SHOULD BE DISPLAYED IN THE EXPECTED RESULT FOR THAT TEST CASE. For example, Description: Given I am on the reset password page, When I enter an incorrect password. Expected Result: Then I am see an error message that says You have entered an incorrect email or password  ` +
       code +
       `Here is an example of what the response should look like: [
         {
@@ -478,7 +480,7 @@ app.get("/generate-test-cases-from-code", async (req, res) => {
         }
        
     ]`,
-    max_tokens: 1500,
+    max_tokens: 2500,
     temperature: 0.4,
   };
 
@@ -497,10 +499,15 @@ app.get("/generate-test-cases-from-code", async (req, res) => {
       data,
       config
     );
+    console.log(
+      "Raw output from the API: " + response.data.choices[0].text.trim()
+    );
+
+    console.log("Full API Response: " + JSON.stringify(response.data));
 
     // Extract the generated test cases from the API response
     const generatedTestCases = response.data.choices[0].text.trim();
-    console.log("Generated Test Cases: " + generatedTestCases);
+    console.log("Generated END TO END Test Cases: " + generatedTestCases);
     const parsedTestCases = JSON.parse(generatedTestCases);
     console.log("Parsed Test Cases: " + JSON.stringify(parsedTestCases));
 
@@ -644,7 +651,7 @@ app.get("/generate-integration-tests-from-code", async (req, res) => {
     max_tokens: 1500,
     temperature: 0.4,
   };
-  console.log(integrationData);
+  // console.log(integrationData);
 
   // Set up the configuration object for the API request
   const config = {
