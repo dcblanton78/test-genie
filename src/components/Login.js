@@ -11,6 +11,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState(""); // New state for error message
 
   useEffect(() => {
     const handleCallbackResponse = (response) => {
@@ -64,6 +65,7 @@ const Login = () => {
       navigate("/landing");
     } else {
       console.log("Login failed");
+      setErrorMsg("Incorrect email or password. Please try again."); // Set the error message upon failed login
     }
   };
 
@@ -103,6 +105,7 @@ const Login = () => {
             data-cy="password-input"
           />
         </div>
+        {errorMsg && <p className="error-message">{errorMsg}</p>}
         <input
           className="login-button"
           type="submit"

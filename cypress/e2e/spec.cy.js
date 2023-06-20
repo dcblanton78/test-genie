@@ -107,7 +107,6 @@ describe("ReqToTest Page", () => {
       "contain",
       "The user should be able to log in"
     );
-
     // cy.get("[data-cy=save-button-0]").click();
 
     // cy.get("[data-cy=success-message]").should(
