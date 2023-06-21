@@ -793,7 +793,124 @@ app.get("/generate-e2e-tests-from-code", async (req, res) => {
   }
 });
 
-// Start the server and listen for incoming requests
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
+//The following code is a React component. I want to implement e2e Cypress tests to test its functionality. Update the code directly with 'data-cy' locators that will be needed to successfully build the e2e Cypress tests
+
+// New endpoint called /update-code-with-data-cy-locators
+app.get("/update-code-with-data-cy-locators", async (req, res) => {
+  const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+  const code = req.query.code;
+
+  const MOCK_E2E_TESTS = `
+
+
+    describe('TEST!!! View Listing Details', () => {
+      const mockListing = {
+        id: 1,
+        photos: ['photo1.jpg', 'photo2.jpg'],
+        description: 'This is a great listing',
+        houseRules: 'No parties',
+        reviews: [{ author: 'John', rating: 5 }, { author: 'Jane', rating: 4 }],
+        pricing: {
+          basePrice: 100,
+          extraPersonFee: 10
+        }
+      };
+
+      test('should return the correct listing photos', () => {
+        expect(mockListing.photos).toEqual(['photo1.jpg', 'photo2.jpg']);
+      });
+
+      // Rest of tests
+    });
+    `;
+
+  if (process.env.MOCK_TEST_DATA === "true") {
+    return res.status(200).json(MOCK_E2E_TESTS);
+  }
+
+  // Create the data object to send to OpenAI's API
+  const data = {
+    model: "text-davinci-003",
+    prompt:
+      "The following code is a React component. I want to implement e2e Cypress tests to test its functionality. Update the code directly with 'data-cy' locators that will be needed to successfully build the e2e Cypress tests. Please send back ALL of the updated code. Not just a snippet" +
+      code,
+    max_tokens: 1500,
+    temperature: 0.4,
+  };
+
+  //console.log(e2eData);
+  // Set up the configuration object for the API request
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${API_KEY}`,
+    },
+  };
+
+  try {
+    // Send a POST request to OpenAI's API to generate the integration tests
+    const response = await axios.post(
+      "https://api.openai.com/v1/completions",
+      data,
+      config
+    );
+
+    // Extract the generated End to End tests from the API response
+    const updatedCode = response.data.choices[0].text;
+
+    // Send the generated integration tests as a JSON response to the client
+    res.json(updatedCode);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
+
+//   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+//   const code = req.query.code;
+
+//   // Create the data object to send to OpenAI's API
+//   const data = {
+//     model: "test-davinci-003",
+//     prompt:
+//       "The following code is a React component. I want to implement e2e Cypress tests to test its functionality. Update the code directly with 'data-cy' locators that will be needed to successfully build the e2e Cypress tests" +
+//       code,
+//     max_tokens: 2000,
+//     temperature: 0.4,
+//   };
+
+//   // Set up the configuration object for the API request
+//   const config = {
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${API_KEY}`,
+//     },
+//   };
+
+//   try {
+//     // Send a POST request to OpenAI's API to generate the updated code
+//     const response = await axios.post(
+//       "https://api.openai.com/v1/completions",
+//       data,
+//       config
+//     );
+
+//     // Extract the updated code from the API response
+//     const updatedCode = response.data.choices[0].text;
+
+//     // Send the updated code as a JSON response to the client
+//     res.json(updatedCode);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
+
+// Start the server and listen for incoming requests
+app
+  .listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`);
+  })
+  .on("error", (error) => {
+    console.log("Error occurred:", error);
+  });

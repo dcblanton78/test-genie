@@ -6,6 +6,7 @@ import TestCasesTable from "./components/TestCasesTable";
 import CodeToTest from "./components/CodeToTest";
 import Login from "./components/Login";
 import UserContext from "./components/UserContext";
+import Locator from "./components/Locator";
 import { useState } from "react";
 
 const App = () => {
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/tests" element={<ReqToTest />} />
           <Route path="/your-tests" element={<TestCasesTable />} />
           <Route path="/codetotest" element={<CodeToTest />} />
+          <Route path="/locator" element={<Locator />} />
         </Routes>
       </Router>
     </UserContext.Provider>
