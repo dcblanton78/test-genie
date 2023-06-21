@@ -5,7 +5,6 @@ import "./LandingPage.css";
 import logo from "./img/TestGenieLogo.png";
 import { useNavigate } from "react-router-dom";
 import UserContext from "./UserContext";
-const profilePicture = localStorage.getItem("profilePicture");
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -18,6 +17,7 @@ const LandingPage = () => {
     }
     navigate("/");
   };
+  const profilePicture = localStorage.getItem("profilePicture");
 
   return (
     <div className="landing-page-container" data-cy="landing-page">
