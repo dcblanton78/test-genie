@@ -54,6 +54,7 @@ const Login = () => {
   const users = {
     "dcblanton78@gmail.com": "abc123",
     "pierce.blanton3@gmail.com": "abc123",
+    "njgrout@gmail.com": "abc123",
   };
 
   const handleEmailPasswordLogin = (e) => {

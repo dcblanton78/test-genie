@@ -32,17 +32,17 @@ describe("Landing Page", () => {
   });
 
   it("should navigate to Req To Test page", () => {
-    cy.get("[data-cy=req-to-test-link]").click();
+    cy.get("[data-cy=req-to-test]").click();
     cy.url().should("include", "/tests");
   });
 
   it("should navigate to Code To Test page", () => {
-    cy.get("[data-cy=code-to-test-link]").click();
-    cy.url().should("include", "/CodeToTest");
+    cy.get("[data-cy=code-to-test]").click();
+    cy.url().should("include", "/codetotest");
   });
 
   it("should navigate to Your Tests page", () => {
-    cy.get("[data-cy=your-tests-link]").click();
+    cy.get("[data-cy=your-tests]").click();
     cy.url().should("include", "/your-tests");
   });
 });
@@ -93,7 +93,7 @@ describe("ReqToTest Page", () => {
 
     cy.get("[data-cy=generate-tests-button]").click();
 
-    cy.wait("@generateTestCases").then((interception) => {
+    cy.wait("@generateTestCases", { timeout: 60000 }).then((interception) => {
       if (interception) {
         expect(interception.response.statusCode).to.equal(200);
         // Add any additional assertions you need to check the response

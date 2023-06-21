@@ -19,42 +19,9 @@ const LandingPage = () => {
     navigate("/");
   };
 
-  const handleCodeToTestLink = () => {
-    navigate("/CodeToTest");
-  };
-
-  const handleReqToTestLink = () => {
-    navigate("/tests");
-  };
-
-  const handleTestLink = () => {
-    navigate("/your-tests");
-  };
-
   return (
     <div className="landing-page-container" data-cy="landing-page">
       <nav className="navbar">
-        <button
-          className="navbar-link"
-          onClick={handleReqToTestLink}
-          data-cy="req-to-test-link"
-        >
-          Req To Test
-        </button>
-        <button
-          className="navbar-link"
-          onClick={handleCodeToTestLink}
-          data-cy="code-to-test-link"
-        >
-          CodeToTest
-        </button>
-        <button
-          className="navbar-link"
-          onClick={handleTestLink}
-          data-cy="your-tests-link"
-        >
-          Your Tests
-        </button>
         {user && user.name && (
           <div className="user-info">
             <img src={profilePicture} alt={user.name} />
