@@ -1,33 +1,52 @@
 /* global google */
-import React, { useContext, useEffect, useState } from "react"; // import useContext
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import UserContext from "./UserContext"; // import UserContext
+import UserContext from "./UserContext";
 import logo from "./img/TestGenieLogo.png";
 import "./Login.css";
 import jwt_decode from "jwt-decode";
 
+const fetchGoogleUserProfile = async (accessToken) => {
+  const res = await fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  const data = await res.json();
+  return data;
+};
+
+const isTokenExpired = (token) => {
+  const decodedToken = jwt_decode(token);
+  const currentTime = Date.now() / 1000;
+
+  return currentTime > decodedToken.exp;
+};
+
 const Login = () => {
-  const { user, setUser } = useContext(UserContext); // use UserContext
+  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorMsg, setErrorMsg] = useState(""); // New state for error message
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
-    const handleCallbackResponse = (response) => {
-      console.log("Encoded JW Token: " + response.credential);
-      var userObject = jwt_decode(response.credential);
-      console.log(userObject);
-      if (userObject.picture) {
+    const handleCallbackResponse = async (response) => {
+      const accessToken = response.credential;
+      console.log("Access Token: ", accessToken);
+
+      if (isTokenExpired(accessToken)) {
+        console.error("Access token is expired!");
+        // Here you can add logic to refresh the token
+      } else {
+        const userObject = jwt_decode(accessToken);
         localStorage.setItem("profilePicture", userObject.picture);
+
+        setUser(userObject);
+        navigate("/landing");
       }
-      console.log("User Picture: " + userObject.picture);
-      console.log("User Pic 2: " + localStorage.getItem("profilePicture"));
-      setUser(userObject);
-      navigate("/landing");
     };
 
-    // Function to initialize Google One Tap
     const initializeGoogleOneTap = () => {
       google.accounts.id.initialize({
         client_id:
@@ -40,16 +59,13 @@ const Login = () => {
       });
     };
 
-    // Check if Google One Tap has already loaded
     if (window.google && window.google.accounts && window.google.accounts.id) {
       initializeGoogleOneTap();
     } else {
-      // If not, retry after a delay
       const timerId = setTimeout(initializeGoogleOneTap, 1000);
-      // Clean up timer upon unmount
       return () => clearTimeout(timerId);
     }
-  }, [navigate, setUser]); // add setUser as a dependency
+  }, [navigate, setUser]);
 
   const users = {
     "dcblanton78@gmail.com": "abc123",
@@ -61,12 +77,10 @@ const Login = () => {
     e.preventDefault();
 
     if (users[email] && users[email] === password) {
-      console.log("Login successful");
-      setUser({ name: email }); // set user to an object with a name property
+      setUser({ name: email });
       navigate("/landing");
     } else {
-      console.log("Login failed");
-      setErrorMsg("Incorrect email or password. Please try again."); // Set the error message upon failed login
+      setErrorMsg("Incorrect email or password. Please try again.");
     }
   };
 

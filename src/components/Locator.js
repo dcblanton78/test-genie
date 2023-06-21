@@ -3,7 +3,7 @@
 
 /* global google */
 
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 
 import "./CodeToTest.css";
@@ -27,6 +27,8 @@ const CodeToTest = () => {
   const navigate = useNavigate();
   const profilePicture = localStorage.getItem("profilePicture");
   const { user, setUser } = useContext(UserContext);
+  const [displayCodeString, setDisplayCodeString] = useState("");
+  const [testsString, setTestsString] = useState("");
 
   //Functions
 
@@ -61,6 +63,30 @@ const CodeToTest = () => {
     navigate("/");
   };
 
+  useEffect(() => {
+    if (codeString) {
+      const generateTests = async () => {
+        const e2eData = {
+          method: "GET",
+          url: "http://localhost:8000/generate-e2e-tests-from-code",
+          params: { code: codeString },
+        };
+
+        try {
+          const [testsResponse] = await Promise.all([axios.request(e2eData)]);
+          setTestsString(testsResponse.data);
+          setDisplayCodeString(codeString);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      generateTests();
+    }
+  }, [codeString]); // On
+
   //A function that handles the submit button click
   const handleSubmit = async (event) => {
     console.log("Submit button clicked");
@@ -84,7 +110,6 @@ const CodeToTest = () => {
     } catch (error) {
       console.error(error);
     } finally {
-      setIsLoading(false);
       document.body.style.cursor = "";
     }
   };
@@ -169,11 +194,18 @@ const CodeToTest = () => {
         <input type="submit" value="Update Code" disabled={isLoading} />
       </form>
 
-      {codeString && !isLoading && (
+      {displayCodeString && !isLoading && (
         <CodeBlock
           codeString={codeString}
           code={codeBlock}
           title="Here is your code updated with data-cy locators:"
+        />
+      )}
+      {testsString && !isLoading && (
+        <CodeBlock
+          codeString={testsString}
+          code={codeBlock}
+          title="Here are the e2e Cypress tests for your code:"
         />
       )}
     </div>
