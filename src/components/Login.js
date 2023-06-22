@@ -6,15 +6,15 @@ import logo from "./img/TestGenieLogo.png";
 import "./Login.css";
 import jwt_decode from "jwt-decode";
 
-const fetchGoogleUserProfile = async (accessToken) => {
-  const res = await fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
-  const data = await res.json();
-  return data;
-};
+// const fetchGoogleUserProfile = async (accessToken) => {
+//   const res = await fetch("https://www.googleapis.com/oauth2/v2/userinfo", {
+//     headers: {
+//       Authorization: `Bearer ${accessToken}`,
+//     },
+//   });
+//   const data = await res.json();
+//   return data;
+// };
 
 const isTokenExpired = (token) => {
   const decodedToken = jwt_decode(token);
