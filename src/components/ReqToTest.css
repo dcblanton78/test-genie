@@ -22,6 +22,34 @@ html {
   background-color: grey;
 }
 
+#req-link {
+  background-color: grey;
+}
+
+#locate-link {
+  background-color: grey;
+}
+
+#test-link {
+  background-color: grey;
+}
+
+#home-link:hover {
+  background-color: rgb(148, 148, 148);
+}
+
+#req-link:hover {
+  background-color: rgb(148, 148, 148);
+}
+
+#locate-link:hover {
+  background-color: rgb(148, 148, 148);
+}
+
+#test-link:hover {
+  background-color: rgb(148, 148, 148)
+}
+
 h1 {
   font-family: "Poppins", sans-serif;
   font-size: 3em;
