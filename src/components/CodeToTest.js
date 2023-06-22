@@ -46,6 +46,10 @@ const CodeToTest = () => {
     navigate("/your-tests");
   };
 
+  const handleLocatorLink = () => {
+    navigate("/locator");
+  };
+
   //A function that routes the user to the landing page when they click the Home button
   const handleHomeLink = () => {
     navigate("/landing");
@@ -207,28 +211,37 @@ const CodeToTest = () => {
 
   return (
     <div className="CodeToTest">
-      <nav className="navbar">
-        <button className="navbar-link" onClick={handleHomeLink}>
-          Home
-        </button>
-        <button className="navbar-link" onClick={handleReqToTestLink}>
-          Req to Test
-        </button>
-        <button className="navbar-link" onClick={handleTestLink}>
-          Your Tests
-        </button>
-        {user && user.name && (
-          <div className="user-info">
-            <img src={profilePicture} alt={user.name} />
-            <h3>{user.name}</h3>
-            <button className="navbar-link" onClick={logout}>
-              Logout
-            </button>
-          </div>
-        )}
-      </nav>
-      <div className="logo-container">
-        <img src={logo} alt="TestGenie Logo" className="logo" />
+      <div className="codetotest-header">
+        <nav className="navbar">
+          <button
+            id="home-link"
+            className="navbar-link"
+            onClick={handleHomeLink}
+          >
+            Home
+          </button>
+          <button className="navbar-link" onClick={handleReqToTestLink}>
+            Req to Test
+          </button>
+          <button className="navbar-link" onClick={handleLocatorLink}>
+            Locator
+          </button>
+          <button className="navbar-link" onClick={handleTestLink}>
+            Your Tests
+          </button>
+          {user && user.name && (
+            <div className="user-info">
+              <img src={profilePicture} alt={user.name} />
+              <h3>{user.name}</h3>
+              <button className="navbar-link" onClick={logout}>
+                Logout
+              </button>
+            </div>
+          )}
+        </nav>
+        <div className="logo-container">
+          <img src={logo} alt="TestGenie Logo" className="logo" />
+        </div>
       </div>
       <Modal
         isOpen={isLoading}
@@ -264,116 +277,119 @@ const CodeToTest = () => {
           take a moment...
         </p>
       </Modal>
+      <div className="main-content">
+        <form onSubmit={handleSubmit}>
+          <TextareaAutosize
+            id="textarea"
+            onFocus={() => clearPlaceholder()}
+            placeholder="Enter your code block"
+            value={codeBlock}
+            onChange={handleChange}
+          />
+          <input type="submit" value="Generate Tests" disabled={isLoading} />
+        </form>
+        {testCases.length > 0 && (
+          <div className="gherkContainter">
+            <h2>Here are your Gherkin test cases</h2>
+            {/* create a 'read more' or 'expand' functionality for long strings */}
+            <p id="GherkReq">
+              Code:
+              {isExpanded || codeBlock.length <= 100
+                ? codeBlock
+                : codeBlock.slice(0, 100) + "... "}
+              {codeBlock.length > 100 && (
+                <button
+                  className="show-more-button"
+                  onClick={() => setIsExpanded(!isExpanded)}
+                >
+                  {isExpanded ? "Show less" : "Show more"}
+                </button>
+              )}
+            </p>
 
-      <form onSubmit={handleSubmit}>
-        <TextareaAutosize
-          id="textarea"
-          onFocus={() => clearPlaceholder()}
-          placeholder="Enter your code block"
-          value={codeBlock}
-          onChange={handleChange}
-        />
-        <input type="submit" value="Generate Tests" disabled={isLoading} />
-      </form>
-      {testCases.length > 0 && (
-        <div className="gherkContainter">
-          <h2>Here are your Gherkin test cases</h2>
-          {/* create a 'read more' or 'expand' functionality for long strings */}
-          <p id="GherkReq">
-            Code:
-            {isExpanded || codeBlock.length <= 100
-              ? codeBlock
-              : codeBlock.slice(0, 100) + "... "}
-            {codeBlock.length > 100 && (
-              <button
-                className="show-more-button"
-                onClick={() => setIsExpanded(!isExpanded)}
-              >
-                {isExpanded ? "Show less" : "Show more"}
-              </button>
-            )}
-          </p>
-
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Description</th>
-                <th>Expected Result</th>
-                <th>Actual Result</th>
-                <th>Status</th>
-                <th>Save</th>
-              </tr>
-            </thead>
-            <tbody>
-              {testCases.map((testCase, index) => (
-                <tr key={index}>
-                  <td>{testCase.ID}</td>
-                  <td>{testCase.Description}</td>
-                  <td>{testCase.Expected_Result}</td>
-                  <td>
-                    <input
-                      type="text"
-                      value={testCase.Actual_Result}
-                      onChange={(event) =>
-                        handleActualResultChange(event, index)
-                      }
-                    />
-                  </td>
-                  <td>
-                    <select
-                      value={testCase.Status}
-                      onChange={(event) => handleStatusChange(event, index)}
-                    >
-                      <option value="New">New</option>
-                      <option value="In Progress">In Progress</option>
-                      <option value="Passed">Passed</option>
-                      <option value="Failed">Failed</option>
-                    </select>
-                  </td>
-                  <td>
-                    <button onClick={() => saveTestCase(testCase)}>Save</button>
-                  </td>
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Description</th>
+                  <th>Expected Result</th>
+                  <th>Actual Result</th>
+                  <th>Status</th>
+                  <th>Save</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="button-container">
-            <button onClick={downloadCSV}>Download to CSV</button>
-            <button>Export To Jira</button>
-            <button
-              onClick={() => saveAllTestCases(testCases)}
-              className="save-all-button"
-            >
-              Save All
-            </button>
+              </thead>
+              <tbody>
+                {testCases.map((testCase, index) => (
+                  <tr key={index}>
+                    <td>{testCase.ID}</td>
+                    <td>{testCase.Description}</td>
+                    <td>{testCase.Expected_Result}</td>
+                    <td>
+                      <input
+                        type="text"
+                        value={testCase.Actual_Result}
+                        onChange={(event) =>
+                          handleActualResultChange(event, index)
+                        }
+                      />
+                    </td>
+                    <td>
+                      <select
+                        value={testCase.Status}
+                        onChange={(event) => handleStatusChange(event, index)}
+                      >
+                        <option value="New">New</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Passed">Passed</option>
+                        <option value="Failed">Failed</option>
+                      </select>
+                    </td>
+                    <td>
+                      <button onClick={() => saveTestCase(testCase)}>
+                        Save
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="button-container">
+              <button onClick={downloadCSV}>Download to CSV</button>
+              <button>Export To Jira</button>
+              <button
+                onClick={() => saveAllTestCases(testCases)}
+                className="save-all-button"
+              >
+                Save All
+              </button>
+            </div>
+            {successMessage && <div className="success">{successMessage}</div>}
           </div>
-          {successMessage && <div className="success">{successMessage}</div>}
-        </div>
-      )}
-      {codeString && (
-        <CodeBlock
-          codeString={codeString}
-          code={codeBlock}
-          title="And here are your Unit Tests"
-        />
-      )}
-      {integrationTestCases && (
-        <CodeBlock
-          codeString={integrationTestCases}
-          code={codeBlock}
-          title="And here are your Integration Tests"
-        />
-      )}
-      {/* Add e2e test code block */}
-      {e2eTestCases && (
-        <CodeBlock
-          codeString={e2eTestCases}
-          code={codeBlock}
-          title="And here are your E2E Tests"
-        />
-      )}
-      {successMessage && <p>{successMessage}</p>}
+        )}
+        {codeString && (
+          <CodeBlock
+            codeString={codeString}
+            code={codeBlock}
+            title="And here are your Unit Tests"
+          />
+        )}
+        {integrationTestCases && (
+          <CodeBlock
+            codeString={integrationTestCases}
+            code={codeBlock}
+            title="And here are your Integration Tests"
+          />
+        )}
+        {/* Add e2e test code block */}
+        {e2eTestCases && (
+          <CodeBlock
+            codeString={e2eTestCases}
+            code={codeBlock}
+            title="And here are your E2E Tests"
+          />
+        )}
+        {successMessage && <p>{successMessage}</p>}
+      </div>
     </div>
   );
 };

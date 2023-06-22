@@ -51,7 +51,7 @@ const CodeToTest = () => {
   };
 
   const handleCodeToTestLink = () => {
-    navigate("/locator");
+    navigate("/codetotest");
   };
 
   //A function that logs the user out of the application

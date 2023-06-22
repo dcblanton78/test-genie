@@ -24,7 +24,11 @@ const LandingPage = () => {
       <nav className="navbar">
         {user && user.name && (
           <div className="user-info">
-            <img src={profilePicture} alt={user.name} />
+            <img
+              referrerPolicy="no-referrer"
+              src={profilePicture}
+              alt={user.name}
+            />
             <h3 data-cy="user-name">{user.name}</h3>
             <button
               className="navbar-link"

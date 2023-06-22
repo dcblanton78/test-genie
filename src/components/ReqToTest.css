@@ -9,9 +9,17 @@ html {
   height: 100%;
 }
 
+.main-content {
+  padding-top: 60px;
+}
+
 .ReqToTest {
   background-color: #dbe1e8;
   min-height: 100vh;
+}
+
+#home-link {
+  background-color: grey;
 }
 
 h1 {
@@ -186,7 +194,7 @@ tr:nth-child(even) {
   font-family: "Poppins", sans-serif;
   overflow: hidden;
 
-  position: fixed;
+  /* position: fixed; */
   top: 0;
   width: 100%;
   z-index: 1;
@@ -194,6 +202,7 @@ tr:nth-child(even) {
   justify-content: flex-start;
   align-items: center;
   padding: 10px;
+  z-index: 1;
 }
 
 .navbar-link {
