@@ -129,7 +129,7 @@ const CodeToTest = () => {
             Req to Test
           </button>
           <button className="navbar-link" onClick={handleCodeToTestLink}>
-            Code To Test
+            Code to Test
           </button>
           <button className="navbar-link" onClick={handleTestLink}>
             Your Tests

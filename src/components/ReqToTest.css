@@ -22,6 +22,10 @@ html {
   background-color: grey;
 }
 
+#home-link-two {
+  background-color: grey;
+}
+
 #req-link {
   background-color: grey;
 }
@@ -30,11 +34,27 @@ html {
   background-color: grey;
 }
 
+#code-to-test-link-two {
+  background-color: grey;
+}
+
+#locate-link-two {
+  background-color: grey;
+}
+
 #test-link {
   background-color: grey;
 }
 
+#test-link-two {
+  background-color: grey;
+}
+
 #home-link:hover {
+  background-color: rgb(148, 148, 148);
+}
+
+#home-link-two:hover {
   background-color: rgb(148, 148, 148);
 }
 
@@ -46,7 +66,19 @@ html {
   background-color: rgb(148, 148, 148);
 }
 
+#code-to-test-link-two:hover {
+  background-color: rgb(148, 148, 148);
+}
+
+#locate-link-two:hover {
+  background-color: rgb(148, 148, 148);
+}
+
 #test-link:hover {
+  background-color: rgb(148, 148, 148)
+}
+
+#test-link-two:hover {
   background-color: rgb(148, 148, 148)
 }
 
