@@ -227,12 +227,12 @@ const CodeToTest = () => {
           <button id="req-link" className="navbar-link" onClick={handleReqToTestLink}>
             Req to Test
           </button>
-          <button id="locate-link" className="navbar-link" onClick={handleLocatorLink}>
-            Locator
-          </button>
           <button className="navbar-link" onClick={handleCodeToTestLink}>
             Code to Test
-          </button>  
+          </button> 
+          <button id="locate-link" className="navbar-link" onClick={handleLocatorLink}>
+            Locator
+          </button> 
           <button id="test-link" className="navbar-link" onClick={handleTestLink}>
             Your Tests
           </button>                  

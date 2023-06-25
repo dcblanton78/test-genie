@@ -47,6 +47,10 @@ const ReqToTest = () => {
     navigate("/your-tests");
   };
 
+  const handleLocaterLink = () => {
+    navigate("/locator");
+  };
+
   const handleChange = (event) => {
     setRequirements(event.target.value);
   };
@@ -191,6 +195,7 @@ const ReqToTest = () => {
     <div className="ReqToTest" data-cy="req-to-test-page">
       <nav className="navbar">
         <button
+        id="home-link-two"
           className="navbar-link"
           onClick={handleHomeLink}
           data-cy="home-link"
@@ -199,12 +204,28 @@ const ReqToTest = () => {
         </button>
         <button
           className="navbar-link"
+          data-cy="req-to-test-link"
+        >
+          Req to Test
+        </button>
+        <button
+          id="code-to-test-link-two"
+          className="navbar-link"
           onClick={handleCodeToTestLink}
           data-cy="code-to-test-link"
         >
-          CodeToTest
+          Code to Test
         </button>
         <button
+          id="locate-link-two"
+          className="navbar-link"
+          onClick={handleLocaterLink}
+          data-cy="locate-link"
+        >
+          Locator
+        </button>
+        <button
+          id="test-link-two"
           className="navbar-link"
           onClick={handleTestLink}
           data-cy="your-tests-link"
