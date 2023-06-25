@@ -18,8 +18,17 @@ const TestCasesTable = () => {
   const handleHomeLink = () => {
     navigate("/landing");
   };
+
   const handleCodeToTestLink = () => {
     navigate("/CodeToTest");
+  };
+
+  const handleTestLink = () => {
+    navigate("/your-tests");
+  };
+
+  const handleLocaterLink = () => {
+    navigate("/tag-your-code");
   };
 
   const handleReqToTestLink = () => {
@@ -48,19 +57,50 @@ const TestCasesTable = () => {
   return (
     <div className="test-cases-container">
       <nav className="navbar">
-        <button className="navbar-link" onClick={handleHomeLink}>
+        <button
+          id="home-link-three"
+          className="navbar-link"
+          onClick={handleHomeLink}
+          data-cy="home-link"
+        >
           Home
         </button>
-        <button className="navbar-link" onClick={handleReqToTestLink}>
-          Req To Test
+        <button
+          id="req-to-test-three"
+          className="navbar-link"
+          onClick={handleReqToTestLink}
+          data-cy="req-to-test-link"
+        >
+          ReqToTest
         </button>
-        <button className="navbar-link" onClick={handleCodeToTestLink}>
-          Code To Test
+        <button
+          id="code-to-test-link-three"
+          className="navbar-link"
+          onClick={handleCodeToTestLink}
+          data-cy="code-to-test-link"
+        >
+          CodeToTest
+        </button>
+        <button
+          id="locate-link-four"
+          className="navbar-link"
+          onClick={handleLocaterLink}
+          data-cy="locate-link"
+        >
+          TagYourCode
+        </button>
+        <button
+          id="test-link-four"
+          className="navbar-link"
+          onClick={handleTestLink}
+          data-cy="your-tests-link"
+        >
+          Your Tests
         </button>
         {user && user.name && (
           <div className="user-info">
             <img src={profilePicture} alt={user.name} />
-            <h3>{user.name}</h3>
+            <h3 data-cy="user-name">{user.name}</h3>
             <button className="navbar-link" onClick={logout}>
               Logout
             </button>

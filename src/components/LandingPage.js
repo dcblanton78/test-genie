@@ -47,7 +47,7 @@ const LandingPage = () => {
       <div className="landing-page-link-container">
         <div className="tooltip-container">
           <Link to="/tests" className="landing-page-link" data-cy="req-to-test">
-            Req To Test
+            ReqToTest
           </Link>
           <span className="tooltip-text">
             Got a well written requirement but no tests?
@@ -59,7 +59,7 @@ const LandingPage = () => {
             className="landing-page-link"
             data-cy="code-to-test"
           >
-            Code To Test
+            CodeToTest
           </Link>
           <span className="tooltip-text">
             Got code but no regression tests?
@@ -71,7 +71,7 @@ const LandingPage = () => {
             className="landing-page-link"
             data-cy="locator-generator"
           >
-            Locator Generator
+            TagYourCode
           </Link>
           <span className="tooltip-text">Got code but crappy locators?</span>
         </div>

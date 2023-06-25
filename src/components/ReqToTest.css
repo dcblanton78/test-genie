@@ -22,15 +22,19 @@ html {
   background-color: grey;
 }
 
-#home-link-two {
-  background-color: grey;
-}
-
 #req-link {
   background-color: grey;
 }
 
 #locate-link {
+  background-color: grey;
+}
+
+#test-link {
+  background-color: grey;
+}
+
+#home-link-two {
   background-color: grey;
 }
 
@@ -42,7 +46,27 @@ html {
   background-color: grey;
 }
 
-#test-link {
+#code-to-test-link-two {
+  background-color: grey;
+}
+
+#home-link-three {
+  background-color: grey;
+}
+
+#req-to-test-three {
+  background-color: grey;
+}
+
+#code-to-test-link-three {
+  background-color: grey;
+}
+
+#test-link-three {
+  background-color: grey;
+}
+
+#locate-link-four {
   background-color: grey;
 }
 
@@ -55,6 +79,22 @@ html {
 }
 
 #home-link-two:hover {
+  background-color: rgb(148, 148, 148);
+}
+
+#home-link-three:hover {
+  background-color: rgb(148, 148, 148);
+}
+
+#req-to-test-three:hover {
+  background-color: rgb(148, 148, 148);
+}
+
+#code-to-test-link-three:hover {
+  background-color: rgb(148, 148, 148);
+}
+
+#locate-link-four:hover {
   background-color: rgb(148, 148, 148);
 }
 
@@ -75,11 +115,11 @@ html {
 }
 
 #test-link:hover {
-  background-color: rgb(148, 148, 148)
+  background-color: rgb(148, 148, 148);
 }
 
 #test-link-two:hover {
-  background-color: rgb(148, 148, 148)
+  background-color: rgb(148, 148, 148);
 }
 
 h1 {

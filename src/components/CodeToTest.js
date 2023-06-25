@@ -47,7 +47,7 @@ const CodeToTest = () => {
   };
 
   const handleLocatorLink = () => {
-    navigate("/locator");
+    navigate("/tag-your-code");
   };
 
   //A function that routes the user to the landing page when they click the Home button
@@ -61,7 +61,7 @@ const CodeToTest = () => {
 
   const handleCodeToTestLink = () => {
     navigate("");
-  };  
+  };
 
   //A function that logs the user out of the application
   const logout = () => {
@@ -224,18 +224,30 @@ const CodeToTest = () => {
           >
             Home
           </button>
-          <button id="req-link" className="navbar-link" onClick={handleReqToTestLink}>
-            Req to Test
+          <button
+            id="req-link"
+            className="navbar-link"
+            onClick={handleReqToTestLink}
+          >
+            ReqToTest
           </button>
           <button className="navbar-link" onClick={handleCodeToTestLink}>
-            Code to Test
-          </button> 
-          <button id="locate-link" className="navbar-link" onClick={handleLocatorLink}>
-            Locator
-          </button> 
-          <button id="test-link" className="navbar-link" onClick={handleTestLink}>
+            CodeToTest
+          </button>
+          <button
+            id="locate-link"
+            className="navbar-link"
+            onClick={handleLocatorLink}
+          >
+            TagYourCode
+          </button>
+          <button
+            id="test-link"
+            className="navbar-link"
+            onClick={handleTestLink}
+          >
             Your Tests
-          </button>                  
+          </button>
           {user && user.name && (
             <div className="user-info">
               <img src={profilePicture} alt={user.name} />
