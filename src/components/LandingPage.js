@@ -67,7 +67,7 @@ const LandingPage = () => {
         </div>
         <div className="tooltip-container">
           <Link
-            to="/locator"
+            to="/tag-your-code"
             className="landing-page-link"
             data-cy="locator-generator"
           >
