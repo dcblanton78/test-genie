@@ -39,11 +39,12 @@ describe("LandingPage component", () => {
     // expect(
     //   screen.getByRole("button", { name: "Your Tests" })
     // ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "ReqToTest" })).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: "Req To Test" })
+      screen.getByRole("link", { name: "CodeToTest" })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: "Code To Test" })
+      screen.getByRole("link", { name: "TagYourCode" })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "Your Tests" })
@@ -51,12 +52,14 @@ describe("LandingPage component", () => {
     expect(screen.getByText("Test User")).toBeInTheDocument();
   });
   test("navigates correctly when buttons are clicked", () => {
-    fireEvent.click(screen.getByRole("link", { name: "Req To Test" }));
+    fireEvent.click(screen.getByRole("link", { name: "ReqToTest" }));
     expect(window.location.pathname).toBe("/tests");
-    fireEvent.click(screen.getByText("Req To Test"));
+    fireEvent.click(screen.getByText("ReqToTest"));
     expect(window.location.pathname).toBe("/tests");
-    fireEvent.click(screen.getByRole("link", { name: "Code To Test" }));
+    fireEvent.click(screen.getByRole("link", { name: "CodeToTest" }));
     expect(window.location.pathname).toBe("/codetotest");
+    fireEvent.click(screen.getByRole("link", { name: "TagYourCode" }));
+    expect(window.location.pathname).toBe("/tag-your-code");
     fireEvent.click(screen.getByRole("link", { name: "Your Tests" }));
     expect(window.location.pathname).toBe("/your-tests");
     fireEvent.click(screen.getByRole("button", { name: "Logout" }));

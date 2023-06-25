@@ -15,6 +15,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import Modal from "react-modal";
 import { BeatLoader } from "react-spinners";
 import UserContext from "./UserContext";
+import "./TagYourCode.css";
 
 //const axios = require("axios");
 
@@ -37,21 +38,20 @@ const CodeToTest = () => {
     setCodeBlock(event.target.value);
   };
 
-  const handleTestLink = () => {
-    navigate("/your-tests");
-  };
-
-  //A function that routes the user to the landing page when they click the Home button
   const handleHomeLink = () => {
     navigate("/landing");
   };
 
-  const handleReqToTestLink = () => {
-    navigate("/tests");
+  const handleCodeToTestLink = () => {
+    navigate("/CodeToTest");
   };
 
-  const handleCodeToTestLink = () => {
-    navigate("/codetotest");
+  const handleTestLink = () => {
+    navigate("/your-tests");
+  };
+
+  const handleLocaterLink = () => {
+    navigate("/tag-your-code");
   };
 
   //A function that logs the user out of the application
@@ -122,22 +122,49 @@ const CodeToTest = () => {
     <div className="Locator">
       {!isLoading && (
         <nav className="navbar">
-          <button className="navbar-link" onClick={handleHomeLink}>
+          <button
+            id="home-link-three"
+            className="navbar-link"
+            onClick={handleHomeLink}
+            data-cy="home-link"
+          >
             Home
           </button>
-          <button className="navbar-link" onClick={handleReqToTestLink}>
-            Req to Test
+          <button
+            id="req-to-test-three"
+            className="navbar-link"
+            data-cy="req-to-test-link"
+          >
+            ReqToTest
           </button>
-          <button className="navbar-link" onClick={handleCodeToTestLink}>
-            Code to Test
+          <button
+            id="code-to-test-link-three"
+            className="navbar-link"
+            onClick={handleCodeToTestLink}
+            data-cy="code-to-test-link"
+          >
+            CodeToTest
           </button>
-          <button className="navbar-link" onClick={handleTestLink}>
+          <button
+            id="locate-link-three"
+            className="navbar-link"
+            onClick={handleLocaterLink}
+            data-cy="locate-link"
+          >
+            TagYourCode
+          </button>
+          <button
+            id="test-link-three"
+            className="navbar-link"
+            onClick={handleTestLink}
+            data-cy="your-tests-link"
+          >
             Your Tests
           </button>
           {user && user.name && (
             <div className="user-info">
               <img src={profilePicture} alt={user.name} />
-              <h3>{user.name}</h3>
+              <h3 data-cy="user-name">{user.name}</h3>
               <button className="navbar-link" onClick={logout}>
                 Logout
               </button>
