@@ -458,28 +458,38 @@ app.get("/generate-test-cases-from-code", async (req, res) => {
 
   // Create the data object to send to OpenAI's API
   const data = {
-    model: "text-davinci-003",
-    prompt:
-      `Please provide all possible test cases associated with the following code in Gherkin syntax (Given, When, Then). In addition to happy path, include all negative cases, edge cases, and corner cases. Please include all the following information: Test Case ID, Description, and Expected Result. Provide the answer as a JSON object with keys for 'ID', 'Description', and 'Expected_Result'. ONLY include the Given, When steps in the Description and ONLY the Then step should be included in the Expected Result. Be sure to start with the word Then in the Expected Result. If you see a specific error message in the code, it SHOULD BE DISPLAYED IN THE EXPECTED RESULT FOR THAT TEST CASE. For example, Description: Given I am on the reset password page, When I enter an incorrect password. Expected Result: Then I am see an error message that says You have entered an incorrect email or password  ` +
-      code +
-      `Here is an example of what the response should look like: [
-        {
-            "ID": 1,
-            "Description": "Given I have sent a booking request to a host, When I receive an email or in-app notification",
-            "Expected_Result": "Then I am informed that my booking has been accepted."
-        },
-        {
-            "ID": 2,
-            "Description": "Given I have received an email or in-app notification, When I open the app or log into the website",
-            "Expected_Result": "Then I can see the booking confirmation in my dashboard."
-        },
-        {
-            "ID": 3,
-            "Description": "Given I can see the booking confirmation in my dashboard, When I click on the booking confirmation",
-            "Expected_Result": "Then I am taken to a page containing more detailed information about the booking."
-        }
-       
-    ]`,
+    model: "gpt-3.5-turbo-0613",
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are a helpful assistant that generates test cases in Gherkin syntax for provided code. Remember to include all negative cases, edge cases, and corner cases. Each test case should include a 'Test Case ID', 'Description', and 'Expected Result'.",
+      },
+      {
+        role: "user",
+        content:
+          `Please provide all possible test cases associated with the following code in Gherkin syntax (Given, When, Then). In addition to happy path, include all negative cases, edge cases, and corner cases. Please include all the following information: Test Case ID, Description, and Expected Result. Provide the answer as a JSON object with keys for 'ID', 'Description', and 'Expected_Result'. ONLY include the Given, When steps in the Description and ONLY the Then step should be included in the Expected Result. Be sure to start with the word Then in the Expected Result. If you see a specific error message in the code, it SHOULD BE DISPLAYED IN THE EXPECTED RESULT FOR THAT TEST CASE. For example, Description: Given I am on the reset password page, When I enter an incorrect password. Expected Result: Then I am see an error message that says You have entered an incorrect email or password  ` +
+          code +
+          `Here is an example of what the response should look like: [
+            {
+                "ID": 1,
+                "Description": "Given I have sent a booking request to a host, When I receive an email or in-app notification",
+                "Expected_Result": "Then I am informed that my booking has been accepted."
+            },
+            {
+                "ID": 2,
+                "Description": "Given I have received an email or in-app notification, When I open the app or log into the website",
+                "Expected_Result": "Then I can see the booking confirmation in my dashboard."
+            },
+            {
+                "ID": 3,
+                "Description": "Given I can see the booking confirmation in my dashboard, When I click on the booking confirmation",
+                "Expected_Result": "Then I am taken to a page containing more detailed information about the booking."
+            }
+           
+        ]`,
+      },
+    ],
     max_tokens: 2500,
     temperature: 0.4,
   };
@@ -494,19 +504,21 @@ app.get("/generate-test-cases-from-code", async (req, res) => {
 
   try {
     // Send a POST request to OpenAI's API to generate the test cases
+
     const response = await axios.post(
-      "https://api.openai.com/v1/completions",
+      "https://api.openai.com/v1/chat/completions",
       data,
       config
     );
     console.log(
-      "Raw output from the API: " + response.data.choices[0].text.trim()
+      "Raw output from the API: " +
+        response.data.choices[0].message.content.trim()
     );
 
     console.log("Full API Response: " + JSON.stringify(response.data));
 
     // Extract the generated test cases from the API response
-    const generatedTestCases = response.data.choices[0].text.trim();
+    const generatedTestCases = response.data.choices[0].message.content.trim();
     console.log("Generated END TO END Test Cases: " + generatedTestCases);
     const parsedTestCases = JSON.parse(generatedTestCases);
     console.log("Parsed Test Cases: " + JSON.stringify(parsedTestCases));
@@ -518,6 +530,93 @@ app.get("/generate-test-cases-from-code", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// app.get("/generate-test-cases-from-code", async (req, res) => {
+//   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+
+//   // Get the code parameter from the query string
+//   const code = req.query.code;
+//   console.log("Code!! " + code);
+
+//   const MOCK_TEST_CASES = [
+//     {
+//       ID: "TC1",
+//       Description: "Test Case 1 Description",
+//       Expected_Result: "Expected Result for Test Case 1",
+//       Actual_Result: "",
+//       Status: null,
+//     },
+//     // additional test cases...
+//   ];
+
+//   if (process.env.MOCK_TEST_DATA === "true") {
+//     return res.status(200).json(MOCK_TEST_CASES);
+//   }
+
+//   // Log the requirements to the console (for debugging purposes)
+
+//   // Create the data object to send to OpenAI's API
+//   const data = {
+//     model: "text-davinci-003",
+//     prompt:
+//       `Please provide all possible test cases associated with the following code in Gherkin syntax (Given, When, Then). In addition to happy path, include all negative cases, edge cases, and corner cases. Please include all the following information: Test Case ID, Description, and Expected Result. Provide the answer as a JSON object with keys for 'ID', 'Description', and 'Expected_Result'. ONLY include the Given, When steps in the Description and ONLY the Then step should be included in the Expected Result. Be sure to start with the word Then in the Expected Result. If you see a specific error message in the code, it SHOULD BE DISPLAYED IN THE EXPECTED RESULT FOR THAT TEST CASE. For example, Description: Given I am on the reset password page, When I enter an incorrect password. Expected Result: Then I am see an error message that says You have entered an incorrect email or password  ` +
+//       code +
+//       `Here is an example of what the response should look like: [
+//         {
+//             "ID": 1,
+//             "Description": "Given I have sent a booking request to a host, When I receive an email or in-app notification",
+//             "Expected_Result": "Then I am informed that my booking has been accepted."
+//         },
+//         {
+//             "ID": 2,
+//             "Description": "Given I have received an email or in-app notification, When I open the app or log into the website",
+//             "Expected_Result": "Then I can see the booking confirmation in my dashboard."
+//         },
+//         {
+//             "ID": 3,
+//             "Description": "Given I can see the booking confirmation in my dashboard, When I click on the booking confirmation",
+//             "Expected_Result": "Then I am taken to a page containing more detailed information about the booking."
+//         }
+
+//     ]`,
+//     max_tokens: 2500,
+//     temperature: 0.4,
+//   };
+
+//   // Set up the configuration object for the API request
+//   const config = {
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${API_KEY}`,
+//     },
+//   };
+
+//   try {
+//     // Send a POST request to OpenAI's API to generate the test cases
+//     const response = await axios.post(
+//       "https://api.openai.com/v1/completions",
+//       data,
+//       config
+//     );
+//     console.log(
+//       "Raw output from the API: " + response.data.choices[0].text.trim()
+//     );
+
+//     console.log("Full API Response: " + JSON.stringify(response.data));
+
+//     // Extract the generated test cases from the API response
+//     const generatedTestCases = response.data.choices[0].text.trim();
+//     console.log("Generated END TO END Test Cases: " + generatedTestCases);
+//     const parsedTestCases = JSON.parse(generatedTestCases);
+//     console.log("Parsed Test Cases: " + JSON.stringify(parsedTestCases));
+
+//     // Send the parsed test cases as a JSON response to the client
+//     res.json(parsedTestCases);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: error.message });
+//   }
+// });
 
 // Define a route that generates unit tests based on user-provided requirements
 app.get("/generate-unit-tests-from-code", async (req, res) => {
