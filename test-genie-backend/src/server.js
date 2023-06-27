@@ -531,93 +531,6 @@ app.get("/generate-test-cases-from-code", async (req, res) => {
   }
 });
 
-// app.get("/generate-test-cases-from-code", async (req, res) => {
-//   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
-
-//   // Get the code parameter from the query string
-//   const code = req.query.code;
-//   console.log("Code!! " + code);
-
-//   const MOCK_TEST_CASES = [
-//     {
-//       ID: "TC1",
-//       Description: "Test Case 1 Description",
-//       Expected_Result: "Expected Result for Test Case 1",
-//       Actual_Result: "",
-//       Status: null,
-//     },
-//     // additional test cases...
-//   ];
-
-//   if (process.env.MOCK_TEST_DATA === "true") {
-//     return res.status(200).json(MOCK_TEST_CASES);
-//   }
-
-//   // Log the requirements to the console (for debugging purposes)
-
-//   // Create the data object to send to OpenAI's API
-//   const data = {
-//     model: "text-davinci-003",
-//     prompt:
-//       `Please provide all possible test cases associated with the following code in Gherkin syntax (Given, When, Then). In addition to happy path, include all negative cases, edge cases, and corner cases. Please include all the following information: Test Case ID, Description, and Expected Result. Provide the answer as a JSON object with keys for 'ID', 'Description', and 'Expected_Result'. ONLY include the Given, When steps in the Description and ONLY the Then step should be included in the Expected Result. Be sure to start with the word Then in the Expected Result. If you see a specific error message in the code, it SHOULD BE DISPLAYED IN THE EXPECTED RESULT FOR THAT TEST CASE. For example, Description: Given I am on the reset password page, When I enter an incorrect password. Expected Result: Then I am see an error message that says You have entered an incorrect email or password  ` +
-//       code +
-//       `Here is an example of what the response should look like: [
-//         {
-//             "ID": 1,
-//             "Description": "Given I have sent a booking request to a host, When I receive an email or in-app notification",
-//             "Expected_Result": "Then I am informed that my booking has been accepted."
-//         },
-//         {
-//             "ID": 2,
-//             "Description": "Given I have received an email or in-app notification, When I open the app or log into the website",
-//             "Expected_Result": "Then I can see the booking confirmation in my dashboard."
-//         },
-//         {
-//             "ID": 3,
-//             "Description": "Given I can see the booking confirmation in my dashboard, When I click on the booking confirmation",
-//             "Expected_Result": "Then I am taken to a page containing more detailed information about the booking."
-//         }
-
-//     ]`,
-//     max_tokens: 2500,
-//     temperature: 0.4,
-//   };
-
-//   // Set up the configuration object for the API request
-//   const config = {
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${API_KEY}`,
-//     },
-//   };
-
-//   try {
-//     // Send a POST request to OpenAI's API to generate the test cases
-//     const response = await axios.post(
-//       "https://api.openai.com/v1/completions",
-//       data,
-//       config
-//     );
-//     console.log(
-//       "Raw output from the API: " + response.data.choices[0].text.trim()
-//     );
-
-//     console.log("Full API Response: " + JSON.stringify(response.data));
-
-//     // Extract the generated test cases from the API response
-//     const generatedTestCases = response.data.choices[0].text.trim();
-//     console.log("Generated END TO END Test Cases: " + generatedTestCases);
-//     const parsedTestCases = JSON.parse(generatedTestCases);
-//     console.log("Parsed Test Cases: " + JSON.stringify(parsedTestCases));
-
-//     // Send the parsed test cases as a JSON response to the client
-//     res.json(parsedTestCases);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: error.message });
-//   }
-// });
-
 // Define a route that generates unit tests based on user-provided requirements
 app.get("/generate-unit-tests-from-code", async (req, res) => {
   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
@@ -626,7 +539,6 @@ app.get("/generate-unit-tests-from-code", async (req, res) => {
   const code = req.query.code;
 
   const MOCK_UNIT_TESTS = `
-
 
     describe('View Listing Details', () => {
       const mockListing = {
@@ -655,29 +567,33 @@ app.get("/generate-unit-tests-from-code", async (req, res) => {
 
   // Create the data object to send to OpenAI's API
   const data = {
-    model: "text-davinci-003",
-    prompt:
-      "Please provide the jest unit tests to test the following code: " +
-      code +
-      ". The response should be formatted like this example: \n\n" +
-      "describe('View Listing Details', () => {\n" +
-      "  const mockListing = {\n" +
-      "    id: 1,\n" +
-      "    photos: ['photo1.jpg', 'photo2.jpg'],\n" +
-      "    description: 'This is a great listing',\n" +
-      "    houseRules: 'No parties',\n" +
-      "    reviews: [{ author: 'John', rating: 5 }, { author: 'Jane', rating: 4 }],\n" +
-      "    pricing: {\n" +
-      "      basePrice: 100,\n" +
-      "      extraPersonFee: 10\n" +
-      "    }\n" +
-      "  };\n\n" +
-      "  test('should return the correct listing photos', () => {\n" +
-      "    expect(mockListing.photos).toEqual(['photo1.jpg', 'photo2.jpg']);\n" +
-      "  });\n\n" +
-      // Rest of tests
-      "});",
-
+    model: "gpt-3.5-turbo-0613",
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are a helpful assistant that generates unit tests for provided code. Each test should ensure the code behaves as expected. Please ensure you only provide the describe statements and the tests themselves. No need to include Import statements, etc. Include all of the code (DO NOT leave any code out!!). Please provide the Jest unit tests for the following code:\n\n" +
+          code +
+          "\n\nThe response should be formatted like this example:\n\n" +
+          "describe('View Listing Details', () => {\n" +
+          "  const mockListing = {\n" +
+          "    id: 1,\n" +
+          "    photos: ['photo1.jpg', 'photo2.jpg'],\n" +
+          "    description: 'This is a great listing',\n" +
+          "    houseRules: 'No parties',\n" +
+          "    reviews: [{ author: 'John', rating: 5 }, { author: 'Jane', rating: 4 }],\n" +
+          "    pricing: {\n" +
+          "      basePrice: 100,\n" +
+          "      extraPersonFee: 10\n" +
+          "    }\n" +
+          "  };\n\n" +
+          "  test('should return the correct listing photos', () => {\n" +
+          "    expect(mockListing.photos).toEqual(['photo1.jpg', 'photo2.jpg']);\n" +
+          "  });\n\n" +
+          // Rest of tests
+          "});",
+      },
+    ],
     max_tokens: 1500,
     temperature: 0.4,
   };
@@ -693,13 +609,13 @@ app.get("/generate-unit-tests-from-code", async (req, res) => {
   try {
     // Send a POST request to OpenAI's API to generate the unit tests
     const response = await axios.post(
-      "https://api.openai.com/v1/completions",
+      "https://api.openai.com/v1/chat/completions",
       data,
       config
     );
 
     // Extract the generated unit tests from the API response
-    const generatedUnitTests = response.data.choices[0].text;
+    const generatedUnitTests = response.data.choices[0].message.content;
 
     // Send the generated unit tests as a JSON response to the client
     res.json(generatedUnitTests);
@@ -743,14 +659,36 @@ app.get("/generate-integration-tests-from-code", async (req, res) => {
 
   // Create the data object to send to OpenAI's API
   const integrationData = {
-    model: "text-davinci-003",
-    prompt:
-      "Please provide the jest integration (not unit!) tests to test the following code: " +
-      code,
-    max_tokens: 1500,
+    model: "gpt-3.5-turbo-0613",
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are a helpful assistant that generates integration tests for provided code. Each test should ensure the code behaves as expected. Please provide the Jest integration tests for the following code:\n\n" +
+          code +
+          "\n\nThe response should be formatted like this example:\n\n" +
+          "describe('View Listing Details', () => {\n" +
+          "  const mockListing = {\n" +
+          "    id: 1,\n" +
+          "    photos: ['photo1.jpg', 'photo2.jpg'],\n" +
+          "    description: 'This is a great listing',\n" +
+          "    houseRules: 'No parties',\n" +
+          "    reviews: [{ author: 'John', rating: 5 }, { author: 'Jane', rating: 4 }],\n" +
+          "    pricing: {\n" +
+          "      basePrice: 100,\n" +
+          "      extraPersonFee: 10\n" +
+          "    }\n" +
+          "  };\n\n" +
+          "  test('should return the correct listing photos', () => {\n" +
+          "    expect(mockListing.photos).toEqual(['photo1.jpg', 'photo2.jpg']);\n" +
+          "  });\n\n" +
+          // Rest of tests
+          "});",
+      },
+    ],
+    max_tokens: 2500,
     temperature: 0.4,
   };
-  // console.log(integrationData);
 
   // Set up the configuration object for the API request
   const config = {
@@ -763,13 +701,13 @@ app.get("/generate-integration-tests-from-code", async (req, res) => {
   try {
     // Send a POST request to OpenAI's API to generate the integration tests
     const response = await axios.post(
-      "https://api.openai.com/v1/completions",
+      "https://api.openai.com/v1/chat/completions",
       integrationData,
       config
     );
 
     // Extract the generated integration tests from the API response
-    const generatedIntegrationTests = response.data.choices[0].text;
+    const generatedIntegrationTests = response.data.choices[0].message.content;
 
     // Send the generated integration tests as a JSON response to the client
     res.json(generatedIntegrationTests);
@@ -785,7 +723,6 @@ app.get("/generate-e2e-tests-from-code", async (req, res) => {
   const code = req.query.code;
 
   const MOCK_E2E_TESTS = `
-
 
     describe('TEST!!! View Listing Details', () => {
       const mockListing = {
@@ -814,57 +751,61 @@ app.get("/generate-e2e-tests-from-code", async (req, res) => {
 
   // Create the data object to send to OpenAI's API
   const e2eData = {
-    model: "text-davinci-003",
-    prompt: `Please provide the Cypress End to End tests to test the following code: ${code}. Here is an example of what the response should look like: 
+    model: "gpt-3.5-turbo-0613",
+    messages: [
+      {
+        role: "system",
+        content: `You are a helpful assistant that generates Cypress End to End tests for provided code. Each test should ensure the code behaves as expected. Please provide the Cypress End to End tests to test the following code: ${code}. Here is an example of what the response should look like: 
 
-    describe('Listing Search', () => {
-      beforeEach(() => {
-        // Visit the homepage
-        cy.visit('http://www.airbnb.com');
-      });
+describe('Listing Search', () => {
+  beforeEach(() => {
+    // Visit the homepage
+    cy.visit('http://www.airbnb.com');
+  });
 
-      it('should allow a guest to search by location', () => {
-        cy.get('[data-cy=location-input]').type('New York');
-        cy.get('[data-cy=search-submit]').click();
-        cy.get('[data-cy=listing]').should('be.visible');
-      });
+  it('should allow a guest to search by location', () => {
+    cy.get('[data-cy=location-input]').type('New York');
+    cy.get('[data-cy=search-submit]').click();
+    cy.get('[data-cy=listing]').should('be.visible');
+  });
 
-      it('should allow a guest to search by dates', () => {
-        cy.get('[data-cy=checkin-date-input]').type('2023-07-01');
-        cy.get('[data-cy=checkout-date-input]').type('2023-07-10');
-        cy.get('[data-cy=search-submit]').click();
-        cy.get('[data-cy=listing]').should('be.visible');
-      });
+  it('should allow a guest to search by dates', () => {
+    cy.get('[data-cy=checkin-date-input]').type('2023-07-01');
+    cy.get('[data-cy=checkout-date-input]').type('2023-07-10');
+    cy.get('[data-cy=search-submit]').click();
+    cy.get('[data-cy=listing]').should('be.visible');
+  });
 
-      it('should allow a guest to search by number of guests', () => {
-        cy.get('[data-cy=guests-input]').type('4');
-        cy.get('[data-cy=search-submit]').click();
-        cy.get('[data-cy=listing]').should('be.visible');
-      });
+  it('should allow a guest to search by number of guests', () => {
+    cy.get('[data-cy=guests-input]').type('4');
+    cy.get('[data-cy=search-submit]').click();
+    cy.get('[data-cy=listing]').should('be.visible');
+  });
 
-      it('should allow a guest to search by amenities', () => {
-        cy.get('[data-cy=amenities-dropdown]').click();
-        cy.get('[data-cy=amenities-wifi-checkbox]').check();
-        cy.get('[data-cy=search-submit]').click();
-        cy.get('[data-cy=listing]').should('be.visible');
-      });
+  it('should allow a guest to search by amenities', () => {
+    cy.get('[data-cy=amenities-dropdown]').click();
+    cy.get('[data-cy=amenities-wifi-checkbox]').check();
+    cy.get('[data-cy=search-submit]').click();
+    cy.get('[data-cy=listing]').should('be.visible');
+  });
 
-      it('should allow a guest to search by location, dates, number of guests, and amenities', () => {
-        cy.get('[data-cy=location-input]').type('New York');
-        cy.get('[data-cy=checkin-date-input]').type('2023-07-01');
-        cy.get('[data-cy=checkout-date-input]').type('2023-07-10');
-        cy.get('[data-cy=guests-input]').type('4');
-        cy.get('[data-cy=amenities-dropdown]').click();
-        cy.get('[data-cy=amenities-wifi-checkbox]').check();
-        cy.get('[data-cy=search-submit]').click();
-        cy.get('[data-cy=listing]').should('be.visible');
-      });
-    });`,
-    max_tokens: 1500,
+  it('should allow a guest to search by location, dates, number of guests, and amenities', () => {
+    cy.get('[data-cy=location-input]').type('New York');
+    cy.get('[data-cy=checkin-date-input]').type('2023-07-01');
+    cy.get('[data-cy=checkout-date-input]').type('2023-07-10');
+    cy.get('[data-cy=guests-input]').type('4');
+    cy.get('[data-cy=amenities-dropdown]').click();
+    cy.get('[data-cy=amenities-wifi-checkbox]').check();
+    cy.get('[data-cy=search-submit]').click();
+    cy.get('[data-cy=listing]').should('be.visible');
+  });
+});`,
+      },
+    ],
+    max_tokens: 2500,
     temperature: 0.4,
   };
 
-  //console.log(e2eData);
   // Set up the configuration object for the API request
   const config = {
     headers: {
@@ -874,23 +815,134 @@ app.get("/generate-e2e-tests-from-code", async (req, res) => {
   };
 
   try {
-    // Send a POST request to OpenAI's API to generate the integration tests
+    // Send a POST request to OpenAI's API to generate the end-to-end tests
     const response = await axios.post(
-      "https://api.openai.com/v1/completions",
+      "https://api.openai.com/v1/chat/completions",
       e2eData,
       config
     );
 
-    // Extract the generated End to End tests from the API response
-    const generatedE2ETests = response.data.choices[0].text;
+    // Extract the generated end-to-end tests from the API response
+    const generatedE2ETests = response.data.choices[0].message.content;
 
-    // Send the generated integration tests as a JSON response to the client
+    // Send the generated end-to-end tests as a JSON response to the client
     res.json(generatedE2ETests);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+// app.get("/generate-e2e-tests-from-code", async (req, res) => {
+//   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+//   const code = req.query.code;
+
+//   const MOCK_E2E_TESTS = `
+
+//     describe('TEST!!! View Listing Details', () => {
+//       const mockListing = {
+//         id: 1,
+//         photos: ['photo1.jpg', 'photo2.jpg'],
+//         description: 'This is a great listing',
+//         houseRules: 'No parties',
+//         reviews: [{ author: 'John', rating: 5 }, { author: 'Jane', rating: 4 }],
+//         pricing: {
+//           basePrice: 100,
+//           extraPersonFee: 10
+//         }
+//       };
+
+//       test('should return the correct listing photos', () => {
+//         expect(mockListing.photos).toEqual(['photo1.jpg', 'photo2.jpg']);
+//       });
+
+//       // Rest of tests
+//     });
+//     `;
+
+//   if (process.env.MOCK_TEST_DATA === "true") {
+//     return res.status(200).json(MOCK_E2E_TESTS);
+//   }
+
+//   // Create the data object to send to OpenAI's API
+//   const e2eData = {
+//     model: "text-davinci-003",
+//     prompt: `Please provide the Cypress End to End tests to test the following code: ${code}. Here is an example of what the response should look like:
+
+//     describe('Listing Search', () => {
+//       beforeEach(() => {
+//         // Visit the homepage
+//         cy.visit('http://www.airbnb.com');
+//       });
+
+//       it('should allow a guest to search by location', () => {
+//         cy.get('[data-cy=location-input]').type('New York');
+//         cy.get('[data-cy=search-submit]').click();
+//         cy.get('[data-cy=listing]').should('be.visible');
+//       });
+
+//       it('should allow a guest to search by dates', () => {
+//         cy.get('[data-cy=checkin-date-input]').type('2023-07-01');
+//         cy.get('[data-cy=checkout-date-input]').type('2023-07-10');
+//         cy.get('[data-cy=search-submit]').click();
+//         cy.get('[data-cy=listing]').should('be.visible');
+//       });
+
+//       it('should allow a guest to search by number of guests', () => {
+//         cy.get('[data-cy=guests-input]').type('4');
+//         cy.get('[data-cy=search-submit]').click();
+//         cy.get('[data-cy=listing]').should('be.visible');
+//       });
+
+//       it('should allow a guest to search by amenities', () => {
+//         cy.get('[data-cy=amenities-dropdown]').click();
+//         cy.get('[data-cy=amenities-wifi-checkbox]').check();
+//         cy.get('[data-cy=search-submit]').click();
+//         cy.get('[data-cy=listing]').should('be.visible');
+//       });
+
+//       it('should allow a guest to search by location, dates, number of guests, and amenities', () => {
+//         cy.get('[data-cy=location-input]').type('New York');
+//         cy.get('[data-cy=checkin-date-input]').type('2023-07-01');
+//         cy.get('[data-cy=checkout-date-input]').type('2023-07-10');
+//         cy.get('[data-cy=guests-input]').type('4');
+//         cy.get('[data-cy=amenities-dropdown]').click();
+//         cy.get('[data-cy=amenities-wifi-checkbox]').check();
+//         cy.get('[data-cy=search-submit]').click();
+//         cy.get('[data-cy=listing]').should('be.visible');
+//       });
+//     });`,
+//     max_tokens: 1500,
+//     temperature: 0.4,
+//   };
+
+//   //console.log(e2eData);
+//   // Set up the configuration object for the API request
+//   const config = {
+//     headers: {
+//       "Content-Type": "application/json",
+//       Authorization: `Bearer ${API_KEY}`,
+//     },
+//   };
+
+//   try {
+//     // Send a POST request to OpenAI's API to generate the integration tests
+//     const response = await axios.post(
+//       "https://api.openai.com/v1/completions",
+//       e2eData,
+//       config
+//     );
+
+//     // Extract the generated End to End tests from the API response
+//     const generatedE2ETests = response.data.choices[0].text;
+
+//     // Send the generated integration tests as a JSON response to the client
+//     res.json(generatedE2ETests);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// });
 
 //The following code is a React component. I want to implement e2e Cypress tests to test its functionality. Update the code directly with 'data-cy' locators that will be needed to successfully build the e2e Cypress tests
 
