@@ -15,11 +15,11 @@
 .copy-code-button {
   position: absolute;
   top: 0;
-  left: 0;
+  right: 0;
   /* Adjust these values as needed */
   z-index: 1;
-  padding-left: 20px;
-  margin-left: 12px;
+  padding-right: 20px;
+  margin-right: 12px;
   margin-top: 12px;
 }
 
