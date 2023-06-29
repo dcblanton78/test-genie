@@ -33,12 +33,12 @@ describe("Landing Page", () => {
 
   it("should navigate to Req To Test page", () => {
     cy.get("[data-cy=req-to-test]").click();
-    cy.url().should("include", "/tests");
+    cy.url().should("include", "/req-to-test");
   });
 
   it("should navigate to Code To Test page", () => {
     cy.get("[data-cy=code-to-test]").click();
-    cy.url().should("include", "/codetotest");
+    cy.url().should("include", "/code-to-test");
   });
 
   it("should navigate to Your Tests page", () => {
@@ -74,7 +74,7 @@ describe("Login and Landing Pages", () => {
 
 describe("ReqToTest Page", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/tests");
+    cy.visit("http://localhost:3000/req-to-test");
   });
 
   it("should display the ReqToTest page", () => {
