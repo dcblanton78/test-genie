@@ -46,7 +46,11 @@ const LandingPage = () => {
       <h1 className="landing-page-header">Welcome to TestGenie!</h1>
       <div className="landing-page-link-container">
         <div className="tooltip-container">
-          <Link to="/tests" className="landing-page-link" data-cy="req-to-test">
+          <Link
+            to="/req-to-test"
+            className="landing-page-link"
+            data-cy="req-to-test"
+          >
             ReqToTest
           </Link>
           <span className="tooltip-text">
@@ -55,7 +59,7 @@ const LandingPage = () => {
         </div>
         <div className="tooltip-container">
           <Link
-            to="/codetotest"
+            to="/code-to-test"
             className="landing-page-link"
             data-cy="code-to-test"
           >

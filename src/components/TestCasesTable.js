@@ -20,7 +20,7 @@ const TestCasesTable = () => {
   };
 
   const handleCodeToTestLink = () => {
-    navigate("/CodeToTest");
+    navigate("/code-to-test");
   };
 
   const handleTestLink = () => {
@@ -32,7 +32,7 @@ const TestCasesTable = () => {
   };
 
   const handleReqToTestLink = () => {
-    navigate("/tests");
+    navigate("/req-to-test");
   };
 
   const logout = () => {

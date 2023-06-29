@@ -43,13 +43,16 @@ const CodeToTest = () => {
   };
 
   const handleCodeToTestLink = () => {
-    navigate("/CodeToTest");
+    navigate("/code-to-test");
   };
 
   const handleTestLink = () => {
     navigate("/your-tests");
   };
 
+  const handleReqToTestLink = () => {
+    navigate("/req-to-test");
+  };
   const handleLocaterLink = () => {
     navigate("/tag-your-code");
   };
@@ -134,6 +137,7 @@ const CodeToTest = () => {
             id="req-to-test-three"
             className="navbar-link"
             data-cy="req-to-test-link"
+            onClick={handleReqToTestLink}
           >
             ReqToTest
           </button>

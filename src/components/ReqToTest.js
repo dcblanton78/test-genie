@@ -40,7 +40,7 @@ const ReqToTest = () => {
   };
 
   const handleCodeToTestLink = () => {
-    navigate("/CodeToTest");
+    navigate("/code-to-test");
   };
 
   const handleTestLink = () => {

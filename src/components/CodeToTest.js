@@ -56,11 +56,11 @@ const CodeToTest = () => {
   };
 
   const handleReqToTestLink = () => {
-    navigate("/tests");
+    navigate("/req-to-test");
   };
 
   const handleCodeToTestLink = () => {
-    navigate("");
+    navigate("/code-to-test");
   };
 
   //A function that logs the user out of the application
