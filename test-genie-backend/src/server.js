@@ -468,7 +468,7 @@ app.get("/generate-test-cases-from-code", async (req, res) => {
       {
         role: "user",
         content:
-          `Please provide all possible test cases associated with the following code in Gherkin syntax (Given, When, Then). In addition to happy path, include all negative cases, edge cases, and corner cases. Please include all the following information: Test Case ID, Description, and Expected Result. Provide the answer as a JSON object with keys for 'ID', 'Description', and 'Expected_Result'. ONLY include the Given, When steps in the Description and ONLY the Then step should be included in the Expected Result. Be sure to start with the word Then in the Expected Result. If you see a specific error message in the code, it SHOULD BE DISPLAYED IN THE EXPECTED RESULT FOR THAT TEST CASE. For example, Description: Given I am on the reset password page, When I enter an incorrect password. Expected Result: Then I am see an error message that says You have entered an incorrect email or password  ` +
+          `Please provide all possible test cases associated with the following code in Gherkin syntax (Given, When, Then). In addition to happy path, include all negative cases, edge cases, and corner cases. Please include all the following information: Test Case ID, Description, and Expected Result. Provide the answer as a JSON object with keys for 'ID', 'Description', and 'Expected_Result'. ONLY INCLUDE THE JSON OBJECT. DO NOT SEND BACK ANY OTHER TEXT. ALSO, ONLY include the Given, When steps in the Description and ONLY the Then step should be included in the Expected Result. Be sure to start with the word Then in the Expected Result.  For example, Description: Given I am on the reset password page, When I enter an incorrect password. Expected Result: Then I am see an error message that says You have entered an incorrect email or password.  ` +
           code +
           `Here is an example of what the response should look like: [
             {
@@ -490,7 +490,7 @@ app.get("/generate-test-cases-from-code", async (req, res) => {
         ]`,
       },
     ],
-    max_tokens: 2500,
+    max_tokens: 500,
     temperature: 0.4,
   };
 
@@ -594,7 +594,7 @@ app.get("/generate-unit-tests-from-code", async (req, res) => {
           "});",
       },
     ],
-    max_tokens: 1500,
+    max_tokens: 500,
     temperature: 0.4,
   };
 
@@ -686,7 +686,7 @@ app.get("/generate-integration-tests-from-code", async (req, res) => {
           "});",
       },
     ],
-    max_tokens: 2500,
+    max_tokens: 500,
     temperature: 0.4,
   };
 
@@ -802,7 +802,7 @@ describe('Listing Search', () => {
 });`,
       },
     ],
-    max_tokens: 2500,
+    max_tokens: 500,
     temperature: 0.4,
   };
 
@@ -832,117 +832,6 @@ describe('Listing Search', () => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
-// app.get("/generate-e2e-tests-from-code", async (req, res) => {
-//   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
-//   const code = req.query.code;
-
-//   const MOCK_E2E_TESTS = `
-
-//     describe('TEST!!! View Listing Details', () => {
-//       const mockListing = {
-//         id: 1,
-//         photos: ['photo1.jpg', 'photo2.jpg'],
-//         description: 'This is a great listing',
-//         houseRules: 'No parties',
-//         reviews: [{ author: 'John', rating: 5 }, { author: 'Jane', rating: 4 }],
-//         pricing: {
-//           basePrice: 100,
-//           extraPersonFee: 10
-//         }
-//       };
-
-//       test('should return the correct listing photos', () => {
-//         expect(mockListing.photos).toEqual(['photo1.jpg', 'photo2.jpg']);
-//       });
-
-//       // Rest of tests
-//     });
-//     `;
-
-//   if (process.env.MOCK_TEST_DATA === "true") {
-//     return res.status(200).json(MOCK_E2E_TESTS);
-//   }
-
-//   // Create the data object to send to OpenAI's API
-//   const e2eData = {
-//     model: "text-davinci-003",
-//     prompt: `Please provide the Cypress End to End tests to test the following code: ${code}. Here is an example of what the response should look like:
-
-//     describe('Listing Search', () => {
-//       beforeEach(() => {
-//         // Visit the homepage
-//         cy.visit('http://www.airbnb.com');
-//       });
-
-//       it('should allow a guest to search by location', () => {
-//         cy.get('[data-cy=location-input]').type('New York');
-//         cy.get('[data-cy=search-submit]').click();
-//         cy.get('[data-cy=listing]').should('be.visible');
-//       });
-
-//       it('should allow a guest to search by dates', () => {
-//         cy.get('[data-cy=checkin-date-input]').type('2023-07-01');
-//         cy.get('[data-cy=checkout-date-input]').type('2023-07-10');
-//         cy.get('[data-cy=search-submit]').click();
-//         cy.get('[data-cy=listing]').should('be.visible');
-//       });
-
-//       it('should allow a guest to search by number of guests', () => {
-//         cy.get('[data-cy=guests-input]').type('4');
-//         cy.get('[data-cy=search-submit]').click();
-//         cy.get('[data-cy=listing]').should('be.visible');
-//       });
-
-//       it('should allow a guest to search by amenities', () => {
-//         cy.get('[data-cy=amenities-dropdown]').click();
-//         cy.get('[data-cy=amenities-wifi-checkbox]').check();
-//         cy.get('[data-cy=search-submit]').click();
-//         cy.get('[data-cy=listing]').should('be.visible');
-//       });
-
-//       it('should allow a guest to search by location, dates, number of guests, and amenities', () => {
-//         cy.get('[data-cy=location-input]').type('New York');
-//         cy.get('[data-cy=checkin-date-input]').type('2023-07-01');
-//         cy.get('[data-cy=checkout-date-input]').type('2023-07-10');
-//         cy.get('[data-cy=guests-input]').type('4');
-//         cy.get('[data-cy=amenities-dropdown]').click();
-//         cy.get('[data-cy=amenities-wifi-checkbox]').check();
-//         cy.get('[data-cy=search-submit]').click();
-//         cy.get('[data-cy=listing]').should('be.visible');
-//       });
-//     });`,
-//     max_tokens: 1500,
-//     temperature: 0.4,
-//   };
-
-//   //console.log(e2eData);
-//   // Set up the configuration object for the API request
-//   const config = {
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${API_KEY}`,
-//     },
-//   };
-
-//   try {
-//     // Send a POST request to OpenAI's API to generate the integration tests
-//     const response = await axios.post(
-//       "https://api.openai.com/v1/completions",
-//       e2eData,
-//       config
-//     );
-
-//     // Extract the generated End to End tests from the API response
-//     const generatedE2ETests = response.data.choices[0].text;
-
-//     // Send the generated integration tests as a JSON response to the client
-//     res.json(generatedE2ETests);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
 
 //The following code is a React component. I want to implement e2e Cypress tests to test its functionality. Update the code directly with 'data-cy' locators that will be needed to successfully build the e2e Cypress tests
 
@@ -1017,45 +906,55 @@ app.get("/update-code-with-data-cy-locators", async (req, res) => {
   }
 });
 
-//   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
-//   const code = req.query.code;
+app.post("/generate-a11y-report", async (req, res) => {
+  const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
 
-//   // Create the data object to send to OpenAI's API
-//   const data = {
-//     model: "test-davinci-003",
-//     prompt:
-//       "The following code is a React component. I want to implement e2e Cypress tests to test its functionality. Update the code directly with 'data-cy' locators that will be needed to successfully build the e2e Cypress tests" +
-//       code,
-//     max_tokens: 2000,
-//     temperature: 0.4,
-//   };
+  // Get the requirements parameter from the query string
+  const code = req.query.code;
 
-//   // Set up the configuration object for the API request
-//   const config = {
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `Bearer ${API_KEY}`,
-//     },
-//   };
+  // Create the data object to send to OpenAI's API
+  const data = {
+    model: "gpt-3.5-turbo-0613",
+    messages: [
+      {
+        role: "system",
+        content:
+          "You are an expert in a11y software best practices, including WCAG. Please analyze the following code for accessibility issues / violations and provide a report with two sections: 1) WCAG Violations 2.0: A list of WCAG violations including a description and link / URL to the corresponding WCAG 2.0 violation and a description of how to resolve the violation. 2) WCAG Violations 2.1: A list of WCAG violations including a description and link / URL to the corresponding WCAG 2.1 violation and a description of how to resolve the violation. Don't forget the URLs!!! Also, provide the response with Markdown, so I can properly format it on my side :\n\n" +
+          code,
+      },
+    ],
+    max_tokens: 1500,
+    temperature: 0.4,
+  };
 
-//   try {
-//     // Send a POST request to OpenAI's API to generate the updated code
-//     const response = await axios.post(
-//       "https://api.openai.com/v1/completions",
-//       data,
-//       config
-//     );
+  // Set up the configuration object for the API request
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${API_KEY}`,
+    },
+  };
 
-//     // Extract the updated code from the API response
-//     const updatedCode = response.data.choices[0].text;
+  try {
+    // Send a POST request to OpenAI's API to generate the unit tests
+    const response = await axios.post(
+      "https://api.openai.com/v1/chat/completions",
+      data,
+      config
+    );
 
-//     // Send the updated code as a JSON response to the client
-//     res.json(updatedCode);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal server error" });
-//   }
-// });
+    // Extract the generated unit tests from the API response
+    const generatedA11yReport = response.data.choices[0].message.content;
+
+    console.log(generatedA11yReport);
+
+    // Send the generated unit tests as a JSON response to the client
+    res.json({ report: generatedA11yReport });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
 // Start the server and listen for incoming requests
 app
