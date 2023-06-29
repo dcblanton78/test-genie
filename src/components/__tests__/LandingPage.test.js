@@ -53,11 +53,11 @@ describe("LandingPage component", () => {
   });
   test("navigates correctly when buttons are clicked", () => {
     fireEvent.click(screen.getByRole("link", { name: "ReqToTest" }));
-    expect(window.location.pathname).toBe("/tests");
+    expect(window.location.pathname).toBe("/req-to-test");
     fireEvent.click(screen.getByText("ReqToTest"));
-    expect(window.location.pathname).toBe("/tests");
+    expect(window.location.pathname).toBe("/req-to-test");
     fireEvent.click(screen.getByRole("link", { name: "CodeToTest" }));
-    expect(window.location.pathname).toBe("/codetotest");
+    expect(window.location.pathname).toBe("/code-to-test");
     fireEvent.click(screen.getByRole("link", { name: "TagYourCode" }));
     expect(window.location.pathname).toBe("/tag-your-code");
     fireEvent.click(screen.getByRole("link", { name: "Your Tests" }));
