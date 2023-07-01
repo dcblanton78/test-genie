@@ -47,7 +47,7 @@ const CodeToTest = () => {
     navigate("/your-tests");
   };
 
-  const handleLocatorLink = () => {
+  const handleLocaterLink = () => {
     navigate("/tag-your-code");
   };
 
@@ -64,9 +64,6 @@ const CodeToTest = () => {
     navigate("/code-to-test");
   };
 
-  const handleLocaterLink = () => {
-    navigate("/tag-your-code");
-  };
   const handleBarrierBreakerLink = () => {
     navigate("/barrier-breaker");
   };
