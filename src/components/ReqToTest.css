@@ -18,7 +18,7 @@ html {
   min-height: 100vh;
 }
 
-#home-link {
+/* #home-link {
   background-color: grey;
 }
 
@@ -120,7 +120,7 @@ html {
 
 #test-link-two:hover {
   background-color: rgb(148, 148, 148);
-}
+} */
 
 h1 {
   font-family: "Poppins", sans-serif;
@@ -293,8 +293,6 @@ tr:nth-child(even) {
 .navbar {
   font-family: "Poppins", sans-serif;
   overflow: hidden;
-
-  /* position: fixed; */
   top: 0;
   width: 100%;
   z-index: 1;
@@ -307,23 +305,26 @@ tr:nth-child(even) {
 
 .navbar-link {
   font-family: "Poppins", sans-serif;
-  background-color: #27ae60;
+  background-color: grey;
   color: white;
-
-  /* font-size: larger; */
   padding: 10px 20px;
   border: none;
   border-radius: 12px;
   cursor: pointer;
   margin-left: 10px;
   margin-right: 10px;
-  width: 120px; /* Adjust as needed */
-  height: 40px; /* Adjust as needed */
-  display: flex; /* Aligns the text in the center */
-  justify-content: center; /* Aligns the text in the center horizontally */
-  align-items: center; /* Aligns the text in the center vertically */
-  text-align: center; /* Aligns the text in the center */
+  width: auto; /* Adjust as needed */
+  height: auto; /* Adjust as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
+
+.navbar-link.active {
+  background-color: green;
+}
+
 .user-info {
   margin-left: auto; /* Push user-info to the right */
   display: flex;

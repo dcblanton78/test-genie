@@ -15,6 +15,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import Modal from "react-modal";
 import { BeatLoader } from "react-spinners";
 import UserContext from "./UserContext";
+import Navbar from "./Navbar";
 
 //const axios = require("axios");
 
@@ -63,6 +64,9 @@ const CodeToTest = () => {
     navigate("/code-to-test");
   };
 
+  const handleLocaterLink = () => {
+    navigate("/tag-your-code");
+  };
   const handleBarrierBreakerLink = () => {
     navigate("/barrier-breaker");
   };
@@ -220,56 +224,17 @@ const CodeToTest = () => {
   return (
     <div className="CodeToTest">
       <div className="codetotest-header">
-        <nav className="navbar">
-          <button
-            id="home-link"
-            className="navbar-link"
-            onClick={handleHomeLink}
-          >
-            Home
-          </button>
-          <button
-            id="req-link"
-            className="navbar-link"
-            onClick={handleReqToTestLink}
-          >
-            ReqToTest
-          </button>
-          <button className="navbar-link" onClick={handleCodeToTestLink}>
-            CodeToTest
-          </button>
-          <button
-            id="locate-link"
-            className="navbar-link"
-            onClick={handleLocatorLink}
-          >
-            TagYourCode
-          </button>
-          <button
-            id="home-link-two"
-            className="navbar-link"
-            onClick={handleBarrierBreakerLink}
-            data-cy="barrier-breaker"
-          >
-            BarrierBreaker
-          </button>
-          <button
-            id="test-link"
-            className="navbar-link"
-            onClick={handleTestLink}
-          >
-            Your Tests
-          </button>
-          {user && user.name && (
-            <div className="user-info">
-              <img src={profilePicture} alt={user.name} />
-              <h3>{user.name}</h3>
-              <button className="navbar-link" onClick={logout}>
-                Logout
-              </button>
-            </div>
-          )}
-        </nav>
+        <Navbar
+          handleHomeLink={handleHomeLink}
+          handleCodeToTestLink={handleCodeToTestLink}
+          handleTestLink={handleTestLink}
+          handleLocaterLink={handleLocaterLink}
+          handleReqToTestLink={handleReqToTestLink}
+          handleBarrierBreakerLink={handleBarrierBreakerLink}
+          user={user}
+          profilePicture={profilePicture}
+          logout={logout}
+        />
         <div className="logo-container">
           <img src={logo} alt="TestGenie Logo" className="logo" />
         </div>
