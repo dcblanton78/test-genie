@@ -11,6 +11,8 @@ import { BeatLoader } from "react-spinners";
 import UserContext from "./UserContext";
 import Report from "./Report";
 import "./Report.css";
+import Navbar from "./Navbar";
+
 // import "./BarrierBreaker.css";
 
 const BarrierBreaker = () => {
@@ -31,10 +33,6 @@ const BarrierBreaker = () => {
     navigate("/your-tests");
   };
 
-  const handleLocatorLink = () => {
-    navigate("/tag-your-code");
-  };
-
   //A function that routes the user to the landing page when they click the Home button
   const handleHomeLink = () => {
     navigate("/landing");
@@ -46,6 +44,10 @@ const BarrierBreaker = () => {
 
   const handleCodeToTestLink = () => {
     navigate("/code-to-test");
+  };
+
+  const handleLocaterLink = () => {
+    navigate("/tag-your-code");
   };
 
   const handleBarrierBreakerLink = () => {
@@ -88,59 +90,17 @@ const BarrierBreaker = () => {
   return (
     <div className="BarrierBreaker">
       <div className="barrierbreaker-header">
-        <nav className="navbar">
-          <button
-            id="home-link"
-            className="navbar-link"
-            onClick={handleHomeLink}
-          >
-            Home
-          </button>
-          <button
-            id="req-link"
-            className="navbar-link"
-            onClick={handleReqToTestLink}
-          >
-            ReqToTest
-          </button>
-          <button
-            id="code-to-test-link-two"
-            className="navbar-link"
-            onClick={handleCodeToTestLink}
-          >
-            CodeToTest
-          </button>
-          <button
-            id="locate-link"
-            className="navbar-link"
-            onClick={handleLocatorLink}
-          >
-            TagYourCode
-          </button>
-          <button
-            id="barrier-link"
-            className="navbar-link"
-            onClick={handleBarrierBreakerLink}
-          >
-            BarrierBreaker
-          </button>
-          <button
-            id="test-link"
-            className="navbar-link"
-            onClick={handleTestLink}
-          >
-            Your Tests
-          </button>
-          {user && user.name && (
-            <div className="user-info">
-              <img src={profilePicture} alt={user.name} />
-              <h3>{user.name}</h3>
-              <button className="navbar-link" onClick={logout}>
-                Logout
-              </button>
-            </div>
-          )}
-        </nav>
+        <Navbar
+          handleHomeLink={handleHomeLink}
+          handleCodeToTestLink={handleCodeToTestLink}
+          handleTestLink={handleTestLink}
+          handleLocaterLink={handleLocaterLink}
+          handleReqToTestLink={handleReqToTestLink}
+          handleBarrierBreakerLink={handleBarrierBreakerLink}
+          user={user}
+          profilePicture={profilePicture}
+          logout={logout}
+        />
         <div className="logo-container">
           <img src={logo} alt="TestGenie Logo" className="logo" />
         </div>

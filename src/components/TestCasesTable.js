@@ -1,10 +1,10 @@
 /* global google */
-
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import "./TestCasesTable.css";
 import { useNavigate } from "react-router-dom";
 import UserContext from "./UserContext";
+import Navbar from "./Navbar";
 
 const TestCasesTable = () => {
   const [testCases, setTestCases] = useState([]);
@@ -35,6 +35,10 @@ const TestCasesTable = () => {
     navigate("/req-to-test");
   };
 
+  const handleBarrierBreakerLink = () => {
+    navigate("/barrier-breaker");
+  };
+
   const logout = () => {
     setUser({});
     if (window.google && window.google.accounts && window.google.accounts.id) {
@@ -56,57 +60,17 @@ const TestCasesTable = () => {
 
   return (
     <div className="test-cases-container">
-      <nav className="navbar">
-        <button
-          id="home-link-three"
-          className="navbar-link"
-          onClick={handleHomeLink}
-          data-cy="home-link"
-        >
-          Home
-        </button>
-        <button
-          id="req-to-test-three"
-          className="navbar-link"
-          onClick={handleReqToTestLink}
-          data-cy="req-to-test-link"
-        >
-          ReqToTest
-        </button>
-        <button
-          id="code-to-test-link-three"
-          className="navbar-link"
-          onClick={handleCodeToTestLink}
-          data-cy="code-to-test-link"
-        >
-          CodeToTest
-        </button>
-        <button
-          id="locate-link-four"
-          className="navbar-link"
-          onClick={handleLocaterLink}
-          data-cy="locate-link"
-        >
-          TagYourCode
-        </button>
-        <button
-          id="test-link-four"
-          className="navbar-link"
-          onClick={handleTestLink}
-          data-cy="your-tests-link"
-        >
-          Your Tests
-        </button>
-        {user && user.name && (
-          <div className="user-info">
-            <img src={profilePicture} alt={user.name} />
-            <h3 data-cy="user-name">{user.name}</h3>
-            <button className="navbar-link" onClick={logout}>
-              Logout
-            </button>
-          </div>
-        )}
-      </nav>
+      <Navbar
+        handleHomeLink={handleHomeLink}
+        handleCodeToTestLink={handleCodeToTestLink}
+        handleTestLink={handleTestLink}
+        handleLocaterLink={handleLocaterLink}
+        handleReqToTestLink={handleReqToTestLink}
+        handleBarrierBreakerLink={handleBarrierBreakerLink}
+        user={user}
+        profilePicture={profilePicture}
+        logout={logout}
+      />
       <h1>Your Tests</h1>
       <table className="test-cases-table">
         <thead>
