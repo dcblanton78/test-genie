@@ -35,6 +35,10 @@ const TestCasesTable = () => {
     navigate("/req-to-test");
   };
 
+  const handleBarrierBreakerLink = () => {
+    navigate("/barrier-breaker");
+  };
+
   const logout = () => {
     setUser({});
     if (window.google && window.google.accounts && window.google.accounts.id) {
@@ -88,6 +92,14 @@ const TestCasesTable = () => {
           data-cy="locate-link"
         >
           TagYourCode
+        </button>
+        <button
+          id="home-link-two"
+          className="navbar-link"
+          onClick={handleBarrierBreakerLink}
+          data-cy="barrier-breaker"
+        >
+          BarrierBreaker
         </button>
         <button
           id="test-link-four"

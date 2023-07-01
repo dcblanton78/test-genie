@@ -81,6 +81,18 @@ const LandingPage = () => {
         </div>
         <div className="tooltip-container">
           <Link
+            to="/tag-your-code"
+            className="landing-page-link"
+            data-cy="barrier-breaker"
+          >
+            BarrierBreaker
+          </Link>
+          <span className="tooltip-text">
+            Is your application inaccessible?
+          </span>
+        </div>
+        <div className="tooltip-container">
+          <Link
             to="/your-tests"
             className="landing-page-link"
             data-cy="your-tests"

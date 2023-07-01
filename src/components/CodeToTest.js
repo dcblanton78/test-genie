@@ -63,6 +63,10 @@ const CodeToTest = () => {
     navigate("/code-to-test");
   };
 
+  const handleBarrierBreakerLink = () => {
+    navigate("/barrier-breaker");
+  };
+
   //A function that logs the user out of the application
   const logout = () => {
     setUser({});
@@ -240,6 +244,14 @@ const CodeToTest = () => {
             onClick={handleLocatorLink}
           >
             TagYourCode
+          </button>
+          <button
+            id="home-link-two"
+            className="navbar-link"
+            onClick={handleBarrierBreakerLink}
+            data-cy="barrier-breaker"
+          >
+            BarrierBreaker
           </button>
           <button
             id="test-link"

@@ -51,6 +51,10 @@ const ReqToTest = () => {
     navigate("/tag-your-code");
   };
 
+  const handleBarrierBreakerLink = () => {
+    navigate("/barrier-breaker");
+  };
+
   const handleChange = (event) => {
     setRequirements(event.target.value);
   };
@@ -220,6 +224,14 @@ const ReqToTest = () => {
           data-cy="locate-link"
         >
           TagYourCode
+        </button>
+        <button
+          id="home-link-two"
+          className="navbar-link"
+          onClick={handleBarrierBreakerLink}
+          data-cy="barrier-breaker"
+        >
+          BarrierBreaker
         </button>
         <button
           id="test-link-two"
