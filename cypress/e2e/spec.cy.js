@@ -24,7 +24,8 @@ describe("Login Page", () => {
 
 describe("Landing Page", () => {
   beforeEach(() => {
-    cy.visit("localhost:3000/landing");
+    cy.visit("localhost:3000/");
+    cy.login("dcblanton78@gmail.com", "abc123");
   });
 
   it("should display the landing page", () => {
