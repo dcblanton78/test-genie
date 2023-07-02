@@ -179,22 +179,25 @@ const CodeToTest = () => {
         </p>
       </Modal>
 
-      <form onSubmit={handleSubmit}>
-        <TextareaAutosize
-          id="textarea"
-          onFocus={() => clearPlaceholder()}
-          placeholder="Enter your code block"
-          value={codeBlock}
-          onChange={handleChange}
-        />
-        <input type="submit" value="Update Code" disabled={isLoading} />
-      </form>
+      {!displayCodeString && !testsString && (
+        <form onSubmit={handleSubmit}>
+          <TextareaAutosize
+            id="textarea"
+            onFocus={() => clearPlaceholder()}
+            placeholder="Enter your code block"
+            value={codeBlock}
+            onChange={handleChange}
+          />
+          <input type="submit" value="Update Code" disabled={isLoading} />
+        </form>
+      )}
 
       {displayCodeString && !isLoading && (
         <CodeBlock
           codeString={codeString}
           code={codeBlock}
           title="Here is your code updated with data-cy locators:"
+          type="code"
         />
       )}
       {testsString && !isLoading && (
@@ -202,6 +205,7 @@ const CodeToTest = () => {
           codeString={testsString}
           code={codeBlock}
           title="Here are the e2e Cypress tests for your code:"
+          type="tests"
         />
       )}
     </div>
