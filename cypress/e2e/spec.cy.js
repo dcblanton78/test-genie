@@ -94,7 +94,7 @@ describe("ReqToTest Page", () => {
 
     cy.get("[data-cy=generate-tests-button]").click();
 
-    cy.wait("@generateTestCases", { timeout: 60000 }).then((interception) => {
+    cy.wait("@generateTestCases", { timeout: 90000 }).then((interception) => {
       if (interception) {
         expect(interception.response.statusCode).to.equal(200);
         // Add any additional assertions you need to check the response

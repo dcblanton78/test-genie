@@ -3,7 +3,8 @@ import { React, useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import UserContext from "./UserContext";
 
-const Navbar = () => {
+const Navbar = (props) => {
+  console.log(props);
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const profilePicture = localStorage.getItem("profilePicture");

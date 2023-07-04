@@ -5,7 +5,7 @@ import "./Report.css";
 
 const Report = ({ report }) => {
   return (
-    <div className="report-container">
+    <div className="report-container" data-testid="report-container">
       <ReactMarkdown
         plugins={[gfm]}
         children={report}

@@ -26,6 +26,7 @@ const BarrierBreaker = () => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const handleChange = (event) => {
+    console.log("Handle Change: " + event.target.value);
     setCodeBlock(event.target.value);
   };
 
@@ -69,6 +70,7 @@ const BarrierBreaker = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsLoading(true);
+    console.log("Code Block Unit Test: " + codeBlock);
     const data = {
       method: "POST",
       url: "http://localhost:8000/generate-a11y-report",
@@ -162,12 +164,23 @@ const BarrierBreaker = () => {
         ) : (
           <form onSubmit={handleSubmit}>
             <TextareaAutosize
+              type="text"
               id="textarea"
               onFocus={() => clearPlaceholder()}
               placeholder="Enter your code block"
-              value={codeBlock}
+              value={codeBlock || ""}
               onChange={handleChange}
+              data-testid="textarea"
             />
+            {/* <textarea
+              data-testid="textarea"
+              id="textarea"
+              placeholder=""
+              type="text"
+              value={codeBlock || ""}
+              onChange={handleChange}
+            /> */}
+
             <input type="submit" value="Generate Report" disabled={isLoading} />
           </form>
         )}

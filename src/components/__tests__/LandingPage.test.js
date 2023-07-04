@@ -30,15 +30,7 @@ describe("LandingPage component", () => {
 
   test("renders LandingPage component correctly", () => {
     expect(screen.getByText("Welcome to TestGenie!")).toBeInTheDocument();
-    // expect(
-    //   screen.getByRole("button", { name: "Req To Test" })
-    // ).toBeInTheDocument();
-    // expect(
-    //   screen.getByRole("button", { name: "CodeToTest" })
-    // ).toBeInTheDocument();
-    // expect(
-    //   screen.getByRole("button", { name: "Your Tests" })
-    // ).toBeInTheDocument();
+    
     expect(screen.getByRole("link", { name: "ReqToTest" })).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "CodeToTest" })
