@@ -117,6 +117,38 @@ describe("ReqToTest Page", () => {
   });
 });
 
+describe("API Tests", () => {
+  it("should generate Gherkin tests from code", () => {
+    cy.request({
+      method: "GET",
+      url: "http://localhost:8000/generate-test-cases-from-code",
+      qs: {
+        code: `function add(a, b) {
+          return a + b;
+        }`,
+      },
+    }).then((response) => {
+      expect(response.status).to.eq(200);
+    });
+  });
+
+  it("should generate unit tests from code", () => {
+    cy.request({
+      method: "GET",
+      url: "http://localhost:8000/generate-unit-tests-from-code",
+      qs: {
+        code: `function add(a, b) {
+          return a + b;
+        }`,
+      },
+    }).then((response) => {
+      expect(response.status).to.eq(200);
+    });
+  });
+
+  // Other tests...
+});
+
 // it("should save a test case", () => {
 //   cy.get("[data-cy=save-button-0]").click();
 

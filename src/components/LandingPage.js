@@ -57,6 +57,7 @@ const LandingPage = () => {
             Got a well written requirement but no tests?
           </span>
         </div>
+
         <div className="tooltip-container">
           <Link
             to="/code-to-test"
@@ -69,6 +70,7 @@ const LandingPage = () => {
             Got code but no regression tests?
           </span>
         </div>
+
         <div className="tooltip-container">
           <Link
             to="/tag-your-code"
@@ -79,6 +81,7 @@ const LandingPage = () => {
           </Link>
           <span className="tooltip-text">Got code but crappy locators?</span>
         </div>
+
         <div className="tooltip-container">
           <Link
             to="/barrier-breaker"
@@ -91,6 +94,7 @@ const LandingPage = () => {
             Is your application inaccessible?
           </span>
         </div>
+
         <div className="tooltip-container">
           <Link
             to="/your-tests"
