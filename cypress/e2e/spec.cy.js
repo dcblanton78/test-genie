@@ -75,7 +75,9 @@ describe("Login and Landing Pages", () => {
 
 describe("ReqToTest Page", () => {
   beforeEach(() => {
-    cy.visit("http://localhost:3000/req-to-test");
+    cy.visit("localhost:3000/");
+    cy.login("dcblanton78@gmail.com", "abc123");
+    cy.get("[data-cy=req-to-test]").click();
   });
 
   it("should display the ReqToTest page", () => {

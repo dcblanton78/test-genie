@@ -1,6 +1,6 @@
 /* global google */
 import { React, useContext } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, Link } from "react-router-dom";
 import UserContext from "./UserContext";
 
 const Navbar = (props) => {
@@ -57,13 +57,27 @@ const Navbar = (props) => {
       >
         Your Tests
       </NavLink>
-      {user && user.name && (
+      {user && user.name ? (
         <div className="user-info">
-          <img src={profilePicture} alt={user.name} />
-          <h3>{user.name}</h3>
-          <button className="navbar-link" onClick={logout}>
+          <img
+            referrerPolicy="no-referrer"
+            src={profilePicture}
+            alt={user.name}
+          />
+          <h3 data-cy="user-name">{user.name}</h3>
+          <button
+            className="navbar-link"
+            onClick={logout}
+            data-cy="logout-button"
+          >
             Logout
           </button>
+        </div>
+      ) : (
+        <div className="user-info">
+          <Link to="/" className="navbar-link" data-cy="login-button">
+            Login
+          </Link>
         </div>
       )}
     </nav>
