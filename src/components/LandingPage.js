@@ -1,5 +1,5 @@
 /* global google */
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import "./LandingPage.css";
 import logo from "./img/TestGenieLogo.png";
@@ -7,6 +7,15 @@ import { useNavigate } from "react-router-dom";
 import UserContext from "./UserContext";
 
 const LandingPage = () => {
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const handleMouseEnter = () => {
+    setShowTooltip(true);
+  };
+
+  const handleMouseLeave = () => {
+    setShowTooltip(false);
+  };
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
 
@@ -22,7 +31,7 @@ const LandingPage = () => {
   return (
     <div className="landing-page-container" data-cy="landing-page">
       <nav className="navbar">
-        {user && user.name && (
+        {user && user.name ? (
           <div className="user-info">
             <img
               referrerPolicy="no-referrer"
@@ -38,6 +47,12 @@ const LandingPage = () => {
               Logout
             </button>
           </div>
+        ) : (
+          <div className="user-info">
+            <Link to="/" className="navbar-link" data-cy="login-button">
+              Login
+            </Link>
+          </div>
         )}
       </nav>
       <div className="logo-container">
@@ -45,7 +60,11 @@ const LandingPage = () => {
       </div>
       <h1 className="landing-page-header">Welcome to TestGenie!</h1>
       <div className="landing-page-link-container">
-        <div className="tooltip-container">
+        <div
+          className="tooltip-container"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           <Link
             to="/req-to-test"
             className="landing-page-link"
@@ -53,9 +72,11 @@ const LandingPage = () => {
           >
             ReqToTest
           </Link>
-          <span className="tooltip-text">
-            Got a well written requirement but no tests?
-          </span>
+          {showTooltip && (
+            <span className="tooltip-text">
+              Got a well written requirement but no tests?
+            </span>
+          )}
         </div>
 
         <div className="tooltip-container">
