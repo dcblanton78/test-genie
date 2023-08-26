@@ -69,11 +69,16 @@ const ReqToTest = () => {
     event.preventDefault();
     setIsLoading(true);
     document.body.style.cursor = "wait";
+    console.log("ENVIRONMENT VARIALBE!!!!@!: " + process.env.REACT_APP_DEV_ENV);
 
     const data = {
       method: "GET",
       url: "http://localhost:8000/generate-test-cases",
       params: { requirements: requirements },
+      headers:
+        process.env.REACT_APP_DEV_ENV === "true"
+          ? { isCypressTest: "true" }
+          : {},
     };
 
     const unitTestData = {
