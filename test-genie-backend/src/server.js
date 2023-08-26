@@ -80,8 +80,13 @@ app.get("/get-test-cases", async (req, res) => {
 
 app.get("/generate-test-cases", async (req, res) => {
   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
-  console.log("Req.query: ", req.query);
-  const isCypressTest = req.query["x-cypress-test"] === "true";
+  // console.log("LOOK HERE!!!! Req.query: ", req.query);
+  // console.log("LOOK HERE!!!! Req.header: ", req.headers);
+  // console.log("LOOK HERE!!!! Req.body: ", req.body);
+  const isCypressTest = req.headers["iscypresstest"] === "true";
+
+  //const isCypressTest = req.query["x-cypress-test"] === "true";
+  console.log("Cypress test RESULT: " + isCypressTest);
 
   // Get the requirements parameter from the query string
   const requirements = req.query.requirements;
@@ -102,7 +107,7 @@ app.get("/generate-test-cases", async (req, res) => {
   }
 
   // Log the requirements to the console (for debugging purposes)
-  console.log(requirements);
+  //console.log(requirements);
 
   // Create the data object to send to OpenAI's API
   const data = {
@@ -156,8 +161,9 @@ app.get("/generate-test-cases", async (req, res) => {
 // Define a route that generates unit tests based on user-provided requirements
 app.get("/generate-unit-tests", async (req, res) => {
   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
-  const isCypressTest = req.query["x-cypress-test"] === "true";
-  console.log("Req.Headers: ", req.headers);
+  const isCypressTest = req.headers["iscypresstest"] === "true";
+  console.log("LOOK HERE!!!! Req.header: ", req.headers);
+  //console.log("Req.Headers: ", req.headers);
 
   // Get the requirements parameter from the query string
   const requirements = req.query.requirements;
@@ -186,8 +192,10 @@ app.get("/generate-unit-tests", async (req, res) => {
     });
     `;
 
-  console.log("isCypressTest: ", isCypressTest);
+  //console.log("isCypressTest: ", isCypressTest);
   if (process.env.MOCK_TEST_DATA === "true" || isCypressTest) {
+    console.log("Mock data requested, returning mock test cases...");
+    return res.status(200).json(MOCK_TEST_CASES);
     return res.status(200).json(MOCK_UNIT_TESTS);
   }
 
@@ -908,6 +916,11 @@ app.get("/update-code-with-data-cy-locators", async (req, res) => {
 
 app.post("/generate-a11y-report", async (req, res) => {
   const API_KEY = process.env.REACT_APP_OPENAI_API_KEY;
+  const USE_STUB_API = process.env.USE_STUB_API === "true";
+
+  const apiUrl = USE_STUB_API
+    ? "http://localhost:8080/v1/chat/completions"
+    : "https://api.openai.com/v1/chat/completions";
 
   // Get the requirements parameter from the query string
   const code = req.query.code;
@@ -936,12 +949,7 @@ app.post("/generate-a11y-report", async (req, res) => {
   };
 
   try {
-    // Send a POST request to OpenAI's API to generate the unit tests
-    const response = await axios.post(
-      "https://api.openai.com/v1/chat/completions",
-      data,
-      config
-    );
+    const response = await axios.post(apiUrl, data, config);
 
     // Extract the generated unit tests from the API response
     const generatedA11yReport = response.data.choices[0].message.content;

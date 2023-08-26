@@ -172,14 +172,6 @@ const BarrierBreaker = () => {
               onChange={handleChange}
               data-testid="textarea"
             />
-            {/* <textarea
-              data-testid="textarea"
-              id="textarea"
-              placeholder=""
-              type="text"
-              value={codeBlock || ""}
-              onChange={handleChange}
-            /> */}
 
             <input type="submit" value="Generate Report" disabled={isLoading} />
           </form>
